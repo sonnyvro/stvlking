@@ -9,71 +9,83 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; cursor: crosshair; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; }
 
-        /* 1. BACKGROUND LAYER (Fixed & Z-Index 0) */
+        /* 1. BACKGROUND LAYER (Fixed) */
         #background-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .lightning { position: absolute; width: 100%; height: 100%; background: white; opacity: 0; animation: lightning 12s linear infinite; }
         @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.15; } 97% { opacity: 0.05; } }
         .floating-gif { position: absolute; width: 120px; opacity: 0.3; animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* 2. SITE CONTENT (Relative & Z-Index 10) */
+        /* 2. SITE CONTENT (Relative) */
         #site-content { position: relative; z-index: 10; width: 100%; }
-
-        /* Rest of your styling remains here... */
-        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center; color: #e60000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; transition: opacity 0.5s ease; }
-        #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10002; display: flex; justify-content: center; align-items: center; }
-        .enter-btn { padding: 20px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; background: transparent; color: #e60000; border: 2px solid #e60000; cursor: pointer; }
         
+        /* Your original styles */
+        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center; color: #e60000; font-family: 'Bebas Neue'; font-size: 2rem; }
+        #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10002; display: flex; justify-content: center; align-items: center; }
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background-color: #111; border-bottom: 2px solid #e60000; }
-        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(rgba(5, 5, 5, 0.85), #050505), url('7f67efa80c099233ef3683c793a38249.jpg') no-repeat center center/cover; }
         .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+        .hero { text-align: center; padding: 100px 20px; }
         .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
-        .track-card { background-color: #111; border: 1px solid #222; padding: 20px; }
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .shop-card { background: #111; padding: 30px; border: 1px solid #e60000; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        .track-card, .shop-card { background: #111; border: 1px solid #e60000; padding: 25px; border-radius: 5px; }
+        .contact-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+        .contact-item { background: #111; padding: 20px; border: 1px solid #e60000; border-radius: 5px; width: 200px; text-align: center; }
+        footer { text-align: center; padding: 40px; border-top: 2px solid #e60000; }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen"><div class="loader-text">LOADING THE VOID...</div></div>
-
-    <div id="start-screen">
-        <button class="enter-btn" onclick="startAudio()">ENTER THE VOID</button>
-    </div>
+    <div id="loading-screen">LOADING...</div>
+    <div id="start-screen"><button onclick="startAudio()" class="enter-btn">ENTER THE VOID</button></div>
 
     <div id="background-layer">
         <div class="lightning"></div>
         <img src="bone.gif" class="floating-gif" style="top: 20%; left: 5%;">
         <img src="crow.gif" class="floating-gif" style="top: 60%; right: 5%;">
-        <img src="punk.gif" class="floating-gif" style="top: 5%; left: 15%;">
-        <img src="spider.gif" class="floating-gif" style="top: 10%; right: 10%;">
-        <img src="scorp.gif" class="floating-gif" style="bottom: 5%; left: 5%;">
-        <img src="rose.gif" class="floating-gif" style="bottom: 10%; right: 15%;">
     </div>
 
     <div id="site-content">
         <header>
             <div class="logo"><img src="logo.png" style="height: 50px;"></div>
-            <nav><ul><li><a href="#music">Music</a></li><li><a href="#about">About</a></li><li><a href="#shop">Shop</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+            <nav><ul><li style="display:inline; margin-left: 20px;"><a href="#music">Music</a></li><li style="display:inline; margin-left: 20px;"><a href="#about">About</a></li></ul></nav>
         </header>
 
-        <section class="hero">
-            <h1>SONNYVRO/STVLKING</h1>
-            <a href="#music" class="btn">enjoy.</a>
-        </section>
+        <section class="hero"><h1>SONNYVRO/STVLKING</h1></section>
 
-        <div class="main-container">
-            <h2 class="section-title">fresh pressed</h2>
-            <div class="music-grid">
-                <div class="track-card">...</div>
-            </div>
-            </div>
+        <main class="main-container">
+            <section id="music">
+                <h2 class="section-title">Fresh Pressed</h2>
+                <div class="music-grid"><div class="track-card"><h3>hurt.mp3</h3><audio controls></audio></div></div>
+            </section>
+
+            <section id="shop">
+                <h2 class="section-title">Shop Services</h2>
+                <div class="shop-grid">
+                    <div class="shop-card"><h3>Custom Beats</h3><p>$100+</p></div>
+                    <div class="shop-card"><h3>Premade Beats</h3><p>$30 - $50</p></div>
+                </div>
+            </section>
+
+            <section id="about">
+                <h2 class="section-title">The Artist</h2>
+                <p>NOISE TO FILL THE VOID!</p>
+            </section>
+
+            <section id="contact">
+                <h2 class="section-title">Contact Me</h2>
+                <div class="contact-grid">
+                    <div class="contact-item"><a href="mailto:sonnyvromusic@gmail.com">Email</a></div>
+                </div>
+            </section>
+        </main>
+        <footer><p>© 2026 SONNYVRO/STVLKING.</p></footer>
     </div>
 
     <script>
-        // ... (Keep your original script)
+        window.addEventListener('load', () => document.getElementById('loading-screen').style.display = 'none');
+        function startAudio() { document.getElementById('start-screen').style.display = 'none'; }
     </script>
 </body>
 </html>
