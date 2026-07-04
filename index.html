@@ -29,7 +29,6 @@
 
         .section-title { font-size: 2rem; color: #fff; margin-bottom: 40px; border-left: 5px solid #e60000; padding-left: 15px; }
         
-        /* Music Grid */
         .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
         .track-card { background-color: #111; border: 1px solid #222; border-radius: 5px; overflow: hidden; }
         .track-art { width: 100%; height: 300px; object-fit: cover; }
@@ -37,10 +36,11 @@
         .track-story { background-color: #050505; padding: 15px; border-left: 3px solid #e60000; margin-bottom: 20px; font-size: 0.9rem; color: #aaa; }
         audio { width: 100%; margin-bottom: 20px; }
         
-        /* Shop Styles */
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
         .shop-card { background: #111; padding: 30px; border: 1px solid #e60000; border-radius: 5px; text-align: center; }
         .price { color: #e60000; font-weight: bold; font-size: 1.4rem; margin: 10px 0; }
+        .shop-btn { display: block; margin-top: 20px; padding: 10px; background: #e60000; color: #fff; border-radius: 3px; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; transition: 0.3s; }
+        .shop-btn:hover { background: #fff; color: #e60000; }
         
         .about-section { text-align: center; padding: 60px 20px; }
         .profile-pic { width: 220px; height: 220px; border-radius: 50%; border: 4px solid #e60000; object-fit: cover; margin-bottom: 25px; }
@@ -91,37 +91,35 @@
         </div>
     </main>
 
-<section id="shop" class="main-container shop-section">
-    <h2 class="section-title">Shop Services</h2>
-    <div class="shop-grid">
-        
-        <div class="shop-card">
-            <h3>Custom Beats</h3>
-            <p class="price">$100+ (discount in bulk)</p>
-            <p>custom made for your vision! includes stems and exclusive rights.</p>
-            <a href="#contact" class="shop-btn">Inquire Now</a>
+    <section id="shop" class="main-container shop-section">
+        <h2 class="section-title">Shop Services</h2>
+        <div class="shop-grid">
+            <div class="shop-card">
+                <h3>Custom Beats</h3>
+                <p class="price">$100+ (discount in bulk)</p>
+                <p>Custom made for your vision! Includes stems and exclusive rights.</p>
+                <a href="#contact" class="shop-btn">Inquire Now</a>
+            </div>
+            <div class="shop-card">
+                <h3>Premade Beats</h3>
+                <p class="price">$30 - $50</p>
+                <p>High-quality leases ready for immediate download and use.</p>
+                <!-- REPLACE $YourCashTag WITH YOUR ACTUAL TAG -->
+                <a href="https://cash.app/$sonnyvro" target="_blank" class="shop-btn">Purchase via CashApp</a>
+            </div>
+            <div class="shop-card">
+                <h3>Features</h3>
+                <p class="price">Contact for quote!</p>
+                <p>Vocals, production assistance, or collaboration on your track.</p>
+                <a href="#contact" class="shop-btn">Message Me</a>
+            </div>
         </div>
-
-        <div class="shop-card">
-            <h3>Premade Beats</h3>
-            <p class="price">$30 - $50</p>
-            <p>high-quality leases ready for immediate download and use.</p>
-            <a href="https://paypal.me/yourusername" target="_blank" class="shop-btn">Purchase via PayPal</a>
-        </div>
-
-        <div class="shop-card">
-            <h3>Features</h3>
-            <p class="price">contact me we can negotiate!</p>
-            <p>vocals, production assistance, or collaboration on your track.</p>
-            <a href="#contact" class="shop-btn">Message Me</a>
-        </div>
-    </div>
-</section>
+    </section>
 
     <section id="about" class="about-section">
         <h2 class="section-title">The Artist</h2>
         <img src="logo.png" alt="Artist" class="profile-pic">
-        <p>NOISE TO FILL THE VOID! 21 year old artist tryna make cool sounds</p>
+        <p>NOISE TO FILL THE VOID! 21 year old artist tryna make cool sounds.</p>
     </section>
 
     <section id="contact" class="contact-section">
@@ -137,6 +135,4 @@
 
 </body>
 </html>
- 
-
  
