@@ -118,7 +118,7 @@
     <div id="logo-overlay"></div>
     <div id="cracks-container"></div>
     <div class="rain"></div>
-    <audio id="bg-audio" loop><source src="THANKXSOMUCH.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-audio" loop></audio>
     <div class="lightning"></div>
 
     <div id="service-modal">
@@ -140,7 +140,7 @@
         </section>
 
         <header style="padding: 10px 10%; border-bottom: 1px solid #1a0000; text-align: center; margin-bottom: 40px;">
-            <div class="logo glitch-text" style="font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 2px; color: #666;"> Now Playing - THANKXSOMUCH by thornskin </div>
+            <div id="now-playing-text" class="logo glitch-text" style="font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 2px; color: #666;"> Now Playing - THANKXSOMUCH by thornskin </div>
         </header>
 
         <main class="main-container" style="perspective: 1200px;">
@@ -161,8 +161,16 @@
                     <div style="text-align: center;"><h2 class="glitch-text" style="color:#666; font-size: 1rem; letter-spacing: 5px;">SERVICES</h2></div>
                     
                     <div class="shop-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top:40px;">
-                        <div class="shop-card" onclick="openModal('Custom Beats', 'Custom made for your vision! Price starts at $50+. Contact me to start.')"><h3 class="glitch-text">Custom Beats</h3></div>
-                        <a href="https://cash.app/$sonnyvro" target="_blank" style="text-decoration:none;"><div class="shop-card"><h3 class="glitch-text">Premade Beats</h3><p style="margin-top:10px; font-size: 0.7rem; opacity: 0.6;">$30 - $50 (Click to purchase)</p></div></a>
+                        <div class="shop-card" onclick="openModal('Custom Beats', 'Custom made for your vision! Price starts at $50+. Contact me to start.')">
+                            <h3 class="glitch-text">Custom Beats</h3>
+                            <p style="margin-top:10px; font-size: 0.7rem; opacity: 0.6;">$50+ (Click for details)</p>
+                        </div>
+                        <a href="https://cash.app/$sonnyvro" target="_blank" style="text-decoration:none;">
+                            <div class="shop-card">
+                                <h3 class="glitch-text">Premade Beats</h3>
+                                <p style="margin-top:10px; font-size: 0.7rem; opacity: 0.6;">$30 - $50 (Click to purchase)</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
@@ -183,6 +191,25 @@
     </div>
 
     <script>
+        // --- SONG CONFIGURATION ---
+        const pageTracks = {
+            'home-section': {
+                file: 'THANKXSOMUCH.mp3',
+                title: 'Now Playing - THANKXSOMUCH by thornskin'
+            },
+            'about-section': {
+                file: 'YOUR_SECOND_SONG.mp3', // <-- REPLACE WITH YOUR ABOUT ME SONG FILE
+                title: 'Now Playing - [SONG NAME] by [ARTIST]' // <-- REPLACE WITH SONG TITLE
+            }
+        };
+
+        const audio = document.getElementById('bg-audio');
+        const nowPlayingDisplay = document.getElementById('now-playing-text');
+        
+        // Set initial song
+        audio.src = pageTracks['home-section'].file;
+        nowPlayingDisplay.innerText = pageTracks['home-section'].title;
+
         const CURRENT_STATUS = "ON"; 
         const statusEl = document.getElementById('status-text');
         if (CURRENT_STATUS === "ON") {
@@ -206,6 +233,16 @@
                 document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
                 targetSection.classList.add('active');
                 
+                // --- SWITCH SONG LOGIC ---
+                if (pageTracks[pageId]) {
+                    const wasPlaying = !audio.paused; // Check if music is currently unmuted/playing
+                    audio.src = pageTracks[pageId].file;
+                    nowPlayingDisplay.innerText = pageTracks[pageId].title;
+                    if (wasPlaying) {
+                        audio.play(); // Keep playing if they had it playing
+                    }
+                }
+
                 flipper.style.transition = 'none';
                 flipper.style.transform = 'rotateX(-90deg)';
                 
@@ -213,7 +250,7 @@
                 
                 flipper.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 flipper.style.transform = 'rotateX(0deg)';
-            }, 400);
+            }, 400); // Happens exactly as the page flips out of view
         }
 
         document.addEventListener('click', function(e) {
@@ -235,8 +272,8 @@
         function closeModal() { document.getElementById('service-modal').style.display = 'none'; }
 
         function startAudio() {
-            const audio = document.getElementById('bg-audio');
-            audio.volume = 0.3; audio.play();
+            audio.volume = 0.3; 
+            audio.play();
             document.getElementById('start-screen').style.display = 'none';
         }
     </script>
