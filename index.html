@@ -9,110 +9,75 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; cursor: crosshair; }
-        
-        /* Loading Screen */
-        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center; color: #e60000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; transition: opacity 0.5s ease; }
-        .loader-text { animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; }
 
-        /* Cinematic Reveal Animations */
-        header, section, .main-container { animation: reveal 1s ease-out forwards; opacity: 0; }
-        @keyframes reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        header { animation-delay: 0.2s; }
-        .hero { animation-delay: 0.4s; }
-        .main-container { animation-delay: 0.6s; }
-
-        /* Lightning Flash */
+        /* LAYER 1: BACKGROUND EFFECTS (Fixed, low z-index) */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .lightning { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1; animation: lightning 12s linear infinite; opacity: 0; }
+        .floating-gif { position: fixed; width: 100px; opacity: 0.3; z-index: 1; animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.15; } 97% { opacity: 0.05; } }
-        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; pointer-events: none; z-index: 10001; animation: lightning 12s linear infinite; }
-        
-        /* Floating & Scattered GIFs */
-        .floating-gif { position: fixed; width: 120px; opacity: 0.3; z-index: 0; pointer-events: none; animation: float 4s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-        .gif-left { left: 20px; top: 20%; } .gif-right { right: 20px; top: 60%; }
-        .gif-top-left { top: 5%; left: 10%; } .gif-top-right { top: 10%; right: 5%; }
-        .gif-bottom-left { bottom: 5%; left: 5%; } .gif-bottom-right { bottom: 10%; right: 15%; }
-        
-        #flashlight { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background: radial-gradient(circle 1000px at var(--x, 50%) var(--y, 50%), transparent 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0.98) 100%); }
-        @media (pointer: coarse) { #flashlight { display: none; } }
 
-        /* UI Elements */
-        #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10002; display: flex; justify-content: center; align-items: center; }
-        .enter-btn { padding: 20px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; background: transparent; color: #e60000; border: 2px solid #e60000; cursor: pointer; transition: 0.3s; }
-        .enter-btn:hover { background: #e60000; color: #fff; }
+        /* LAYER 2: SITE CONTENT (Relative, higher z-index) */
+        #main-content { position: relative; z-index: 10; width: 100%; }
 
-        .overlay-gif { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('wallpaper.gif'); background-size: cover; background-position: center; opacity: 0.1; pointer-events: none; z-index: -1; }
-        .hero h1 { animation: glow 3s infinite alternate; font-size: 3.5rem; color: #fff; }
-        @keyframes glow { from { text-shadow: 0 0 5px #e60000; } to { text-shadow: 0 0 20px #e60000; } }
-        .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 1; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background-color: #111; border-bottom: 2px solid #e60000; position: relative; z-index: 2; }
-        .btn { display: inline-block; background: #e60000; color: #fff; padding: 12px 30px; border-radius: 3px; font-weight: bold; text-transform: uppercase; font-family: 'Bebas Neue'; }
+        /* UI/LOADING */
+        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; justify-content: center; align-items: center; color: #e60000; font-family: 'Bebas Neue'; font-size: 2rem; transition: opacity 0.5s; }
+        #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center; }
+        .enter-btn { padding: 20px 40px; font-family: 'Bebas Neue'; font-size: 2.5rem; background: transparent; color: #e60000; border: 2px solid #e60000; cursor: pointer; }
+        
+        /* CONTENT STYLING */
+        header { display: flex; justify-content: space-between; padding: 20px 10%; background: #111; border-bottom: 2px solid #e60000; }
+        .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+        .hero { text-align: center; padding: 100px 20px; }
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        .track-card { background: #111; border: 1px solid #222; padding: 20px; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .shop-card { background: #111; padding: 30px; border: 1px solid #e60000; }
+        footer { text-align: center; padding: 40px; border-top: 2px solid #e60000; }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen">
-        <div class="loader-text">LOADING THE VOID...</div>
-    </div>
-
-    <audio id="bg-audio" loop><source src="thunderstorm.mp3" type="audio/mpeg"></audio>
+    <div id="loading-screen"><div class="loader-text">LOADING THE VOID...</div></div>
 
     <div id="start-screen">
         <button class="enter-btn" onclick="startAudio()">ENTER THE VOID</button>
     </div>
 
-    <div class="lightning"></div>
-    <div id="flashlight"></div>
-    <div class="overlay-gif"></div>
-    
-    <img src="bone.gif" class="floating-gif gif-left">
-    <img src="crow.gif" class="floating-gif gif-right">
-    <img src="punk.gif" class="floating-gif gif-top-left">
-    <img src="spider.gif" class="floating-gif gif-top-right">
-    <img src="scorp.gif" class="floating-gif gif-bottom-left">
-    <img src="rose.gif" class="floating-gif gif-bottom-right">
+    <div id="bg-canvas">
+        <div class="lightning"></div>
+        <img src="bone.gif" class="floating-gif" style="top: 20%; left: 5%;">
+        <img src="crow.gif" class="floating-gif" style="top: 60%; right: 5%;">
+    </div>
 
-    <header>
-        <div class="logo"><img src="logo.png" alt="Logo" style="height: 50px;"></div>
-        <nav>
-            <ul>
-                <li><a href="#music">Music</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <main id="main-content">
+        <header>
+            <div class="logo"><img src="logo.png" style="height: 50px;"></div>
+            <nav><ul><li style="display:inline; margin: 10px;"><a href="#music" style="color:white;">Music</a></li></ul></nav>
+        </header>
 
-    <section class="hero">
-        <h1>SONNYVRO/STVLKING</h1>
-        <p>new stuff soon</p>
-        <a href="#music" class="btn">enjoy.</a>
-    </section>
+        <section class="hero">
+            <h1>SONNYVRO/STVLKING</h1>
+        </section>
+
+        <div class="main-container" id="music">
+            <div class="music-grid">
+                <div class="track-card"><h3>hurt.mp3</h3><audio controls></audio></div>
+            </div>
+        </div>
+    </main>
 
     <script>
         window.addEventListener('load', () => {
-            const loader = document.getElementById('loading-screen');
-            loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; }, 500);
-        });
-
-        const flashlight = document.getElementById('flashlight');
-        const audio = document.getElementById('bg-audio');
-        const startScreen = document.getElementById('start-screen');
-
-        document.addEventListener('mousemove', (e) => {
-            flashlight.style.setProperty('--x', e.clientX + 'px');
-            flashlight.style.setProperty('--y', e.clientY + 'px');
+            document.getElementById('loading-screen').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading-screen').style.display = 'none', 500);
         });
 
         function startAudio() {
-            audio.play().then(() => {
-                startScreen.style.display = 'none';
-            }).catch(error => { console.error("Audio failed:", error); });
+            document.getElementById('bg-audio')?.play();
+            document.getElementById('start-screen').style.display = 'none';
         }
     </script>
 </body>
 </html>
- 
