@@ -9,46 +9,54 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background-color: #020202; color: #888; overflow-x: hidden; cursor: crosshair; }
 
-        /* The Ghastly Follow-Mouse Glow */
-        #cursor-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998;
-            background: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), rgba(230, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.95) 80%);
+        /* VHS Noise/Grain Overlay */
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/noise-lines.png');
+            opacity: 0.03; pointer-events: none; z-index: 9998;
         }
+
+        /* Glitch Animation (Subtle) */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            100% { transform: translate(0); }
+        }
+        .glitch-effect { animation: glitch 4s infinite linear; }
 
         /* Giant Background Logo */
         #bg-logo {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('logo.png');
-            background-repeat: no-repeat; background-position: center; background-size: 50%;
-            opacity: 0.05; z-index: 0; pointer-events: none;
+            background-repeat: no-repeat; background-position: center; background-size: 40%;
+            opacity: 0.04; z-index: 0; pointer-events: none; filter: blur(2px);
         }
 
-        /* Ambient Layers */
+        /* Ambient Fog/Scanlines */
         body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 0, 0, 0.03)); background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 1; }
-        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; pointer-events: none; z-index: 2; animation: lightning 12s linear infinite; }
-        @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.05; } 97% { opacity: 0.02; } }
+        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; pointer-events: none; z-index: 2; animation: lightning 15s linear infinite; }
+        @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.04; } 97% { opacity: 0.01; } }
 
-        /* UI */
-        #service-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100000; justify-content: center; align-items: center; }
-        .modal-content { background: #0a0a0a; padding: 40px; border: 2px solid #e60000; text-align: center; max-width: 500px; color: #fff; }
+        /* Modal & UI */
+        #service-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100000; justify-content: center; align-items: center; }
+        .modal-content { background: #0a0a0a; padding: 40px; border: 1px solid #330000; text-align: center; max-width: 500px; color: #fff; }
         .close-btn { margin-top: 20px; color: #e60000; cursor: pointer; text-transform: uppercase; font-family: 'Bebas Neue'; }
         
         #site-wrapper { position: relative; z-index: 3; }
         .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
-        .shop-card { background: #0a0a0a; border: 1px solid #1a0000; padding: 25px; cursor: pointer; transition: 0.4s; color: #888; text-decoration: none; display: block; }
-        .shop-card:hover { border-color: #e60000; box-shadow: 0 0 20px rgba(230, 0, 0, 0.2); color: #fff; }
-        .hero { text-align: center; padding: 150px 20px; background: radial-gradient(circle at center, #1a0000 0%, #020202 70%); }
-        .enter-btn { padding: 15px 30px; font-family: 'Bebas Neue'; font-size: 1.5rem; background: transparent; color: #e60000; border: 2px solid #e60000; cursor: pointer; }
+        .shop-card { background: #050505; border: 1px solid #1a0000; padding: 25px; cursor: pointer; transition: 0.4s; color: #888; text-decoration: none; display: block; }
+        .shop-card:hover { border-color: #550000; background: #080808; }
+        .hero { text-align: center; padding: 150px 20px; }
+        .enter-btn { padding: 15px 30px; font-family: 'Bebas Neue'; font-size: 1.5rem; background: transparent; color: #e60000; border: 1px solid #e60000; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <audio id="bg-audio" loop><source src="thunderstorm.mp3" type="audio/mpeg"></audio>
 
-    <!-- Visual Effects -->
     <div id="bg-logo"></div>
     <div class="lightning"></div>
-    <div id="cursor-glow"></div>
 
     <div id="service-modal">
         <div class="modal-content">
@@ -62,23 +70,23 @@
         <button class="enter-btn" onclick="startAudio()">ENTER THE VOID</button>
     </div>
 
-    <div id="site-wrapper">
-        <header style="padding: 20px 10%; border-bottom: 2px solid #1a0000;">
-            <div class="logo" style="font-family: 'Bebas Neue'; font-size: 1.5rem;">SONNYVRO</div>
+    <div id="site-wrapper" class="glitch-effect">
+        <header style="padding: 20px 10%; border-bottom: 1px solid #1a0000;">
+            <div class="logo" style="font-family: 'Bebas Neue'; font-size: 1.5rem; letter-spacing: 2px;">SONNYVRO</div>
         </header>
 
         <section class="hero"><h1>SONNYVRO/STVLKING</h1></section>
 
         <main class="main-container">
-            <h2 style="color:#fff;">Shop Services</h2>
+            <h2 style="color:#666; font-size: 1rem; letter-spacing: 5px;">SHOP SERVICES</h2>
             <div class="shop-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top:40px;">
-                <div class="shop-card" onclick="openModal('Custom Beats', 'Custom made for your vision! Price starts at $50+. Contact me to start! discounts with bulk purchases.')">
+                <div class="shop-card" onclick="openModal('Custom Beats', 'Custom made for your vision! Price starts at $100+. Contact me to start.')">
                     <h3>Custom Beats</h3>
                 </div>
-                <a href="https://cash.app/$sonnyvro" target="_blank" style="text-decoration:none;">
+                <a href="https://cash.app/$YourCashTag" target="_blank" style="text-decoration:none;">
                     <div class="shop-card">
                         <h3>Premade Beats</h3>
-                        <p style="margin-top:10px; font-size: 0.9rem;">$30 - $50 (Click to purchase)</p>
+                        <p style="margin-top:10px; font-size: 0.8rem; opacity: 0.6;">$30 - $50 (Click to purchase)</p>
                     </div>
                 </a>
             </div>
@@ -86,12 +94,6 @@
     </div>
 
     <script>
-        // Track mouse movement for the glow effect
-        document.addEventListener('mousemove', e => {
-            document.documentElement.style.setProperty('--x', `${e.clientX}px`);
-            document.documentElement.style.setProperty('--y', `${e.clientY}px`);
-        });
-
         function openModal(t, d) {
             document.getElementById('modal-title').innerText = t;
             document.getElementById('modal-desc').innerText = d;
