@@ -9,50 +9,71 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; cursor: crosshair; }
 
-        /* 1. BACKGROUND LAYER (Fixed & Beneath) */
-        #background-effects { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-        .lightning { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; animation: lightning 12s linear infinite; opacity: 0; }
+        /* 1. BACKGROUND LAYER (Fixed & Z-Index 0) */
+        #background-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .lightning { position: absolute; width: 100%; height: 100%; background: white; opacity: 0; animation: lightning 12s linear infinite; }
         @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.15; } 97% { opacity: 0.05; } }
         .floating-gif { position: absolute; width: 120px; opacity: 0.3; animation: float 4s ease-in-out infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* 2. CONTENT LAYER (Anchored and organized) */
-        #main-wrapper { position: relative; z-index: 10; width: 100%; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background: #111; border-bottom: 2px solid #e60000; }
-        .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+        /* 2. SITE CONTENT (Relative & Z-Index 10) */
+        #site-content { position: relative; z-index: 10; width: 100%; }
+
+        /* Rest of your styling remains here... */
+        #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center; color: #e60000; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; transition: opacity 0.5s ease; }
+        #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10002; display: flex; justify-content: center; align-items: center; }
+        .enter-btn { padding: 20px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; background: transparent; color: #e60000; border: 2px solid #e60000; cursor: pointer; }
         
-        /* Loading/Start Screens (Topmost) */
-        #loading-screen, #start-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        
-        /* All other original styles remain here... */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background-color: #111; border-bottom: 2px solid #e60000; }
         .hero { text-align: center; padding: 100px 20px; background: linear-gradient(rgba(5, 5, 5, 0.85), #050505), url('7f67efa80c099233ef3683c793a38249.jpg') no-repeat center center/cover; }
+        .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
         .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        .track-card { background-color: #111; border: 1px solid #222; padding: 20px; }
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .track-card, .shop-card { background: #111; border: 1px solid #333; padding: 20px; }
+        .shop-card { background: #111; padding: 30px; border: 1px solid #e60000; }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen">LOADING...</div>
-    <div id="start-screen"><button onclick="start()">ENTER</button></div>
+    <div id="loading-screen"><div class="loader-text">LOADING THE VOID...</div></div>
 
-    <div id="background-effects">
+    <div id="start-screen">
+        <button class="enter-btn" onclick="startAudio()">ENTER THE VOID</button>
+    </div>
+
+    <div id="background-layer">
         <div class="lightning"></div>
         <img src="bone.gif" class="floating-gif" style="top: 20%; left: 5%;">
-        </div>
+        <img src="crow.gif" class="floating-gif" style="top: 60%; right: 5%;">
+        <img src="punk.gif" class="floating-gif" style="top: 5%; left: 15%;">
+        <img src="spider.gif" class="floating-gif" style="top: 10%; right: 10%;">
+        <img src="scorp.gif" class="floating-gif" style="bottom: 5%; left: 5%;">
+        <img src="rose.gif" class="floating-gif" style="bottom: 10%; right: 15%;">
+    </div>
 
-    <div id="main-wrapper">
-        <header>...</header>
-        <section class="hero">...</section>
-        <main class="main-container">
-            </main>
-        <footer>...</footer>
+    <div id="site-content">
+        <header>
+            <div class="logo"><img src="logo.png" style="height: 50px;"></div>
+            <nav><ul><li><a href="#music">Music</a></li><li><a href="#about">About</a></li><li><a href="#shop">Shop</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+        </header>
+
+        <section class="hero">
+            <h1>SONNYVRO/STVLKING</h1>
+            <a href="#music" class="btn">enjoy.</a>
+        </section>
+
+        <div class="main-container">
+            <h2 class="section-title">fresh pressed</h2>
+            <div class="music-grid">
+                <div class="track-card">...</div>
+            </div>
+            </div>
     </div>
 
     <script>
-        // Your logic remains the same
+        // ... (Keep your original script)
     </script>
 </body>
 </html>
