@@ -11,23 +11,16 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: #d1d1d1; overflow-x: hidden; }
         
-        /* Dark Filter Overlay */
-        .content-filter {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3); /* Adjust 0.3 to make it darker */
-            pointer-events: none;
-            z-index: 9998;
-        }
-
-        /* GIF Overlay */
-        .overlay-gif {
+        /* Flashlight Effect */
+        #flashlight {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('YOUR_GIF_URL_HERE.gif');
-            background-size: cover; opacity: 0.1; pointer-events: none; z-index: -1; 
+            pointer-events: none; z-index: 9999;
+            background: radial-gradient(circle 200px at var(--x, 50%) var(--y, 50%), transparent 0%, rgba(0, 0, 0, 0.95) 100%);
         }
 
-        /* Animations */
+        .content-filter { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); pointer-events: none; z-index: 9998; }
+        .overlay-gif { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('wallpaper.gif'); background-size: cover; background-position: center; opacity: 0.1; pointer-events: none; z-index: -1; }
+
         section { animation: fadeIn 1.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -35,7 +28,6 @@
         @keyframes glow { from { text-shadow: 0 0 5px #e60000; } to { text-shadow: 0 0 20px #e60000; } }
 
         .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 1; }
-        
         h1, h2, h3, .logo, .btn { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
         a { color: #e60000; text-decoration: none; transition: 0.3s; }
         a:hover { color: #ff3333; }
@@ -77,6 +69,7 @@
 </head>
 <body>
 
+    <div id="flashlight"></div>
     <div class="overlay-gif"></div>
     <div class="content-filter"></div>
 
@@ -122,7 +115,7 @@
         <div class="shop-grid">
             <div class="shop-card">
                 <h3>Custom Beats</h3>
-                <p class="price">$100+ (discount in bulk)</p>
+                <p class="price">$100+</p>
                 <p>Custom made for your vision! Includes stems and exclusive rights.</p>
                 <a href="#contact" class="shop-btn">Inquire Now</a>
             </div>
@@ -130,7 +123,7 @@
                 <h3>Premade Beats</h3>
                 <p class="price">$30 - $50</p>
                 <p>High-quality leases ready for immediate download and use.</p>
-                <a href="https://cash.app/$sonnyvro" target="_blank" class="shop-btn">Purchase via CashApp</a>
+                <a href="https://cash.app/$YourCashTag" target="_blank" class="shop-btn">Purchase via CashApp</a>
             </div>
             <div class="shop-card">
                 <h3>Features</h3>
@@ -158,5 +151,12 @@
 
     <footer><p>© 2026 SONNYVRO/STVLKING. Hosted via <span>GitHub Pages</span>.</p></footer>
 
+    <script>
+        const flashlight = document.getElementById('flashlight');
+        document.addEventListener('mousemove', (e) => {
+            flashlight.style.setProperty('--x', e.clientX + 'px');
+            flashlight.style.setProperty('--y', e.clientY + 'px');
+        });
+    </script>
 </body>
 </html>
