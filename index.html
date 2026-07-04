@@ -7,60 +7,163 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- RESET & BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background-color: #020202; color: #888; overflow-x: hidden; cursor: crosshair; }
 
-        /* --- BACKGROUND FX --- */
+        /* Video Background */
         #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; filter: blur(2px) grayscale(100%); opacity: 0.15; }
+
+        /* Crack Effect */
         #cracks-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9996; }
         .crack-mark { position: absolute; width: 150px; height: 150px; background: url('https://www.transparenttextures.com/patterns/cracked-glass.png'); opacity: 0.2; pointer-events: none; filter: invert(1); }
+
+        /* Rain & Noise */
         .rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/rain.png'); opacity: 0.05; pointer-events: none; z-index: 9997; animation: rain-move 10s linear infinite; }
-        
-        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/noise-lines.png'); opacity: 0.03; pointer-events: none; z-index: 9998; }
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 0, 0, 0.03)); background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 1; }
-        
-        #logo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('logo.png'); background-repeat: no-repeat; background-position: center; background-size: 40%; opacity: 0.04; z-index: 1; pointer-events: none; filter: blur(2px); }
-        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; pointer-events: none; z-index: 2; animation: lightning 15s linear infinite; }
-
-        /* --- ANIMATIONS --- */
         @keyframes rain-move { from { background-position: 0 0; } to { background-position: 100px 1000px; } }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(230, 0, 0, 0.2); }
-            50% { box-shadow: 0 0 25px rgba(230, 0, 0, 0.4); }
-        }
-        @keyframes glitch-anim {
-            0%, 100% { clip-path: inset(0% 0 0% 0); transform: translate(0); }
-            10% { clip-path: inset(80% 0 1% 0); transform: translate(-5px, 5px); }
-            30% { clip-path: inset(10% 0 85% 0); transform: translate(5px, -5px); }
-            50% { clip-path: inset(30% 0 40% 0); transform: translate(-3px, 2px); }
-            70% { clip-path: inset(60% 0 20% 0); transform: translate(3px, -2px); }
-        }
-        @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.04; } 97% { opacity: 0.01; } }
+        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/noise-lines.png'); opacity: 0.03; pointer-events: none; z-index: 9998; }
 
+        /* Neon Pulse Animation */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px rgba(230, 0, 0, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(230, 0, 0, 0.4); }
+            100% { box-shadow: 0 0 10px rgba(230, 0, 0, 0.2); }
+        }
+
+        /* Aggressive Glitch Animation */
+        @keyframes glitch-anim {
+            0% { clip-path: inset(80% 0 1% 0); transform: translate(-5px, 5px); }
+            10% { clip-path: inset(10% 0 85% 0); transform: translate(5px, -5px); }
+            20% { clip-path: inset(30% 0 40% 0); transform: translate(-3px, 2px); }
+            30% { clip-path: inset(60% 0 20% 0); transform: translate(3px, -2px); }
+            40% { clip-path: inset(15% 0 60% 0); transform: translate(-5px, 0); }
+            50% { clip-path: inset(45% 0 10% 0); transform: translate(5px, 0); }
+            60% { clip-path: inset(85% 0 5% 0); transform: translate(-2px, 3px); }
+            70% { clip-path: inset(5% 0 90% 0); transform: translate(2px, -3px); }
+            80% { clip-path: inset(50% 0 30% 0); transform: translate(-4px, 1px); }
+            90% { clip-path: inset(20% 0 70% 0); transform: translate(4px, -1px); }
+            100% { clip-path: inset(0% 0 0% 0); transform: translate(0); }
+        }
         .glitch-effect { animation: glitch-anim 0.4s infinite linear; }
 
-        /* --- UI COMPONENTS --- */
+        #logo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('logo.png'); background-repeat: no-repeat; background-position: center; background-size: 40%; opacity: 0.04; z-index: 1; pointer-events: none; filter: blur(2px); }
+        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 0, 0, 0.03)); background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 1; }
+        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; pointer-events: none; z-index: 2; animation: lightning 15s linear infinite; }
+        @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.04; } 97% { opacity: 0.01; } }
+
+        /* Navigation & Content Boxes */
         .content-box { background: #050505; border: 1px solid #330000; padding: 30px; margin: 20px auto; max-width: 800px; color: #aaa; line-height: 1.6; animation: pulse-glow 4s infinite ease-in-out; }
         .page-section { display: none; }
         .active { display: block; }
-        
         .nav-btn { background: transparent; border: 1px solid #444; color: #888; padding: 10px 20px; font-family: 'Bebas Neue'; cursor: pointer; margin: 10px; transition: 0.3s; }
         .nav-btn:hover { border-color: #fff; color: #fff; }
 
+        /* Shop Cards */
         .shop-card { background: #050505; border: 1px solid #330000; padding: 25px; cursor: pointer; transition: 0.4s; color: #888; text-decoration: none; display: block; animation: pulse-glow 4s infinite ease-in-out; }
         .shop-card:hover { border-color: #e60000; background: #080505; color: #fff; box-shadow: 0 0 20px rgba(230, 0, 0, 0.5); }
 
-        .enter-btn { padding: 15px 30px; font-family: 'Bebas Neue'; font-size: 1.5rem; background: transparent; color: #e60000; border: 1px solid #e60000; cursor: pointer; }
-
-        /* --- MODAL --- */
         #service-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 100000; justify-content: center; align-items: center; }
         .modal-content { background: #0a0a0a; padding: 40px; border: 1px solid #330000; text-align: center; max-width: 500px; color: #fff; }
         .close-btn { margin-top: 20px; color: #e60000; cursor: pointer; text-transform: uppercase; font-family: 'Bebas Neue'; }
+        
+        #site-wrapper { position: relative; z-index: 3; }
+        .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+        .hero { text-align: center; padding: 100px 20px 50px 20px; }
+        .enter-btn { padding: 15px 30px; font-family: 'Bebas Neue'; font-size: 1.5rem; background: transparent; color: #e60000; border: 1px solid #e60000; cursor: pointer; }
     </style>
 </head>
 <body>
-    </body>
+    <video id="bg-video" autoplay loop muted playsinline><source src="background.mp4" type="video/mp4"></video>
+    <div id="logo-overlay"></div>
+    <div id="cracks-container"></div>
+    <div class="rain"></div>
+    <audio id="bg-audio" loop><source src="THANKXSOMUCH.mp3" type="audio/mpeg"></audio>
+    <div class="lightning"></div>
+
+    <div id="service-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Service Details</h2>
+            <p id="modal-desc" style="margin: 20px 0;"></p>
+            <div class="close-btn" onclick="closeModal()">Close</div>
+        </div>
+    </div>
+
+    <div id="start-screen" style="position: fixed; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; justify-content: center; align-items: center;">
+        <button class="enter-btn" onclick="startAudio()">enter...</button>
+    </div>
+
+    <div id="site-wrapper" class="glitch-effect">
+        <header style="padding: 20px 10%; border-bottom: 1px solid #1a0000;">
+            <div class="logo" style="font-family: 'Bebas Neue'; font-size: 1.5rem; letter-spacing: 2px;"> Now Playing - THANKXSOMUCH by thornskin </div>
+        </header>
+
+        <section class="hero"><h1>SONNYVRO/STVLKING</h1></section>
+
+        <main class="main-container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <button class="nav-btn" onclick="showPage('home-section')">HOME</button>
+                <button class="nav-btn" onclick="showPage('about-section')">ABOUT ME</button>
+            </div>
+
+            <div id="home-section" class="page-section active">
+                <div id="status-indicator" style="text-align: center; margin-bottom: 50px; font-family: 'Bebas Neue'; letter-spacing: 2px;">
+                    <span id="status-text" style="padding: 5px 15px; border: 1px solid #330; color: #fff;"></span>
+                </div>
+                <h2 style="color:#fff; text-align: center; margin-bottom: 20px; font-family: 'Bebas Neue'; letter-spacing: 3px;">FOR SALE</h2>
+                <div style="display: flex; justify-content: center; margin-bottom: 80px;">
+                    <a href="https://air.bi/nXZu4" target="_blank" class="shop-card" style="text-align: center; width: 250px;"><h3>STOCK</h3></a>
+                </div>
+                <h2 style="color:#666; font-size: 1rem; letter-spacing: 5px; text-align: center;">SERVICES</h2>
+                <div class="shop-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top:40px;">
+                    <div class="shop-card" onclick="openModal('Custom Beats', 'Custom made for your vision! Price starts at $50+. Contact me to start.')"><h3>Custom Beats</h3></div>
+                    <a href="https://cash.app/$sonnyvro" target="_blank" style="text-decoration:none;"><div class="shop-card"><h3>Premade Beats</h3><p style="margin-top:10px; font-size: 0.8rem; opacity: 0.6;">$30 - $50 (Click to purchase)</p></div></a>
+                </div>
+            </div>
+
+            <div id="about-section" class="page-section">
+                <div class="content-box">
+                    <h2 style="color: #fff; font-family: 'Bebas Neue'; margin-bottom: 15px;">WHO AM I?</h2>
+                    <p>Welcome to my corner of the web. I specialize in crafting dark, atmospheric soundscapes and custom beats.</p><br>
+                    <p>If you're looking for something specific, contact me for custom projects.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const CURRENT_STATUS = "ON"; 
+        const statusEl = document.getElementById('status-text');
+        if (CURRENT_STATUS === "ON") {
+            statusEl.innerText = "● ACCEPTING CUSTOM WORK";
+            statusEl.style.color = "#00ff00";
+        } else {
+            statusEl.innerText = "○ CURRENTLY BUSY";
+            statusEl.style.color = "#ff0000";
+        }
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+        document.addEventListener('click', function(e) {
+            const crack = document.createElement('div');
+            crack.className = 'crack-mark';
+            crack.style.left = (e.clientX - 75) + 'px';
+            crack.style.top = (e.clientY - 75) + 'px';
+            crack.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+            document.getElementById('cracks-container').appendChild(crack);
+            setTimeout(() => { crack.style.transition = "opacity 2s"; crack.style.opacity = "0"; setTimeout(() => crack.remove(), 2000); }, 3000);
+        });
+        function openModal(t, d) {
+            document.getElementById('modal-title').innerText = t;
+            document.getElementById('modal-desc').innerText = d;
+            document.getElementById('service-modal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('service-modal').style.display = 'none'; }
+        function startAudio() {
+            const audio = document.getElementById('bg-audio');
+            audio.volume = 0.3; audio.play();
+            document.getElementById('start-screen').style.display = 'none';
+        }
+    </script>
+</body>
 </html>
