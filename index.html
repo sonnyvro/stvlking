@@ -3,277 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> sonnyvro | stvlk </title>
+    <title>sonnyvro | stvlk</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <style>html {
-    scroll-behavior: smooth;
-}
-        section {
-    scroll-margin-top: 100px; /* Adjust this number based on your header height */
-}
-        /* Force everything to stay centered */
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden; /* Prevents horizontal shifting */
-}
-
-.main-container {
-    max-width: 1100px;
-    margin: 0 auto; /* This keeps it centered */
-    padding: 0 20px;
-}
-        .about-section {
-    max-width: 900px;
-    margin: 80px auto;
-    padding: 0 20px;
-    text-align: center;
-}
-.profile-pic {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    border: 4px solid #e60000; /* Signature red ring */
-    object-fit: cover;
-    margin-bottom: 25px;
-    box-shadow: 0 0 20px rgba(230, 0, 0, 0.2); /* Soft red glow */
-}
-.about-content p {
-    color: #aaa;
-    font-size: 1.1rem;
-    line-height: 1.8;
-}
-        /* Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-    font-family: 'Montserrat', sans-serif; /* Updates the main text */
-    background-color: #050505; 
-    color: #d1d1d1; 
-    line-height: 1.6;
-}
-
-h1, h2, h3, .logo, .btn {
-    font-family: 'Bebas Neue', sans-serif; /* Makes headers bold and tall */
-    letter-spacing: 2px;
-}
-        a {
-            color: #e60000; 
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        a:hover {
-            color: #ff3333; 
-        }
-
-        /* Navigation */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 10%;
-            background-color: #111; 
-            border-bottom: 2px solid #e60000; 
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        nav ul li {
-            margin-left: 20px;
-        }
-        nav ul li a {
-            color: #fff;
-        }
-        nav ul li a:hover {
-            color: #e60000;
-        }
-<li><a href="#contact">Contact</a></li>
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(rgba(5, 5, 5, 0.85), #050505), url('https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=1200') no-repeat center center/cover;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            color: #fff;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: #ff3333;
-        }
-        .btn {
-            display: inline-block;
-            background: #e60000;
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 3px; 
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-        }
-        .btn:hover {
-            background: #ff3333;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(230, 0, 0, 0.4);
-            color: #fff;
-        }
-
-        /* Music Grid Section */
-        .main-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-        .section-title {
-            font-size: 2rem;
-            color: #fff;
-            margin-bottom: 40px;
-            border-left: 5px solid #e60000;
-            padding-left: 15px;
-            text-transform: uppercase;
-        }
-        .music-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-        }
-        .track-card {
-            background-color: #111;
-            border-radius: 5px;
-            overflow: hidden;
-            border: 1px solid #222;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-        .track-card:hover {
-            transform: translateY(-5px);
-            border-color: #e60000; 
-        }
-        .track-art {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-bottom: 2px solid #222;
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #050505; 
+            color: #d1d1d1; 
+            overflow-x: hidden; 
         }
         
-        /* Inside the Card */
-        .track-info {
-            padding: 25px;
-        }
-        .track-title {
-            color: #fff;
-            font-size: 1.4rem;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-        .track-genre {
-            font-size: 0.9rem;
-            color: #ff3333;
-            margin-bottom: 15px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
+        section { scroll-margin-top: 80px; }
+        .main-container { max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
         
-        /* Dedicated Text Area */
-        .track-story {
-            background-color: #050505;
-            padding: 15px;
-            border-left: 3px solid #e60000;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #aaa;
-            border-radius: 0 4px 4px 0;
-            line-height: 1.5;
-        }
+        h1, h2, h3, .logo, .btn { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
+        a { color: #e60000; text-decoration: none; transition: 0.3s; }
+        a:hover { color: #ff3333; }
 
-        /* Audio Element Styling */
-        audio {
-            width: 100%;
-            margin-bottom: 20px;
-            height: 40px;
-            outline: none;
-        }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 10%; background-color: #111; border-bottom: 2px solid #e60000; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 20px; }
+        nav ul li a { color: #fff; }
 
-        /* Streaming Icon Links */
-        .streaming-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #222;
-        }
-        .streaming-links a {
-            color: #666;
-            font-size: 1.4rem;
-        }
-        .streaming-links a:hover {
-            color: #e60000;
-            transform: scale(1.15);
-        }
+        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(rgba(5, 5, 5, 0.85), #050505), url('https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=1200') no-repeat center center/cover; }
+        .hero h1 { font-size: 3.5rem; color: #fff; margin-bottom: 10px; }
+        .btn { display: inline-block; background: #e60000; color: #fff; padding: 12px 30px; border-radius: 3px; font-weight: bold; text-transform: uppercase; }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: #111;
-            border-top: 2px solid #e60000;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        footer span {
-            color: #e60000;
-        }
-        .contact-section {
-    padding: 60px 20px;
-    background-color: #0b0b0b;
-    text-align: center;
-}
-.contact-grid {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-top: 30px;
-}
-.contact-item {
-    background: #111;
-    padding: 20px;
-    border: 1px solid #e60000;
-    border-radius: 5px;
-    width: 200px;
-}
-.contact-item i {
-    font-size: 2rem;
-    color: #e60000;
-    margin-bottom: 10px;
-    display: block;
-}
+        .section-title { font-size: 2rem; color: #fff; margin-bottom: 40px; border-left: 5px solid #e60000; padding-left: 15px; }
+        .music-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        .track-card { background-color: #111; border: 1px solid #222; border-radius: 5px; overflow: hidden; }
+        .track-art { width: 100%; height: 300px; object-fit: cover; }
+        .track-info { padding: 25px; }
+        .track-story { background-color: #050505; padding: 15px; border-left: 3px solid #e60000; margin-bottom: 20px; font-size: 0.9rem; color: #aaa; }
+        audio { width: 100%; margin-bottom: 20px; }
+        
+        .about-section { text-align: center; padding: 60px 20px; }
+        .profile-pic { width: 220px; height: 220px; border-radius: 50%; border: 4px solid #e60000; object-fit: cover; margin-bottom: 25px; }
+        
+        .contact-section { padding: 60px 20px; background-color: #0b0b0b; text-align: center; }
+        .contact-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+        .contact-item { background: #111; padding: 20px; border: 1px solid #e60000; border-radius: 5px; width: 200px; }
+        
+        footer { text-align: center; padding: 40px; background-color: #111; border-top: 2px solid #e60000; color: #666; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">
-    <img src="logo.png" alt="SONNYVRO/STVLKING" style="height: 50px;">
-</div>
+        <div class="logo"><img src="logo.png" alt="Logo" style="height: 50px;"></div>
         <nav>
             <ul>
                 <li><a href="#music">Music</a></li>
@@ -291,93 +71,40 @@ h1, h2, h3, .logo, .btn {
 
     <main class="main-container" id="music">
         <h2 class="section-title">fresh pressed</h2>
-        
         <div class="music-grid">
-            
             <div class="track-card">
                 <img src="hurt.jpg" alt="Album Art" class="track-art">
                 <div class="track-info">
                     <h3 class="track-title">hurt.mp3</h3>
                     <p class="track-genre">distorted/heavy</p>
-                    
-                    <div class="track-story">
-                      suffer
-                    </div>
-
-                    <audio controls>
-                        <source src="hurt.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-
+                    <div class="track-story">suffer</div>
+                    <audio controls><source src="hurt.mp3" type="audio/mpeg"></audio>
                     <div class="streaming-links">
-                        <a href="https://open.spotify.com/track/1D5X9erQKiCatTkkqGayNx?si=eb22a49d9305490f" target="blank" title="Listen on Spotify"><i class="fab fa-spotify"></i></a>
-                        <a href="https://soundcloud.com/user-11954578/hurt-wav" target="blank" title="Listen on SoundCloud"><i class="fab fa-soundcloud"></i></a>
-    
-                        <a href="https://music.youtube.com/watch?v=H9vUnagb1D4&si=Kpp2rqx933xGv5UA" target="blank" title="Watch on YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://open.spotify.com/track/1D5X9erQKiCatTkkqGayNx" target="_blank"><i class="fab fa-spotify"></i></a>
+                        <a href="https://soundcloud.com/user-11954578/hurt-wav" target="_blank"><i class="fab fa-soundcloud"></i></a>
                     </div>
                 </div>
             </div>
-
-            <div class="track-card">
-                <img src="album.jpg" alt="Album Art" class="track-art">
-                <div class="track-info">
-                    <h3 class="track-title">moss</h3>
-                    <p class="track-genre">dark/trap</p>
-                    
-                    <div class="track-story">
-                      creep
-                    </div>
-
-                    <audio controls>
-                        <source src="moss.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-
-                    <div class="streaming-links">
-                        <a href="https://open.spotify.com/track/4c98GlSjxXm2w9DmAHOCsj?si=e3ff757a178b4644" target="_blank" title="Listen on Spotify"><i class="fab fa-spotify"></i></a>
-                        <a href="https://soundcloud.com/user-11954578/moss-ehrboyla" target="_blank" title="Listen on SoundCloud"><i class="fab fa-soundcloud"></i></a>
-                        
-                        <a href="https://music.youtube.com/watch?v=8sY9vs1Zh0A&si=q53U8XmRQ5TF6NOe" target="_blank" title="Watch on YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Add more track-cards here -->
         </div>
     </main>
-<section id="about" class="about-section">
-    <h2 class="section-title">The Artist</h2>
-    <div class="about-content">
-        <img src="logo.png" alt="Artist Profile" class="profile-pic">
-        <p> NOISE TO FILL THE VOID </p>
-    </div>
-</section>
-<!-- Updated Contact Section -->
-<section id="contact" class="main-container contact-section">
-    <h2 class="section-title">contact me</h2>
-    <div class="contact-grid">
-        <div class="contact-item">
-            <i class="fas fa-envelope"></i>
-            <a href="sonnyvromusic@.gmail.com">Email Me</a>
+
+    <section id="about" class="about-section">
+        <h2 class="section-title">The Artist</h2>
+        <img src="logo.png" alt="Artist" class="profile-pic">
+        <p>NOISE TO FILL THE VOID</p>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">contact me</h2>
+        <div class="contact-grid">
+            <div class="contact-item"><i class="fas fa-envelope"></i><br><a href="mailto:sonnyvromusic@gmail.com">Email Me</a></div>
+            <div class="contact-item"><i class="fab fa-instagram"></i><br><a href="https://instagram.com/sonnyvro" target="_blank">Instagram</a></div>
+            <div class="contact-item"><i class="fab fa-discord"></i><br><p>stvlking</p></div>
         </div>
-        <div class="contact-item">
-            <i class="fab fa-instagram"></i>
-            <a href="https://instagram.com/sonnyvro" target="_blank">Instagram</a>
-        </div>
-        <div class="contact-item">
-            <i class="fab fa-discord"></i>
-            <p>stvlking</p>
-        </div>
-    </div>
-</section>
-    <footer>
-        <p>© 2026 SONNYVRO/STVLKING All Rights Reserved. Hosted via <span>GitHub Pages</span>.</p>
-    </footer>
+    </section>
+
+    <footer><p>© 2026 SONNYVRO/STVLKING. Hosted via <span>GitHub Pages</span>.</p></footer>
 
 </body>
 </html>
-
- 
-
- 
-
- 
