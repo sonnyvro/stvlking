@@ -11,7 +11,6 @@
     <style>
         /* =========================================
            🛠️ CUSTOMIZATION DASHBOARD 🛠️
-           Change these values to tweak the whole site!
            ========================================= */
         :root {
             /* Colors */
@@ -25,7 +24,6 @@
             
             /* Animations */
             --flip-speed: 0.5s;          /* Speed of the page flip */
-            --vhs-flicker-speed: 0.2s;   /* Speed of screen glitch overlay */
         }
 
         /* --- RESET & BASE --- */
@@ -44,22 +42,48 @@
         #logo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('logo.png'); background-repeat: no-repeat; background-position: center; background-size: 40%; opacity: 0.03; z-index: 1; pointer-events: none; filter: blur(3px); }
         .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--neon-color); pointer-events: none; z-index: 2; animation: lightning 15s linear infinite; mix-blend-mode: overlay; }
 
-        /* --- VHS TRANSITION OVERLAY --- */
-        #transition-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; pointer-events: none; opacity: 0; display: flex; justify-content: center; align-items: center; transition: opacity 0.1s; }
-        #transition-overlay.active { opacity: 1; animation: vhs-flicker var(--vhs-flicker-speed) infinite; }
-        .vhs-noise { position: absolute; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/noise-lines.png'); opacity: 0.3; animation: noise-move 0.1s infinite; filter: contrast(200%); }
+        /* --- HEAVY VHS LOADING SCREEN --- */
+        #transition-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #050505; z-index: 99999; pointer-events: none; 
+            opacity: 0; display: flex; justify-content: center; align-items: center; 
+            flex-direction: column; transition: opacity 0.2s ease-in-out;
+        }
+        #transition-overlay.active { opacity: 1; }
+        
+        /* Aggressive Scanlines */
+        .vhs-noise { 
+            position: absolute; width: 100%; height: 100%; 
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px); 
+            z-index: 1; animation: vhs-jump 0.1s infinite;
+        }
+        
+        /* Scrolling Tracking Bar */
+        .vhs-tracking {
+            position: absolute; width: 100%; height: 10vh;
+            background: rgba(255, 255, 255, 0.1); filter: blur(4px);
+            z-index: 2; animation: tracking-scroll 3s infinite linear;
+        }
 
-        @keyframes vhs-flicker { 0% { opacity: 0.8; } 50% { opacity: 1; filter: hue-rotate(10deg); } 100% { opacity: 0.7; } }
-        @keyframes noise-move { from { background-position: 0 0; } to { background-position: 100px 100px; } }
+        /* Glitching Loading Text */
+        .vhs-text {
+            color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+            letter-spacing: 15px; z-index: 3;
+            text-shadow: 3px 0 0 rgba(255,0,0,0.7), -3px 0 0 rgba(0,0,255,0.7);
+            animation: text-flicker 0.1s infinite;
+        }
+
+        @keyframes vhs-jump { 0% { transform: translateY(0); } 50% { transform: translateY(5px); } 100% { transform: translateY(-3px); } }
+        @keyframes tracking-scroll { 0% { top: -20%; } 100% { top: 120%; } }
+        @keyframes text-flicker { 0%, 100% { opacity: 1; transform: translateX(0); } 50% { opacity: 0.6; transform: translateX(3px); } }
         @keyframes rain-move { from { background-position: 0 0; } to { background-position: 100px 1000px; } }
         
-        /* HEAVY BLOOM ANIMATION */
+        /* --- BLOOM & NEON --- */
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 15px var(--neon-dim), 0 0 30px var(--neon-dim), inset 0 0 10px var(--neon-dim); border-color: rgba(255, 0, 51, 0.4); }
             50% { box-shadow: 0 0 25px var(--neon-color), 0 0 60px var(--neon-dim), inset 0 0 20px var(--neon-dim); border-color: var(--neon-color); }
         }
         
-        /* NEON TEXT ANIMATION */
         @keyframes ghostly-glitch {
             0%, 100% { text-shadow: 0 0 5px var(--neon-core), 0 0 15px var(--neon-color), 0 0 30px var(--neon-color); opacity: 1; transform: translateX(0); }
             25% { text-shadow: -2px 0 8px var(--neon-core), 3px 0 20px var(--neon-color), 0 0 40px var(--neon-color); opacity: 0.8; transform: translateX(-1px); }
@@ -68,13 +92,7 @@
         }
         @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.08; } 97% { opacity: 0.02; } }
 
-        /* Global Neon Glow for all text */
-        h1, h2, h3, p, span, .nav-btn, .shop-card {
-            text-shadow: 0 0 5px var(--neon-dim), 0 0 15px var(--neon-dim), 0 0 30px var(--neon-dim);
-            position: relative;
-            z-index: 10;
-        }
-
+        h1, h2, h3, p, span, .nav-btn, .shop-card { text-shadow: 0 0 5px var(--neon-dim), 0 0 15px var(--neon-dim), 0 0 30px var(--neon-dim); position: relative; z-index: 10; }
         .glitch-text { display: inline-block; animation: ghostly-glitch 2.5s infinite ease-in-out; }
 
         /* --- UI COMPONENTS --- */
@@ -105,7 +123,11 @@
     </style>
 </head>
 <body>
-    <div id="transition-overlay"><div class="vhs-noise"></div></div>
+    <div id="transition-overlay">
+        <div class="vhs-noise"></div>
+        <div class="vhs-tracking"></div>
+        <div class="vhs-text">TRACKING...</div>
+    </div>
 
     <video id="bg-video" loop muted playsinline><source src="background.mp4" type="video/mp4"></video>
     <div id="logo-overlay"></div>
@@ -202,7 +224,6 @@
             document.getElementById('start-screen').style.display = 'none'; 
         }
 
-        // RESTORED & FIXED: VHS Logic and Flip Timing
         const transition = document.getElementById('transition-overlay');
         
         function showPage(pageId) {
@@ -211,49 +232,47 @@
             
             const flipper = document.getElementById('content-flipper');
             
-            // 1. Trigger VHS overlay and start flipping away
+            // 1. Trigger heavy VHS static screen
             transition.classList.add('active');
             flipper.style.transform = 'rotateX(90deg)';
             
-            // 2. Wait for the flip to hit the 90-degree invisible point
+            // 2. Simulate "loading" time
             setTimeout(() => {
-                // Swap active classes
                 document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
                 targetSection.classList.add('active');
                 
-                // Swap Audio
                 if (pageTracks[pageId]) {
                     audio.src = pageTracks[pageId].file;
                     nowPlayingDisplay.innerText = pageTracks[pageId].title;
                     audio.play();
                 }
                 
-                // Teleport to -90 degrees instantly to prepare for the forward flip
                 flipper.style.transition = 'none';
                 flipper.style.transform = 'rotateX(-90deg)';
-                void flipper.offsetWidth; // Force browser reflow
+                void flipper.offsetWidth; 
                 
-                // Flip forward and remove VHS overlay
                 flipper.style.transition = 'transform var(--flip-speed) cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 flipper.style.transform = 'rotateX(0deg)';
-                transition.classList.remove('active');
                 
-            }, 400); // This timing must closely match --flip-speed in CSS
+                // Keep static on screen slightly longer to sell the "loading" effect
+                setTimeout(() => {
+                    transition.classList.remove('active');
+                }, 200); 
+                
+            }, 600); 
         }
 
         function openModal(t, d) { document.getElementById('modal-title').innerText = t; document.getElementById('modal-desc').innerText = d; document.getElementById('service-modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('service-modal').style.display = 'none'; }
         
-        // RESTORED & FIXED: Cracking glass effect rotation
         document.addEventListener('click', function(e) {
-            // Ignore clicks if the modal is open or if clicking a link so we don't block interactions
             if (e.target.closest('#service-modal') || e.target.closest('a') || e.target.closest('button')) return;
 
             const crack = document.createElement('div');
             crack.className = 'crack-mark';
             crack.style.left = (e.clientX - 75) + 'px';
             crack.style.top = (e.clientY - 75) + 'px';
-            crack.style.transform = 'rotate(' + Math.random() * 360 + 'deg)'; // Added rotation back
+            crack.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
             document.getElementById('cracks-container').appendChild(crack);
             
             setTimeout(() => {
