@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Name | Music Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #050505; 
+            color: #d1d1d1; 
+            line-height: 1.6;
+        }
+        a {
+            color: #e60000; 
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            color: #ff3333; 
+        }
+
+        /* Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background-color: #111; 
+            border-bottom: 2px solid #e60000; 
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+        }
+        nav ul li a:hover {
+            color: #e60000;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(rgba(5, 5, 5, 0.85), #050505), url('https://images.unsplash.com/photo-1574169208507-84376144848b?q=80&w=1200') no-repeat center center/cover;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #ff3333;
+        }
+        .btn {
+            display: inline-block;
+            background: #e60000;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 3px; 
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            background: #ff3333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 0, 0, 0.4);
+            color: #fff;
+        }
+
+        /* Music Grid Section */
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 40px;
+            border-left: 5px solid #e60000;
+            padding-left: 15px;
+            text-transform: uppercase;
+        }
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        .track-card {
+            background-color: #111;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .track-card:hover {
+            transform: translateY(-5px);
+            border-color: #e60000; 
+        }
+        .track-art {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 2px solid #222;
+        }
+        
+        /* Inside the Card */
+        .track-info {
+            padding: 25px;
+        }
+        .track-title {
+            color: #fff;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .track-genre {
+            font-size: 0.9rem;
+            color: #ff3333;
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        /* Dedicated Text Area */
+        .track-story {
+            background-color: #050505;
+            padding: 15px;
+            border-left: 3px solid #e60000;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+            border-radius: 0 4px 4px 0;
+            line-height: 1.5;
+        }
+
+        /* Audio Element Styling */
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+            height: 40px;
+            outline: none;
+        }
+
+        /* Streaming Icon Links */
+        .streaming-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #222;
+        }
+        .streaming-links a {
+            color: #666;
+            font-size: 1.4rem;
+        }
+        .streaming-links a:hover {
+            color: #e60000;
+            transform: scale(1.15);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #111;
+            border-top: 2px solid #e60000;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        footer span {
+            color: #e60000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">AUDIO_CRIMSON</div>
+        <nav>
+            <ul>
+                <li><a href="#music">Music</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>UNLEASH THE SOUND</h1>
+        <p>Hard beats, distorted synths, and raw energy.</p>
+        <a href="#music" class="btn">Listen Now</a>
+    </section>
+
+    <main class="main-container" id="music">
+        <h2 class="section-title">Latest Releases</h2>
+        
+        <div class="music-grid">
+            
+            <div class="track-card">
+                <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=400" alt="Album Art" class="track-art">
+                <div class="track-info">
+                    <h3 class="track-title">Crimson Tide</h3>
+                    <p class="track-genre">Darkwave / Industrial</p>
+                    
+                    <div class="track-story">
+                        "Written during a thunderstorm in late October. This track focuses on heavy sub-bass and distorted vocal samples to create a claustrophobic atmosphere."
+                    </div>
+
+                    <audio controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+
+                    <div class="streaming-links">
+                        <a href="https://spotify.com" target="_blank" title="Listen on Spotify"><i class="fab fa-spotify"></i></a>
+                        <a href="https://soundcloud.com" target="_blank" title="Listen on SoundCloud"><i class="fab fa-soundcloud"></i></a>
+                        <a href="https://bandcamp.com" target="_blank" title="Buy on Bandcamp"><i class="fab fa-bandcamp"></i></a>
+                        <a href="https://youtube.com" target="_blank" title="Watch on YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="track-card">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400" alt="Album Art" class="track-art">
+                <div class="track-info">
+                    <h3 class="track-title">Nightmare Fuel</h3>
+                    <p class="track-genre">Trap Metal / Bass</p>
+                    
+                    <div class="track-story">
+                        "Lyrics:<br>
+                        Shadows on the wall, yeah they calling my name.<br>
+                        Step into the dark, I got nothing to tame..."
+                    </div>
+
+                    <audio controls>
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+
+                    <div class="streaming-links">
+                        <a href="https://spotify.com" target="_blank" title="Listen on Spotify"><i class="fab fa-spotify"></i></a>
+                        <a href="https://soundcloud.com" target="_blank" title="Listen on SoundCloud"><i class="fab fa-soundcloud"></i></a>
+                        <a href="https://bandcamp.com" target="_blank" title="Buy on Bandcamp"><i class="fab fa-bandcamp"></i></a>
+                        <a href="https://youtube.com" target="_blank" title="Watch on YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 AUDIO_CRIMSON. All Rights Reserved. Hosted via <span>GitHub Pages</span>.</p>
+    </footer>
+
+</body>
+</html>
