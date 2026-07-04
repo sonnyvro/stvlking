@@ -134,7 +134,9 @@
     <div id="cracks-container"></div>
     <div class="rain"></div>
     <div class="lightning"></div>
+    
     <audio id="bg-audio" loop></audio>
+    <audio id="static-audio" loop><source src="static.mp3" type="audio/mpeg"></audio>
 
     <div id="service-modal">
         <div class="modal-content">
@@ -207,6 +209,7 @@
             'about-section': { file: 'letmefall.mp3', title: 'Now Playing - Let Me Fall' }
         };
         const audio = document.getElementById('bg-audio');
+        const staticAudio = document.getElementById('static-audio');
         const video = document.getElementById('bg-video');
         const nowPlayingDisplay = document.getElementById('now-playing-text');
         const statusEl = document.getElementById('status-text');
@@ -214,6 +217,9 @@
         statusEl.innerText = "● ACCEPTING CUSTOM WORK";
         statusEl.style.color = "#00ff00";
         statusEl.style.textShadow = "0 0 10px #00ff00";
+
+        // Set static volume a bit lower so it doesn't blast the user's ears
+        staticAudio.volume = 0.5;
 
         function startAudio() { 
             audio.volume = 0.3; 
@@ -236,15 +242,19 @@
             transition.classList.add('active');
             flipper.style.transform = 'rotateX(90deg)';
             
-            // 2. Simulate "loading" time
+            // 2. Pause main audio and play static sound
+            audio.pause();
+            staticAudio.play();
+            
+            // 3. Simulate "loading" time
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
                 targetSection.classList.add('active');
                 
+                // Swap Audio source but don't play yet
                 if (pageTracks[pageId]) {
                     audio.src = pageTracks[pageId].file;
                     nowPlayingDisplay.innerText = pageTracks[pageId].title;
-                    audio.play();
                 }
                 
                 flipper.style.transition = 'none';
@@ -257,6 +267,11 @@
                 // Keep static on screen slightly longer to sell the "loading" effect
                 setTimeout(() => {
                     transition.classList.remove('active');
+                    
+                    // 4. Stop static sound, reset its time, and play the new main audio
+                    staticAudio.pause();
+                    staticAudio.currentTime = 0;
+                    audio.play();
                 }, 200); 
                 
             }, 600); 
