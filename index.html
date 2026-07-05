@@ -4,63 +4,83 @@
     <meta charset="UTF-8">
     <title>SONNYVRO // STVLKING</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --bg: #050101;
+            --panel: rgba(15, 5, 5, 0.9);
+            --red: #ff3a3a;
+            --dim-red: #551111;
+            --text: #ffcccc;
+        }
+
+        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; overflow: hidden; perspective: 1000px; }
+
+        /* THE SNOW ENGINE */
+        #snow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+            background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: snowFall 20s linear infinite;
+        }
+        @keyframes snowFall { from { background-position: 0 0; } to { background-position: 0 200px; } }
+
+        #viewport { width: 100vw; height: 100vh; position: relative; z-index: 2; }
+        #camera { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* PAN ANIMATIONS */
+        .pan-left { transform: rotateY(90deg) translateZ(200px); opacity: 0; }
+        .pan-right { transform: rotateY(-90deg) translateZ(200px); opacity: 0; }
+        .pan-up { transform: rotateX(-90deg) translateZ(200px); opacity: 0; }
+        .pan-down { transform: rotateX(90deg) translateZ(200px); opacity: 0; }
+
+        .layout-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1100px; margin: 40px auto; padding: 20px; }
+        header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
+        
+        /* BOXES WITH "ROOF" */
+        .box { 
+            border: 1px solid var(--dim-red); background: var(--panel); padding: 20px; min-height: 220px; position: relative;
+        }
+        .box::before { 
+            content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; 
+            background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%);
+        }
+        .box-title { font-family: 'Press Start 2P'; font-size: 0.7rem; color: var(--red); margin-bottom: 15px; }
+
+        .links a { display: block; color: var(--text); text-decoration: none; margin: 8px 0; }
+        .links a:hover { color: var(--red); }
+        .home-btn { grid-column: 1 / -1; background: transparent; border: 1px solid var(--red); color: var(--red); padding: 15px; cursor: pointer; }
+    </style>
 </head>
 <body>
 
-    <div id="viewport">
-        <div id="camera">
-            <main class="layout-grid">
-                
-                <header>
-                    <h1>SONNYVRO</h1>
-                    <p>// STVLKING //</p>
-                </header>
+<div id="snow"></div>
 
-                <section class="box" id="stvlker">
-                    <div class="box-title">STVLKER</div>
-                    <p>Main profile and about section. Here is where the bio lives.</p>
-                </section>
+<div id="viewport">
+    <div id="camera">
+        <main class="layout-grid">
+            <header><h1>SONNYVRO // STVLKING</h1></header>
 
-                <section class="box" id="sonnyvro">
-                    <div class="box-title">SONNYVRO</div>
-                    <p>Details about the artist and production background.</p>
-                </section>
-
-                <section class="box" id="pics">
-                    <div class="box-title">PICS</div>
-                    <div class="placeholder-img">[IMG_GRID]</div>
-                </section>
-
-                <section class="box" id="blog">
-                    <div class="box-title">BLOG</div>
-                    <p>> Latest update...</p>
-                </section>
-
-                <section class="box" id="beats">
-                    <div class="box-title">BEATS FOR SALE</div>
-                    <a href="https://air.bi/nXZu4" target="_blank" class="nav-link">AIRBIT LINK</a>
-                </section>
-
-                <section class="box" id="links">
-                    <div class="box-title">LINKS</div>
-                    <nav class="links">
-                        <a href="#">DISCORD</a>
-                        <a href="#">TWITTER</a>
-                    </nav>
-                </section>
-
-                <button class="home-btn" onclick="scrollToTop()">[ RETURN HOME ]</button>
-
-            </main>
-        </div>
+            <section class="box"><div class="box-title">STVLKER</div><p>Main profile and about section.</p></section>
+            <section class="box"><div class="box-title">SONNYVRO</div><p>Details about the artist.</p></section>
+            <section class="box"><div class="box-title">PICS</div><p>[IMG_GRID]</p></section>
+            <section class="box"><div class="box-title">BLOG</div><p>> Latest update...</p></section>
+            <section class="box"><div class="box-title">BEATS FOR SALE</div><a href="#" class="nav-link" data-dir="pan-right">AIRBIT LINK</a></section>
+            <section class="box"><div class="box-title">LINKS</div><nav class="links"><a href="#">DISCORD</a><a href="#">TWITTER</a></nav></section>
+            
+            <button class="home-btn" onclick="window.location.reload()">[ RETURN HOME ]</button>
+        </main>
     </div>
+</div>
 
-    <script>
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
+<script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const camera = document.getElementById('camera');
+            camera.classList.add(this.getAttribute('data-dir'));
+            setTimeout(() => { window.location.href = this.getAttribute('href'); }, 1200);
+        });
+    });
+</script>
 </body>
 </html>
- 
