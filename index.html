@@ -14,245 +14,62 @@
             --border-dim: #551111; 
             --text-main: #ffcccc; 
             --text-highlight: #ff3333; 
-            --link-hover: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Prevent normal scrolling so 3D works */
+            width: 100%; height: 100%; overflow: hidden;
             background-color: var(--bg);
             color: var(--text-main);
             font-family: 'VT323', monospace;
             font-size: 1.2rem;
-            line-height: 1.4;
             /* Starry Background */
-            background-image: 
-                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
+            background-image: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)), radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0));
             background-size: 200px 200px;
-            animation: starsMove 100s linear infinite;
         }
 
-        @keyframes starsMove {
-            from { background-position: 0 0; }
-            to { background-position: -1000px 500px; }
-        }
-
-        /* Scanline Overlay (Stays static over the camera) */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        /* =========================================
-           3D CAMERA SYSTEM
-        ========================================= */
+        /* 3D CAMERA SYSTEM */
         #viewport {
-            perspective: 1000px; /* Gives the 3D depth */
-            width: 100vw;
-            height: 100vh;
-            overflow-y: auto; /* Allow scrolling inside the viewport */
-            overflow-x: hidden;
-            position: relative;
-            z-index: 10;
+            perspective: 1000px;
+            width: 100vw; height: 100vh;
+            overflow: hidden; position: relative; z-index: 10;
         }
 
         #camera {
-            width: 100%;
-            min-height: 100%;
+            width: 100%; height: 100%;
             transform-style: preserve-3d;
-            /* The rotation origin is set back, simulating a person turning their head */
             transform-origin: center center -400px; 
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease-in;
         }
 
-        /* The class we add with JS when a link is clicked */
-        .turn-camera {
-            transform: translateZ(200px) rotateY(-90deg); /* Zooms in slightly, pans sharp right */
-            opacity: 0; /* Fades into the darkness */
-        }
+        /* DIRECTIONAL CLASSES */
+        .pan-right  { transform: translateZ(200px) rotateY(-90deg); opacity: 0; }
+        .pan-left   { transform: translateZ(200px) rotateY(90deg); opacity: 0; }
+        .pan-up     { transform: translateZ(200px) rotateX(-90deg); opacity: 0; }
+        .pan-down   { transform: translateZ(200px) rotateX(90deg); opacity: 0; }
+        .pan-in     { transform: translateZ(800px); opacity: 0; }
 
-        /* Layout Container */
+        /* Container Layout */
         .container {
-            max-width: 950px;
-            margin: 40px auto;
-            padding: 0 15px;
-            display: grid;
-            grid-template-columns: 2fr 1fr; 
-            gap: 20px;
+            max-width: 950px; margin: 40px auto; padding: 0 15px;
+            display: grid; grid-template-columns: 2fr 1fr; gap: 20px;
         }
 
-        /* Header / Logo */
-        header {
-            grid-column: 1 / -1;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        header h1 {
-            font-family: 'Press Start 2P', cursive;
-            color: var(--text-highlight);
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
-            margin-bottom: 5px;
-        }
-
-        header h2 {
-            font-size: 1.5rem;
-            color: #fff;
-            letter-spacing: 5px;
-        }
-
-        /* Cyber Panels */
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-dim);
-            border-top: 1px solid var(--border);
-            border-left: 1px solid var(--border);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 10px rgba(255, 51, 51, 0.05), 0 5px 15px rgba(0,0,0,0.5); 
-            border-radius: 2px;
-        }
-
-        .panel-header {
-            font-family: 'Press Start 2P', cursive;
-            color: var(--text-highlight);
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px dashed var(--border-dim);
-            padding-bottom: 10px;
-        }
-
-        /* Text & Links */
-        p {
-            margin-bottom: 15px;
-        }
-
-        a, .fake-link {
-            color: var(--text-highlight);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        a:hover, .fake-link:hover {
-            color: var(--link-hover);
-            text-decoration: underline;
-            text-shadow: 0 0 5px var(--text-highlight);
-        }
-
-        /* Content Specifics */
-        .profile-section {
-            display: flex;
-            gap: 15px;
-        }
-
-        .avatar-placeholder {
-            width: 100px;
-            height: 100px;
-            border: 1px solid var(--border);
-            background: #110000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        ul.cyber-list {
-            list-style: none;
-            margin-left: 10px;
-        }
-
-        ul.cyber-list li::before {
-            content: "> ";
-            color: var(--text-highlight);
-        }
-
-        /* Buttons & Audio Controls */
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn {
-            background: transparent;
-            border: 1px solid var(--border-dim);
-            color: var(--text-main);
-            font-family: 'VT323', monospace;
-            font-size: 1.2rem;
-            padding: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn:hover {
-            border-color: var(--border);
-            color: var(--text-highlight);
-            background: rgba(255, 51, 51, 0.1); 
-        }
-
-        .track-list {
-            margin-top: 10px;
-            height: 120px;
-            overflow-y: auto;
-            border: 1px solid var(--border-dim);
-            padding: 5px;
-        }
+        header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
+        header h1 { font-family: 'Press Start 2P', cursive; color: var(--text-highlight); font-size: 2.5rem; }
         
-        .track-item {
-            padding: 2px 5px;
-            cursor: pointer;
-        }
+        .panel { background: var(--panel-bg); border: 1px solid var(--border-dim); border-top: 1px solid var(--border); border-left: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
+        .panel-header { font-family: 'Press Start 2P', cursive; color: var(--text-highlight); font-size: 0.8rem; margin-bottom: 15px; border-bottom: 1px dashed var(--border-dim); padding-bottom: 10px; }
         
-        .track-item:hover {
-            background: var(--border-dim);
-            color: #fff;
-        }
-        
-        .now-playing {
-            color: var(--text-highlight);
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        /* Scrollbar customization */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border-dim); }
-        ::-webkit-scrollbar-thumb { background: var(--border-dim); }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border); }
-
+        .btn { background: transparent; border: 1px solid var(--border-dim); color: var(--text-main); font-family: 'VT323', monospace; font-size: 1.2rem; padding: 8px; cursor: pointer; width: 100%; margin-top: 5px; }
+        .btn:hover { border-color: var(--border); color: var(--text-highlight); background: rgba(255, 51, 51, 0.1); }
     </style>
 </head>
 <body>
 
-    <div class="scanlines"></div>
-
     <div id="viewport">
         <div id="camera">
-            
             <div class="container">
                 <header>
                     <h1>SONNYVRO</h1>
@@ -261,132 +78,41 @@
 
                 <div class="left-col">
                     <div class="panel">
-                        <div class="panel-header">🌙 WELCOME TO MY SITE</div>
-                        <div class="profile-section">
-                            <div class="avatar-placeholder">[IMG<br>PLACEHOLDER]</div>
-                            <div>
-                                <p>Welcome to the digital shrine. My name's Sonny, I'm 21, and I started making music in 2022. I've been obsessed with music all my life.</p>
-                                <p>I started producing about a year ago and have been doing it basically every day since. This is where I dump my tracks, beats, and thoughts.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="panel">
-                        <div class="panel-header">🎵 AUDIO TERMINAL</div>
-                        <div class="now-playing" id="now-playing">STATUS: IDLE // SELECT A TRACK</div>
-                        
-                        <div class="track-list" id="track-list">
-                            <div class="track-item" onclick="loadTrack(0)">01 - KILLING.MP3</div>
-                            <div class="track-item" onclick="loadTrack(1)">02 - CCC.MP3</div>
-                            <div class="track-item" onclick="loadTrack(2)">03 - 4M.MP3</div>
-                            <div class="track-item" onclick="loadTrack(3)">04 - ALIVE.MP3</div>
-                        </div>
-
-                        <div class="controls">
-                            <button class="btn" onclick="prevTrack()"><< PREV</button>
-                            <button class="btn" id="play-btn" onclick="togglePlay()">PLAY</button>
-                            <button class="btn" onclick="nextTrack()">NEXT >></button>
-                            <button class="btn" onclick="shuffleTracks()">SHUFFLE</button>
-                        </div>
+                        <div class="panel-header">🌙 WELCOME</div>
+                        <p>Welcome to the digital shrine. Sonny, 21. Music production daily.</p>
                     </div>
                 </div>
 
                 <div class="right-col">
                     <div class="panel">
                         <div class="panel-header">⭐ DIRECTORY</div>
-                        <ul class="cyber-list">
-                            <li><a href="#" class="nav-link">Home</a></li>
-                            <li><a href="#" class="nav-link">About Me</a></li>
-                            <li><a href="https://air.bi/nXZu4" class="nav-link" target="_blank">Stock Beats</a></li>
-                            <li><a href="form.html" class="nav-link">Custom Beats</a></li>
-                            <li><a href="misc.html" class="nav-link">Misc Archive</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="panel">
-                        <div class="panel-header">⚡ SYSTEM STATUS</div>
-                        <p style="color: #ff3333;">I'm ONLINE!</p>
-                        <p style="font-size: 0.9rem; border-top: 1px dotted var(--border-dim); padding-top: 10px;">
-                            <strong>Location:</strong> Main Hub<br>
-                            Camera systems initialized.
-                        </p>
+                        <a href="index.html" class="nav-link btn" data-direction="left">Home</a>
+                        <a href="#" class="nav-link btn" data-direction="up">About Me</a>
+                        <a href="https://air.bi/nXZu4" class="btn" target="_blank">Stock Beats</a>
+                        <a href="form.html" class="nav-link btn" data-direction="in">Custom Beats</a>
+                        <a href="misc.html" class="nav-link btn" data-direction="down">Misc Archive</a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <audio id="bg-audio"></audio>
-
     <script>
-        /* ========================================
-           POINT & CLICK CAMERA LOGIC
-        ======================================== */
         const camera = document.getElementById('camera');
         const navLinks = document.querySelectorAll('.nav-link');
 
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-                // Ignore if it opens in a new tab
                 if (this.target === "_blank") return;
-                
-                e.preventDefault(); // Stop instant navigation
+                e.preventDefault(); 
                 const targetUrl = this.getAttribute('href');
-
-                // Trigger the camera pan animation
-                camera.classList.add('turn-camera');
-
-                // Wait for the animation to finish (1000ms), then navigate
-                setTimeout(() => {
-                    // For testing empty links, we just snap the camera back
-                    if(targetUrl === '#' || targetUrl === '') {
-                        camera.classList.remove('turn-camera');
-                    } else {
-                        window.location.href = targetUrl;
-                    }
-                }, 1000);
+                const dir = this.getAttribute('data-direction') || 'right';
+                
+                camera.classList.add('pan-' + dir);
+                setTimeout(() => { window.location.href = targetUrl; }, 1000);
             });
         });
-
-        /* ========================================
-           AUDIO PLAYER LOGIC
-        ======================================== */
-        const playlist = [
-            { title: "KILLING.MP3", file: "music/killing.mp3" },
-            { title: "CCC.MP3", file: "ccc.mp3" },
-            { title: "4M.MP3", file: "music/4m.mp3" },
-            { title: "ALIVE.MP3", file: "music/alive.mp3" }
-        ];
-
-        let currentTrackIndex = 0;
-        const audio = document.getElementById('bg-audio');
-        const playBtn = document.getElementById('play-btn');
-        const nowPlayingText = document.getElementById('now-playing');
-
-        function togglePlay() {
-            if (audio.src === "") return;
-            if (audio.paused) { 
-                audio.play(); 
-                playBtn.innerText = "PAUSE"; 
-            } else { 
-                audio.pause(); 
-                playBtn.innerText = "PLAY"; 
-            }
-        }
-
-        function loadTrack(index) {
-            currentTrackIndex = index;
-            audio.src = playlist[index].file;
-            nowPlayingText.innerText = "PLAYING: " + playlist[index].title;
-            audio.play(); 
-            playBtn.innerText = "PAUSE";
-        }
-
-        function nextTrack() { loadTrack((currentTrackIndex + 1) % playlist.length); }
-        function prevTrack() { loadTrack((currentTrackIndex - 1 + playlist.length) % playlist.length); }
-        function shuffleTracks() { loadTrack(Math.floor(Math.random() * playlist.length)); }
     </script>
 </body>
 </html>
-                        
+ 
