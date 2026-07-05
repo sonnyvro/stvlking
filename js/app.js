@@ -1,103 +1,42 @@
 // ===============================
-// SONNYVRO BUILD 0.2
+// SONNYVRO // STVLKING
+// APP.JS
+// Version 1.1
 // ===============================
 
-const title = document.querySelector("header h1");
-const body = document.body;
+const flash = document.getElementById("flash");
 
-// -------------------------------
-// Title Flicker
-// -------------------------------
+// Random lightning
+function lightningStrike() {
 
-function flickerTitle(){
+    flash.style.animation = "none";
+    flash.offsetHeight; // restart animation
+    flash.style.animation = "lightningFlash .35s";
 
-    const chance = Math.random();
-
-    if(chance < 0.08){
-
-        title.style.opacity = ".45";
-
-        setTimeout(()=>{
-            title.style.opacity="1";
-        },70);
-
-    }
-
+    // Next strike in 4–12 seconds
+    const next = Math.random() * 8000 + 4000;
+    setTimeout(lightningStrike, next);
 }
 
-setInterval(flickerTitle,250);
+// Start lightning after page loads
+window.addEventListener("load", () => {
 
-// -------------------------------
-// Lightning
-// -------------------------------
-
-const flash = document.createElement("div");
-
-flash.style.position="fixed";
-flash.style.inset="0";
-flash.style.background="white";
-flash.style.opacity="0";
-flash.style.pointerEvents="none";
-flash.style.zIndex="999";
-
-document.body.appendChild(flash);
-
-function lightning(){
-
-    if(Math.random() < .30){
-
-        flash.style.transition="none";
-        flash.style.opacity=".18";
-
-        setTimeout(()=>{
-
-            flash.style.transition="opacity .7s";
-            flash.style.opacity="0";
-
-        },60);
-
-    }
-
-}
-
-setInterval(lightning,9000);
-
-// -------------------------------
-// Button Hover Glow
-// -------------------------------
-
-document.querySelectorAll("button").forEach(btn=>{
-
-    btn.addEventListener("mouseenter",()=>{
-
-        btn.style.boxShadow="0 0 25px #ff2a2a";
-
-    });
-
-    btn.addEventListener("mouseleave",()=>{
-
-        btn.style.boxShadow="";
-
-    });
+    const first = Math.random() * 5000 + 2000;
+    setTimeout(lightningStrike, first);
 
 });
 
-// -------------------------------
-// Shrine Glow Pulse
-// -------------------------------
+// Mouse glow
+document.addEventListener("mousemove", (e) => {
 
-const shrine = document.getElementById("shrine");
+    document.documentElement.style.setProperty(
+        "--mouse-x",
+        e.clientX + "px"
+    );
 
-let glow = 18;
-let dir = 1;
+    document.documentElement.style.setProperty(
+        "--mouse-y",
+        e.clientY + "px"
+    );
 
-setInterval(()=>{
-
-    glow += dir;
-
-    if(glow>32) dir=-1;
-    if(glow<18) dir=1;
-
-    shrine.style.filter=`drop-shadow(0 0 ${glow}px rgba(255,40,40,.30))`;
-
-},70);
+});
