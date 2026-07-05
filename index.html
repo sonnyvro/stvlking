@@ -72,10 +72,10 @@
         @keyframes neonFlicker {
             0%, 18%, 22%, 25%, 53%, 57%, 100% { 
                 opacity: 1; 
-                text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); /* Faint, tight glow */
+                text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); 
             }
             20%, 24%, 55% { 
-                opacity: 0.75; /* Barely dims to keep it readable */
+                opacity: 0.75; 
                 text-shadow: none; 
             }
         }
@@ -99,17 +99,17 @@
     <div id="viewport">
         <div id="camera">
             <main class="layout-stack">
-                <header id="main-header" class="rain-collider">
+                <header id="main-header">
                     <h1>SONNYVRO // STVLKING</h1>
                 </header>
 
-                <section class="box rain-collider">
+                <section class="box">
                     <div class="box-title">STVLKER</div>
                     <p>Welcome to the digital shrine. Replace this text with a brief introduction about the project, the aesthetic, or the overall vibe of this site.</p>
                     <p>You can add multiple paragraphs here to break up the reading experience. Treat this like your main terminal landing page.</p>
                 </section>
 
-                <section class="box rain-collider">
+                <section class="box">
                     <div class="box-title">SONNYVRO</div>
                     <p><strong>Alias:</strong> Sonny</p>
                     <p><strong>Age:</strong> 21</p>
@@ -118,13 +118,13 @@
                     <p>Insert your personal biography here. Talk about when you started making music, your inspirations, your daw/equipment, and what drives your sound.</p>
                 </section>
 
-                <section class="box rain-collider">
+                <section class="box">
                     <div class="box-title">PICS</div>
                     <p><em>[ IMAGE ARCHIVE EMPTY ]</em></p>
                     <p>Replace this text with your HTML image tags when you are ready to upload photos. You can put them in a grid or stack them on top of each other.</p>
                 </section>
 
-                <section class="box rain-collider">
+                <section class="box">
                     <div class="box-title">BLOG</div>
                     <p><strong>> LOG ENTRY: 07.2026</strong></p>
                     <p>Type your latest thoughts, updates, or rants here. This acts as a chronological record of your digital footprint.</p>
@@ -133,13 +133,13 @@
                     <p>Archived entry text goes here.</p>
                 </section>
 
-                <section class="box rain-collider">
+                <section class="box">
                     <div class="box-title">BEATS FOR SALE</div>
                     <p>Select the link below to access the external beat store. Audio terminal sync complete.</p>
                     <a href="https://air.bi/nXZu4" target="_blank" class="nav-link" data-dir="pan-right">> ACCESS AIRBIT STORE</a>
                 </section>
 
-                <section class="box rain-collider">
+                <section class="box">
                     <div class="box-title">LINKS</div>
                     <p>Connect with the mainframe:</p>
                     <nav class="links">
@@ -150,16 +150,15 @@
                     </nav>
                 </section>
                 
-                <button class="home-btn rain-collider" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
+                <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
             </main>
         </div>
     </div>
 
     <script>
-        // Advanced Rain Collision Logic
+        // Smooth Continuous Rain Logic
         const canvas = document.getElementById('rain-canvas');
         const ctx = canvas.getContext('2d');
-        const colliders = document.querySelectorAll('.rain-collider');
         
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
@@ -171,21 +170,11 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#ff0000'; 
             
-            const rects = Array.from(colliders).map(el => el.getBoundingClientRect());
-
             if (drops.length < 150) drops.push(createDrop());
             
             drops.forEach(d => {
-                let hit = false;
-                
-                for (let r of rects) {
-                    if (d.y >= r.top && d.y <= r.top + 10 && d.x > r.left && d.x < r.right) {
-                        hit = true;
-                        break;
-                    }
-                }
-
-                if (hit || d.y > canvas.height) {
+                // If it drops past the bottom of the screen, reset it back to the top
+                if (d.y > canvas.height) {
                     d.y = -10 - Math.random() * 20; 
                     d.x = Math.random() * canvas.width;
                 } else {
@@ -200,7 +189,6 @@
         // 3D Camera Pan logic
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                // If it's an external link opening in a new tab, let it work normally without camera pan
                 if (this.target === "_blank") return;
                 
                 e.preventDefault();
