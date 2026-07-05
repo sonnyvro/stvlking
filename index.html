@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SONNYVRO // STVLKING</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -11,72 +10,37 @@
 
     <div id="viewport">
         <div id="camera">
-            
-            <div id="world">
-                <div id="stars"></div>
-                <div id="moon"></div>
-                <div id="clouds"></div>
-                <div id="bgCity"></div>
-                <div id="fog"></div>
-                <div id="rain"></div>
-            </div>
-
-            <main id="scene">
+            <main class="grid-layout">
+                
                 <header>
                     <h1>SONNYVRO</h1>
-                    <p>STVLKING</p>
+                    <p>// STVLKING //</p>
                 </header>
 
-                <section id="shrine">
-                    <div id="roof"></div>
-                    <div class="lantern left"><div class="rope"></div><div class="light"></div></div>
-                    <div class="lantern right"><div class="rope"></div><div class="light"></div></div>
-                    <div id="roofBeam"></div>
-                    <div id="crossBeam"></div>
-                    
-                    <div id="building">
-                        <div class="pillar left"></div>
-                        <div id="content">
-                            <div id="innerShrine">
-                                <div id="doors">
-                                    <div class="door leftDoor">
-                                        <div class="doorFrame">
-                                            <button onclick="pan('pan-left', 'index.html')">STOCK</button>
-                                            <button onclick="pan('pan-up', 'about.html')">CUSTOM</button>
-                                        </div>
-                                    </div>
-                                    <div class="door rightDoor">
-                                        <div class="doorFrame">
-                                            <button onclick="pan('pan-right', 'misc.html')">MISC</button>
-                                            <div class="screen">NO TRACK LOADED</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel">
-                                <h2>ABOUT</h2>
-                                <p>Welcome to the Shrine.</p>
-                            </div>
-                        </div>
-                        <div class="pillar right"></div>
-                    </div>
-                </section>
+                <div class="left-col">
+                    <section class="panel">
+                        <div class="panel-header">🌙 WELCOME</div>
+                        <p>Welcome to the digital shrine. Sonny, 21. Music production daily.</p>
+                    </section>
+                </div>
+
+                <div class="right-col">
+                    <section class="panel">
+                        <div class="panel-header">⭐ DIRECTORY</div>
+                        <nav class="directory-list">
+                            <a href="#" class="nav-link" data-dir="pan-left">Home</a>
+                            <a href="#" class="nav-link" data-dir="pan-up">About Me</a>
+                            <a href="https://air.bi/nXZu4" target="_blank">Stock Beats</a>
+                            <a href="form.html" class="nav-link" data-dir="pan-in">Custom Beats</a>
+                            <a href="misc.html" class="nav-link" data-dir="pan-down">Misc Archive</a>
+                        </nav>
+                    </section>
+                </div>
             </main>
-            </div>
+        </div>
     </div>
 
-    <script>
-        function pan(directionClass, url) {
-            const camera = document.getElementById('camera');
-            // Apply the camera turn class
-            camera.classList.add(directionClass);
-            
-            // Wait for 1 second animation, then navigate
-            setTimeout(() => {
-                window.location.href = url;
-            }, 1000);
-        }
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>
  
