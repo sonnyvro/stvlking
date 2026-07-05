@@ -4,21 +4,51 @@
     <meta charset="UTF-8">
     <title>Request Custom Beat</title>
     <style>
-        body { background: #020202; color: #ff0033; font-family: 'Bebas Neue'; text-align: center; padding: 50px; }
-        input, textarea { width: 80%; padding: 15px; margin: 10px 0; background: #050101; border: 1px solid #ff0033; color: white; font-family: sans-serif;}
-        button { background: transparent; border: 1px solid #ff0033; color: white; padding: 15px 30px; cursor: pointer; font-size: 1.5rem; transition: 0.3s; }
-        button:hover { background: #ff0033; color: black; }
+        :root { --neon-color: #ff0033; }
+        body { 
+            background: #020202; color: #ff0033; font-family: 'Bebas Neue', sans-serif; 
+            text-align: center; padding: 50px;
+            /* Ghostly Text Style */
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+        }
+
+        /* Ghostly Input Styling */
+        input, textarea, select { 
+            width: 80%; padding: 15px; margin: 10px 0; 
+            background: #050101; border: 1px solid var(--neon-color); 
+            color: #ffccd5; font-family: 'Montserrat', sans-serif;
+            filter: blur(0.2px);
+        }
+
+        button { 
+            background: transparent; border: 1px solid var(--neon-color); 
+            color: #ffccd5; padding: 15px 30px; cursor: pointer; 
+            font-size: 1.5rem; transition: 0.3s; margin-top: 20px;
+        }
+        button:hover { background: var(--neon-color); color: black; }
+        
+        label { display: block; margin-top: 15px; font-size: 1.2rem; }
     </style>
 </head>
 <body>
     <h1>REQUEST CUSTOM BEAT</h1>
+    
     <form action="https://formspree.io/f/mojorqnz" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required><br>
-        <input type="email" name="email" placeholder="Your Email" required><br>
-        <textarea name="message" placeholder="Describe the vibe you want..." rows="10"></textarea><br>
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        
+        <label for="vibe">Select Beat Style:</label>
+        <select name="vibe" id="vibe">
+            <option value="dark-trap">Dark Trap</option>
+            <option value="atmospheric">Atmospheric</option>
+            <option value="boom-bap">Boom Bap</option>
+            <option value="custom">Other (Type below)</option>
+        </select>
+        
+        <textarea name="message" placeholder="Describe your custom vision here..." rows="6"></textarea>
+        
         <button type="submit">SEND REQUEST</button>
     </form>
 </body>
 </html>
-
  
