@@ -1,1 +1,468 @@
+/* ==========================
+   SONNYVRO // STVLKING
+   BUILD 0.1
+========================== */
 
+:root{
+    --bg:#050505;
+    --panel:#120606;
+    --panel2:#1d0909;
+    --border:#5d1515;
+    --highlight:#ff3b3b;
+    --text:#ffd9d9;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    background:#050505;
+    overflow:hidden;
+    font-family:'VT323', monospace;
+    color:var(--text);
+}
+
+/* ==========================
+      BACKGROUND
+========================== */
+
+#background{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:-10;
+    background:
+    radial-gradient(circle at top,#260808 0%,#090909 45%,#000 100%);
+}
+
+/* Stars */
+
+.stars{
+    position:absolute;
+    inset:0;
+    background-image:
+    radial-gradient(#ffffff55 1px, transparent 1px);
+    background-size:120px 120px;
+    opacity:.25;
+}
+
+/* Rain */
+
+.rain{
+    position:absolute;
+    inset:-100%;
+    background-image:
+    repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 96px,
+        rgba(255,255,255,.06) 97px,
+        rgba(255,255,255,.08) 98px
+    );
+
+    transform:rotate(12deg);
+
+    animation:rainMove .5s linear infinite;
+}
+
+@keyframes rainMove{
+
+    from{
+        transform:
+        translateY(-120px)
+        rotate(12deg);
+    }
+
+    to{
+        transform:
+        translateY(120px)
+        rotate(12deg);
+    }
+
+}
+
+/* Fog */
+
+.fog{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    radial-gradient(circle,#66151522,transparent 70%);
+
+    animation:fog 10s ease-in-out infinite;
+
+}
+
+@keyframes fog{
+
+0%,100%{
+
+opacity:.2;
+
+transform:scale(1);
+
+}
+
+50%{
+
+opacity:.45;
+
+transform:scale(1.08);
+
+}
+
+}
+
+/* Vignette */
+
+.vignette{
+
+position:absolute;
+
+inset:0;
+
+box-shadow:
+inset 0 0 200px black,
+inset 0 0 350px black;
+
+}
+
+/* CRT */
+
+.crt{
+
+position:absolute;
+
+inset:0;
+
+background:
+repeating-linear-gradient(
+
+0deg,
+
+transparent 0px,
+
+transparent 3px,
+
+rgba(0,0,0,.18) 4px
+
+);
+
+opacity:.35;
+
+pointer-events:none;
+
+animation:flicker .18s infinite;
+
+}
+
+@keyframes flicker{
+
+0%{opacity:.28;}
+
+50%{opacity:.34;}
+
+100%{opacity:.29;}
+
+}
+
+/* ==========================
+        HEADER
+========================== */
+
+header{
+
+position:absolute;
+
+top:50px;
+
+width:100%;
+
+text-align:center;
+
+}
+
+header h1{
+
+font-family:'Press Start 2P', cursive;
+
+font-size:clamp(24px,3vw,42px);
+
+letter-spacing:3px;
+
+color:#ffe3e3;
+
+text-shadow:
+
+0 0 8px #ff4444,
+
+0 0 25px #ff0000;
+
+}
+
+header p{
+
+margin-top:18px;
+
+font-size:32px;
+
+letter-spacing:8px;
+
+color:#ff6b6b;
+
+}
+
+/* ==========================
+        SHRINE
+========================== */
+
+main{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+height:100vh;
+
+padding-top:80px;
+
+}
+
+#shrine{
+
+width:min(90vw,650px);
+
+animation:float 5s ease-in-out infinite;
+
+}
+
+@keyframes float{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-10px);
+
+}
+
+}
+
+/* Roof */
+
+.roof{
+
+height:45px;
+
+background:#170707;
+
+clip-path:polygon(10% 0,90% 0,100% 100%,0% 100%);
+
+border:4px solid var(--border);
+
+}
+
+/* Roof Base */
+
+.roof-base{
+
+height:18px;
+
+background:#220909;
+
+border-left:4px solid var(--border);
+
+border-right:4px solid var(--border);
+
+}
+
+/* Body */
+
+.body{
+
+background:var(--panel);
+
+border:4px solid var(--border);
+
+padding:30px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:25px;
+
+box-shadow:
+
+0 0 25px rgba(255,0,0,.18);
+
+}
+
+/* ==========================
+        BUTTONS
+========================== */
+
+.menu{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:15px;
+
+}
+
+button{
+
+font-family:'Press Start 2P';
+
+font-size:11px;
+
+padding:18px;
+
+cursor:pointer;
+
+background:#220909;
+
+color:var(--text);
+
+border:3px solid var(--border);
+
+transition:.15s;
+
+}
+
+button:hover{
+
+background:#ff3434;
+
+color:black;
+
+transform:translateY(-2px);
+
+box-shadow:
+
+0 0 15px #ff3434;
+
+}
+
+button:active{
+
+transform:translateY(2px);
+
+}
+
+/* ==========================
+        PANELS
+========================== */
+
+.player,
+
+.about{
+
+background:var(--panel2);
+
+border:3px solid var(--border);
+
+padding:18px;
+
+}
+
+.player h2,
+
+.about h2{
+
+font-family:'Press Start 2P';
+
+font-size:13px;
+
+margin-bottom:18px;
+
+color:#ff7070;
+
+}
+
+.screen{
+
+height:90px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:black;
+
+border:2px solid var(--border);
+
+font-size:28px;
+
+margin-bottom:20px;
+
+}
+
+.controls{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:10px;
+
+}
+
+/* ==========================
+       MOBILE
+========================== */
+
+@media(max-width:700px){
+
+.menu{
+
+grid-template-columns:1fr;
+
+}
+
+.controls{
+
+grid-template-columns:1fr;
+
+}
+
+header{
+
+top:25px;
+
+}
+
+header p{
+
+font-size:24px;
+
+}
+
+.body{
+
+padding:20px;
+
+}
+
+}
