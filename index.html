@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SONNYVRO / STVLKING</title>
+    <title>SONNYVRO // STVLKING</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        /* 1. STRICT COLOR PALETTE */
         :root {
             --bg: #000000;
             --panel: rgba(10, 0, 0, 0.85); 
@@ -14,18 +13,13 @@
             --text: #e0a0a0;
         }
 
-        /* 2. THE DIMMED WALLPAPER */
         body { 
             background-color: #000000 !important; 
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-                url('wallpaper.jpg'); 
-            
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('wallpaper.jpg'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
-            
             color: var(--text) !important; 
             font-family: 'VT323', monospace; 
             margin: 0; 
@@ -33,7 +27,6 @@
             perspective: 1000px;
         }
 
-        /* 3. THE UNAFFECTED CLOUD LAYER */
         #clouds-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('clouds.png'); 
@@ -45,40 +38,26 @@
         }
         @keyframes cloudDrift { from { background-position: 0 0; } to { background-position: 1000px 0; } }
 
-        /* 4. RAIN & CAMERA */
         #rain-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
         #viewport { position: relative; z-index: 3; width: 100vw; min-height: 100vh; }
         #camera { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        .pan-left { transform: rotateY(90deg) translateZ(200px); opacity: 0; }
-        .pan-right { transform: rotateY(-90deg) translateZ(200px); opacity: 0; }
-        .pan-up { transform: rotateX(-90deg) translateZ(200px); opacity: 0; }
-        .pan-down { transform: rotateX(90deg) translateZ(200px); opacity: 0; }
-
-        /* 5. STACK LAYOUT & BOXES */
         .layout-stack { display: grid; grid-template-columns: 1fr; gap: 25px; max-width: 600px; margin: 40px auto; padding: 20px; }
-        
         header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); }
         
-        /* 6. NEON FLICKER TEXT (Faint & Readable) */
-        h1 { 
-            font-family: 'Press Start 2P'; 
-            color: var(--red); 
-            font-size: 2rem; 
-            margin: 0; 
-            animation: neonFlicker 4s infinite; 
-        }
+        h1, .divider span { font-family: 'Press Start 2P'; color: var(--red); margin: 0; animation: neonFlicker 4s infinite; }
+        h1 { font-size: 2rem; }
 
         @keyframes neonFlicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% { 
-                opacity: 1; 
-                text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); 
-            }
-            20%, 24%, 55% { 
-                opacity: 0.75; 
-                text-shadow: none; 
-            }
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); }
+            20%, 24%, 55% { opacity: 0.75; text-shadow: none; }
         }
+
+        /* Divider Style */
+        .divider { display: flex; align-items: center; text-align: center; font-size: 0.7rem; margin: 20px 0; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--red); }
+        .divider:not(:empty)::before { margin-right: 15px; }
+        .divider:not(:empty)::after { margin-left: 15px; }
 
         .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; min-height: 200px; position: relative; line-height: 1.6; }
         .box::before { content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%); }
@@ -89,6 +68,19 @@
 
         .home-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 20px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 0.8rem; transition: 0.3s; width: 100%; margin-bottom: 100px; }
         .home-btn:hover { background: var(--red); color: #000000; }
+
+        /* Audio Styles */
+        .audio-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--dim-red); padding-bottom: 15px; margin-bottom: 15px; font-size: 0.9rem; }
+        #now-playing { color: var(--red); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        input[type=range] { -webkit-appearance: none; background: transparent; width: 100px; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--dim-red); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 8px; background: var(--red); border: 1px solid #000; }
+        .tracklist { list-style: none; padding: 0; }
+        .track { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #110000; cursor: pointer; }
+        .track:hover .play-btn { color: var(--red); }
+        .play-btn { width: 70px; color: var(--text); font-family: 'Press Start 2P'; font-size: 0.6rem; }
+        .track.active .track-name { color: var(--red); text-shadow: 0 0 5px var(--red); }
     </style>
 </head>
 <body>
@@ -105,41 +97,24 @@
 
                 <section class="box">
                     <div class="box-title">STVLKER</div>
-                    <p>Welcome. This website serves as a hub for all of my projects, art, info about me, and a store where you can buy beats, feats, and more!</p>
-                    <p>Scroll down to see more information about me and my services!</p>
+                    <p>Welcome. This is the hub for all projects, art, and beats.</p>
                 </section>
 
                 <section class="box">
                     <div class="box-title">SONNYVRO</div>
-                    <p><strong>Alias:</strong> Sonny</p>
-                    <p><strong>Age:</strong> 21</p>
-                    <p><strong>Status:</strong> Actively coding:(</p>
-                    <br>
-                    <p>Growing up listening to music every second of the day really helps me when creating as i never really run out of ideas. I excel in dark, atmospheric, and gloomy vibes while also recording alternative rock, dark trap, and indie music.</p>
+                    <p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Coding</p>
+                    <p>Gloomy, dark, atmospheric vibes.</p>
                 </section>
-
-               <section class="box rain-collider">
-    <div class="box-title">PICS</div>
-    
-    <div class="pic-grid">
-        <img src="images/pic1.jpg" alt="Description of pic 1">
-        <img src="images/pic2.jpg" alt="Description of pic 2">
-        <img src="images/pic3.jpg" alt="Description of pic 3">
-    </div>
-</section>
 
                 <section class="box">
                     <div class="box-title">BLOG</div>
-                    <p><strong>> LOG ENTRY: 07.2026</strong></p>
-                    <p>Learning coding yay...</p>
-                    <br>
-                    <p><strong>> LOG ENTRY: 06.2026</strong></p>
-                    <p>Rediscovered post punk and found pure bliss.</p>
+                    <p><strong>> LOG ENTRY: 07.2026</strong><br>Learning coding yay...</p>
                 </section>
 
-              <section class="box">
+                <div class="divider"><span>SHOP / GET IN CONTACT</span></div>
+
+                <section class="box">
                     <div class="box-title">BEATS FOR SALE</div>
-                    
                     <div class="audio-header">
                         <span id="now-playing">> STATUS: IDLE</span>
                         <div class="volume-control">
@@ -147,30 +122,19 @@
                             <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.5">
                         </div>
                     </div>
-
                     <ul class="tracklist">
                         <li class="track" data-src="music/widow.mp3">
-                            <span class="play-btn">[ PLAY ]</span>
-                            <span class="track-name">widow.mp3</span>
-                            <span class="track-meta">132 BPM | D# Min</span>
+                            <span class="play-btn">[ PLAY ]</span> <span class="track-name">widow.mp3</span>
                         </li>
                         <li class="track" data-src="music/error.mp3">
-                            <span class="play-btn">[ PLAY ]</span>
-                            <span class="track-name">error.mp3</span>
-                            <span class="track-meta">125 BPM | C Maj</span>
-                        </li>
-                        <li class="track" data-src="music/killing.mp3">
-                            <span class="play-btn">[ PLAY ]</span>
-                            <span class="track-name">killing.mp3</span>
-                            <span class="track-meta">122 BPM | A Min</span>
+                            <span class="play-btn">[ PLAY ]</span> <span class="track-name">error.mp3</span>
                         </li>
                     </ul>
-                    
                     <a href="https://air.bi/nXZu4" target="_blank" class="nav-link airbit-link">> ACCESS FULL AIRBIT STORE</a>
                 </section>
+
                 <section class="box">
                     <div class="box-title">LINKS</div>
-                    <p>Connect with me:</p>
                     <nav class="links">
                         <a href="https://www.instagram.com/sonnyvro">> INSTAGRAM</a>
                         <a href="https://soundcloud.com/user-11954578">> SOUNDCLOUD</a>
@@ -183,46 +147,35 @@
     </div>
 
 <script>
-    console.log("SYSTEM BOOTING...");
-
-    // 1. RAIN ENGINE
     const canvas = document.getElementById('rain-canvas');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
-        let drops = [];
-        function createDrop() { return { x: Math.random() * canvas.width, y: -10, speed: 2 + Math.random() * 3 }; }
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ff0000';
-            if (drops.length < 150) drops.push(createDrop());
-            drops.forEach(d => {
-                if (d.y > canvas.height) { d.y = -10; d.x = Math.random() * canvas.width; }
-                else { d.y += d.speed; ctx.fillRect(d.x, d.y, 2, 6); }
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.onresize = resize; resize();
+    let drops = [];
+    function createDrop() { return { x: Math.random() * canvas.width, y: -10, speed: 2 + Math.random() * 3 }; }
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#ff0000';
+        if (drops.length < 150) drops.push(createDrop());
+        drops.forEach(d => {
+            if (d.y > canvas.height) { d.y = -10; d.x = Math.random() * canvas.width; }
+            else { d.y += d.speed; ctx.fillRect(d.x, d.y, 2, 6); }
+        });
+        requestAnimationFrame(animate);
     }
+    animate();
 
-// 2. AUDIO ENGINE & BUTTON DELEGATION
     const audioEngine = new Audio();
     const nowPlayingText = document.getElementById('now-playing');
     const volumeSlider = document.getElementById('vol-slider');
-
-    // Set initial volume
     audioEngine.volume = volumeSlider.value;
+    volumeSlider.addEventListener('input', function() { audioEngine.volume = this.value; });
 
-    // Listen for volume changes AND clicks in one place
     document.body.addEventListener('click', function(e) {
-        
-        // Handle Track Clicks
         const track = e.target.closest('.track');
         if (track) {
             const src = track.getAttribute('data-src');
             const btn = track.querySelector('.play-btn');
-            
             if (audioEngine.src.includes(src) && !audioEngine.paused) {
                 audioEngine.pause();
                 btn.innerText = '[ PLAY ]';
@@ -235,27 +188,8 @@
                 nowPlayingText.innerText = '> PLAYING: ' + track.querySelector('.track-name').innerText;
             }
         }
-
-        // Handle Camera Clicks
-        const nav = e.target.closest('.nav-link');
-        if (nav && nav.target !== "_blank") {
-            e.preventDefault();
-            document.getElementById('camera').classList.add(nav.getAttribute('data-dir'));
-            setTimeout(() => { window.location.href = nav.getAttribute('href'); }, 1200);
-        }
-    });
-
-    // Handle Volume Slider independently
-    volumeSlider.addEventListener('input', function() {
-        audioEngine.volume = this.value;
-    });
-
-    // Reset UI when track ends naturally
-    audioEngine.addEventListener('ended', () => {
-        document.querySelectorAll('.play-btn').forEach(b => b.innerText = '[ PLAY ]');
-        nowPlayingText.innerText = '> STATUS: IDLE';
     });
 </script>
 </body>
-</html> 
+</html>
  
