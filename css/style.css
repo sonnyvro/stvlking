@@ -258,8 +258,13 @@ letter-spacing:8px;
 color:white;
 
 text-shadow:
-0 0 15px red,
-0 0 40px red;
+
+0 0 10px #ff2222,
+0 0 20px #ff2222,
+0 0 40px #ff0000,
+0 0 80px #ff0000;
+
+animation:titleFlicker 5s infinite;
 
 }
 
@@ -315,6 +320,10 @@ display:flex;
 flex-direction:column;
 
 gap:20px;
+
+box-shadow:
+0 0 25px rgba(255,0,0,.15),
+0 0 60px rgba(255,0,0,.08);
 
 }
 
@@ -471,6 +480,85 @@ opacity:.15;
 50%{
 
 opacity:.30;
+
+}
+
+}
+@keyframes titleFlicker{
+
+0%,96%,100%{
+
+opacity:1;
+
+}
+
+97%{
+
+opacity:.6;
+
+}
+
+98%{
+
+opacity:1;
+
+}
+
+99%{
+
+opacity:.8;
+
+}
+
+}
+/* LIGHTNING FLASH */
+
+#flash{
+
+position:fixed;
+inset:0;
+
+background:white;
+
+opacity:0;
+
+pointer-events:none;
+
+z-index:5;
+
+animation:lightningFlash 10s infinite;
+
+}
+
+@keyframes lightningFlash{
+
+0%,92%,100%{
+
+opacity:0;
+
+}
+
+93%{
+
+opacity:.25;
+
+}
+
+94%{
+
+opacity:0;
+
+}
+
+95%{
+
+opacity:.5;
+
+}
+
+96%{
+
+opacity:0;
 
 }
 
