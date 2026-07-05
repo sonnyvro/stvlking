@@ -289,6 +289,8 @@ color:#ff9999;
 
 #shrine{
 
+position:relative;
+
 width:900px;
 
 max-width:92vw;
@@ -396,6 +398,95 @@ margin-bottom:-4px;
 
 box-shadow:
 0 3px 8px rgba(0,0,0,.5);
+
+}
+
+/* ==========================
+        LANTERNS
+========================== */
+
+.lantern{
+
+position:absolute;
+
+top:52px;
+
+width:32px;
+height:42px;
+
+background:
+linear-gradient(
+to bottom,
+#ff8b8b,
+#ff3a3a 45%,
+#7a0000
+);
+
+border:2px solid #441111;
+
+border-radius:6px;
+
+box-shadow:
+0 0 20px rgba(255,70,70,.5),
+0 0 45px rgba(255,70,70,.25);
+
+animation:
+swing 5s ease-in-out infinite,
+lanternGlow 2.8s ease-in-out infinite;
+
+}
+
+.lantern.left{
+
+left:-18px;
+
+transform-origin:top center;
+
+}
+
+.lantern.right{
+
+right:-18px;
+
+transform-origin:top center;
+
+animation-delay:.3s;
+
+}
+
+.rope{
+
+position:absolute;
+
+bottom:100%;
+
+left:50%;
+
+width:2px;
+
+height:34px;
+
+background:#444;
+
+transform:translateX(-50%);
+
+}
+
+.light{
+
+position:absolute;
+
+inset:6px;
+
+border-radius:4px;
+
+background:
+
+radial-gradient(
+circle,
+#ffd0d0,
+#ff4b4b 70%
+);
 
 }
 
@@ -530,6 +621,47 @@ padding:20px;
 /* ==========================
       ANIMATIONS
 ========================== */
+@keyframes swing{
+
+0%{
+
+transform:rotate(-4deg);
+
+}
+
+50%{
+
+transform:rotate(4deg);
+
+}
+
+100%{
+
+transform:rotate(-4deg);
+
+}
+
+}
+
+@keyframes lanternGlow{
+
+0%,100%{
+
+box-shadow:
+0 0 18px rgba(255,60,60,.45),
+0 0 40px rgba(255,60,60,.2);
+
+}
+
+50%{
+
+box-shadow:
+0 0 30px rgba(255,120,120,.7),
+0 0 60px rgba(255,120,120,.4);
+
+}
+
+}
 
 @keyframes rain{
 
