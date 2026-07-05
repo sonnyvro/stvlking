@@ -7,28 +7,55 @@
     <style>
         :root {
             --bg: #000000;
-            --panel: #0a0000;
+            --panel: rgba(10, 0, 0, 0.85); /* Slightly transparent to let wallpaper show through */
             --red: #ff0000;
             --dim-red: #330000;
             --text: #e0a0a0;
         }
 
-        body { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow-x: hidden; }
+        body { 
+            /* THE WALLPAPER SETTINGS */
+            background-image: url('wallpaper.jpg'); /* REPLACE THIS WITH YOUR FILE NAME */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: var(--bg) !important; 
+            
+            color: var(--text) !important; 
+            font-family: 'VT323', monospace; 
+            margin: 0; 
+            overflow-x: hidden; 
+            perspective: 1000px;
+        }
 
-        /* Rain Layer - Stays behind the content */
+        /* Rain Layer */
         #rain-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
+        /* 3D Camera System */
         #viewport { position: relative; z-index: 2; width: 100vw; min-height: 100vh; }
-        .layout-stack { display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 700px; margin: 60px auto; padding: 20px; }
-        
-        header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); }
-        h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; }
+        #camera { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Pan Animations */
+        .pan-left { transform: rotateY(90deg) translateZ(200px); opacity: 0; }
+        .pan-right { transform: rotateY(-90deg) translateZ(200px); opacity: 0; }
+        .pan-up { transform: rotateX(-90deg) translateZ(200px); opacity: 0; }
+        .pan-down { transform: rotateX(90deg) translateZ(200px); opacity: 0; }
+
+        /* Layout */
+        .layout-stack { display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 700px; margin: 60px auto; padding: 20px; }
+        header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); }
+        h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; margin: 0; }
+
+        /* Boxes */
         .box { border: 1px solid var(--red); background: var(--panel); padding: 30px; min-height: 350px; position: relative; }
-        .box::before { content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; background: var(--red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%); }
+        .box::before { 
+            content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; 
+            background: var(--red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%);
+        }
         .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); margin-bottom: 20px; border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; }
         
-        .home-btn { background: transparent; border: 2px solid var(--red); color: var(--red); padding: 20px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 1rem; width: 100%; }
+        .home-btn { background: transparent; border: 2px solid var(--red); color: var(--red); padding: 20px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 1rem; width: 100%; margin-bottom: 100px; }
         .home-btn:hover { background: var(--red); color: black; }
     </style>
 </head>
@@ -37,60 +64,43 @@
     <canvas id="rain-canvas"></canvas>
 
     <div id="viewport">
-        <main class="layout-stack">
-            <header id="main-header">
-                <h1>SONNYVRO // STVLKING</h1>
-            </header>
+        <div id="camera">
+            <main class="layout-stack">
+                <header id="main-header">
+                    <h1>SONNYVRO // STVLKING</h1>
+                </header>
 
-            <section class="box"><div class="box-title">STVLKER</div></section>
-            <section class="box"><div class="box-title">SONNYVRO</div></section>
-            <section class="box"><div class="box-title">PICS</div></section>
-            <section class="box"><div class="box-title">BLOG</div></section>
-            <section class="box"><div class="box-title">BEATS FOR SALE</div></section>
-            <section class="box"><div class="box-title">LINKS</div></section>
-            
-            <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
-        </main>
+                <section class="box"><div class="box-title">STVLKER</div></section>
+                <section class="box"><div class="box-title">SONNYVRO</div></section>
+                <section class="box"><div class="box-title">PICS</div></section>
+                <section class="box"><div class="box-title">BLOG</div></section>
+                <section class="box"><div class="box-title">BEATS FOR SALE</div></section>
+                <section class="box"><div class="box-title">LINKS</div></section>
+                
+                <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
+            </main>
+        </div>
     </div>
 
     <script>
+        // Rain logic
         const canvas = document.getElementById('rain-canvas');
         const ctx = canvas.getContext('2d');
         const header = document.getElementById('main-header');
-
-        // Resize canvas to match screen
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
 
         let drops = [];
-        function createDrop() {
-            return {
-                x: Math.random() * canvas.width,
-                y: -10,
-                speed: 2 + Math.random() * 3,
-                stopped: false
-            };
-        }
-
+        function createDrop() { return { x: Math.random() * canvas.width, y: -10, speed: 2 + Math.random() * 3, stopped: false }; }
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ff0000'; // Red pixel rain
-
-            // Get header position for collision
+            ctx.fillStyle = '#ff0000';
             const headRect = header.getBoundingClientRect();
-
             if (drops.length < 100) drops.push(createDrop());
-
             drops.forEach(d => {
-                // If drop hits header top, stop it
-                if (!d.stopped && d.y >= headRect.top && d.x > headRect.left && d.x < headRect.right) {
-                    d.stopped = true;
-                }
-
+                if (!d.stopped && d.y >= headRect.top && d.x > headRect.left && d.x < headRect.right) d.stopped = true;
                 if (!d.stopped) d.y += d.speed;
-                ctx.fillRect(d.x, d.y, 2, 6); // Pixelated rain shape
-
-                // Reset drop if it goes off screen
+                ctx.fillRect(d.x, d.y, 2, 6);
                 if (d.y > canvas.height) d.y = -10;
             });
             requestAnimationFrame(animate);
