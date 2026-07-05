@@ -62,9 +62,16 @@ body {
 header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); }
 h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; margin: 0; animation: neonFlicker 4s infinite; }
 
+/* Faint & Readable Neon Flicker */
 @keyframes neonFlicker {
-    0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 5px #fff, 0 0 15px var(--red), 0 0 30px var(--red); }
-    20%, 24%, 55% { opacity: 0.4; text-shadow: none; }
+    0%, 18%, 22%, 25%, 53%, 57%, 100% { 
+        opacity: 1; 
+        text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); 
+    }
+    20%, 24%, 55% { 
+        opacity: 0.75; 
+        text-shadow: none; 
+    }
 }
 
 .box { 
@@ -73,6 +80,7 @@ h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; margin: 
     padding: 25px; 
     min-height: 200px; 
     position: relative;
+    line-height: 1.6;
 }
 
 /* The Shrine "Roof" effect */
@@ -94,3 +102,29 @@ h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; margin: 
     margin-bottom: 100px;
 }
 .home-btn:hover { background: var(--red); color: black; }
+
+/* 6. AUDIO PLAYER STYLES */
+.audio-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--dim-red); padding-bottom: 15px; margin-bottom: 15px; font-size: 0.9rem; }
+#now-playing { color: var(--red); animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.volume-control { display: flex; align-items: center; gap: 10px; }
+
+/* Custom retro volume slider */
+input[type=range] { -webkit-appearance: none; background: transparent; width: 100px; }
+input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--dim-red); cursor: pointer; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 8px; background: var(--red); cursor: pointer; margin-top: -5px; border: 1px solid #000; }
+
+.tracklist { list-style: none; padding: 0; margin: 0 0 20px 0; }
+.track { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #110000; cursor: pointer; transition: 0.2s; }
+.track:hover { background: rgba(255, 0, 0, 0.05); padding-left: 5px; }
+.track:hover .play-btn { color: var(--red); }
+
+.play-btn { width: 70px; color: var(--text); font-family: 'Press Start 2P'; font-size: 0.6rem; transition: 0.2s; }
+.track-name { flex-grow: 1; margin-left: 10px; }
+.track-meta { color: var(--dim-red); font-size: 0.9rem; }
+.track.active .track-name { color: var(--red); text-shadow: 0 0 5px var(--red); }
+.track.active .play-btn { color: var(--red); }
+
+.airbit-link { display: inline-block; margin-top: 10px; font-family: 'Press Start 2P'; font-size: 0.6rem; }
+ 
