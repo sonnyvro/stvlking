@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>SONNYVRO // STVLKING</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    
     <style>
-        /* CSS EMBEDDED DIRECTLY TO PREVENT LOADING ERRORS */
         :root {
             --bg: #000000;
             --panel: #0a0000;
@@ -21,26 +19,32 @@
             font-family: 'VT323', monospace; 
             margin: 0;
             overflow-x: hidden;
+            perspective: 1000px;
         }
 
-        /* Grid Layout */
-        .layout-grid {
+        /* 3D Viewport Setup */
+        #viewport { width: 100vw; min-height: 100vh; }
+        #camera { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* The Stacked Layout */
+        .layout-stack {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            max-width: 1100px;
-            margin: 40px auto;
+            grid-template-columns: 1fr; /* Single column stack */
+            gap: 40px; /* Large gaps for "breathing room" */
+            max-width: 700px; /* Keeps the "document" look narrow */
+            margin: 60px auto;
             padding: 20px;
         }
 
-        header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
+        header { text-align: center; margin-bottom: 20px; }
         h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; }
 
+        /* BIGGER BOXES */
         .box { 
             border: 1px solid var(--red); 
             background: var(--panel); 
-            padding: 20px; 
-            min-height: 220px; 
+            padding: 30px; 
+            min-height: 350px; /* Much taller */
             position: relative;
         }
 
@@ -50,34 +54,36 @@
             background: var(--red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%);
         }
 
-        .box-title { font-family: 'Press Start 2P'; font-size: 0.7rem; color: var(--red); margin-bottom: 15px; }
-
-        .links a { display: block; color: var(--text); text-decoration: none; margin: 8px 0; }
-        .links a:hover { color: var(--red); }
+        .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); margin-bottom: 20px; border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; }
 
         .home-btn { 
-            grid-column: 1 / -1; background: transparent; border: 1px solid var(--red); 
-            color: var(--red); padding: 15px; cursor: pointer; font-family: 'Press Start 2P';
+            background: transparent; border: 2px solid var(--red); 
+            color: var(--red); padding: 20px; cursor: pointer; font-family: 'Press Start 2P';
+            font-size: 1rem; width: 100%; margin-bottom: 100px;
         }
         .home-btn:hover { background: var(--red); color: black; }
     </style>
 </head>
 <body>
 
-    <main class="layout-grid">
-        <header>
-            <h1>SONNYVRO // STVLKING</h1>
-        </header>
+    <div id="viewport">
+        <div id="camera">
+            <main class="layout-stack">
+                <header>
+                    <h1>SONNYVRO // STVLKING</h1>
+                </header>
 
-        <section class="box"><div class="box-title">STVLKER</div><p>Main profile and about section.</p></section>
-        <section class="box"><div class="box-title">SONNYVRO</div><p>Details about the artist.</p></section>
-        <section class="box"><div class="box-title">PICS</div><p>[IMG_GRID]</p></section>
-        <section class="box"><div class="box-title">BLOG</div><p>> Latest update...</p></section>
-        <section class="box"><div class="box-title">BEATS FOR SALE</div><a href="https://air.bi/nXZu4" target="_blank">AIRBIT LINK</a></section>
-        <section class="box"><div class="box-title">LINKS</div><nav class="links"><a href="#">DISCORD</a><a href="#">TWITTER</a></nav></section>
-        
-        <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
-    </main>
+                <section class="box"><div class="box-title">STVLKER</div><p>Content goes here...</p></section>
+                <section class="box"><div class="box-title">SONNYVRO</div><p>Content goes here...</p></section>
+                <section class="box"><div class="box-title">PICS</div><p>Content goes here...</p></section>
+                <section class="box"><div class="box-title">BLOG</div><p>Content goes here...</p></section>
+                <section class="box"><div class="box-title">BEATS FOR SALE</div><p>Content goes here...</p></section>
+                <section class="box"><div class="box-title">LINKS</div><p>Content goes here...</p></section>
+                
+                <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
+            </main>
+        </div>
+    </div>
 
 </body>
 </html>
