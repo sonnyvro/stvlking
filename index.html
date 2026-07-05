@@ -45,7 +45,6 @@
         .layout-stack { display: grid; grid-template-columns: 1fr; gap: 25px; max-width: 600px; margin: 40px auto; padding: 20px; }
         header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); }
         
-        /* Neon Flickers */
         h1, .divider span { font-family: 'Press Start 2P'; color: var(--red); margin: 0; animation: neonFlicker 4s infinite; }
         h1 { font-size: 2rem; }
         .divider span { font-size: 0.7rem; }
@@ -60,32 +59,25 @@
         .divider:not(:empty)::before { margin-right: 15px; }
         .divider:not(:empty)::after { margin-left: 15px; }
 
-        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; min-height: 200px; position: relative; line-height: 1.6; }
+        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; min-height: 150px; position: relative; line-height: 1.6; }
         .box::before { content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%); }
         .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); margin-bottom: 20px; border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; }
-
-        .links a { display: block; color: var(--text); text-decoration: none; margin: 10px 0; }
-        .links a:hover { color: var(--red); padding-left: 5px; }
 
         .home-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 20px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 0.8rem; transition: 0.3s; width: 100%; margin-bottom: 100px; }
         .home-btn:hover { background: var(--red); color: #000000; }
 
-        /* Audio Styles */
         .audio-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--dim-red); padding-bottom: 15px; margin-bottom: 15px; font-size: 0.9rem; }
         #now-playing { color: var(--red); animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        input[type=range] { -webkit-appearance: none; background: transparent; width: 100px; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--dim-red); }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 14px; width: 8px; background: var(--red); border: 1px solid #000; }
-        .tracklist { list-style: none; padding: 0; }
-        .track { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid #110000; cursor: pointer; }
-        .track:hover .play-btn { color: var(--red); }
-        .play-btn { width: 70px; color: var(--text); font-family: 'Press Start 2P'; font-size: 0.6rem; }
-        .track.active .track-name { color: var(--red); text-shadow: 0 0 5px var(--red); }
+        
+        .track { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #110000; cursor: pointer; }
+        .play-btn { width: 85px; padding: 5px; background: var(--dim-red); color: var(--text); font-family: 'Press Start 2P'; font-size: 0.6rem; text-align: center; border: 1px solid var(--red); }
+        .track:hover .play-btn { background: var(--red); color: #000; }
+        .track.active .play-btn { background: var(--red); color: #000; }
+        .track-name { flex-grow: 1; margin-left: 15px; }
     </style>
 </head>
 <body>
-
     <div id="clouds-layer"></div>
     <canvas id="rain-canvas"></canvas>
 
@@ -95,19 +87,14 @@
                 <header><h1>SONNYVRO // STVLKING</h1></header>
 
                 <section class="box">
-                    <div class="box-title">STVLKER</div>
-                    <p>Welcome. This is the hub for all projects, art, and beats.</p>
+                    <div class="box-title">STVLKING</div>
+                    <p>Welcome. This website serves as a hub for all of my projects, art, info about me, and a store where you can buy beats, feats, and more!</p>
                 </section>
 
                 <section class="box">
                     <div class="box-title">SONNYVRO</div>
-                    <p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Coding</p>
+                    <p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Actively coding:(</p>
                     <p>Growing up listening to music every second of the day really helps me when creating as i never really run out of ideas. I excel in dark, atmospheric, and gloomy vibes while also recording alternative rock, dark trap, and indie music.</p>
-                </section>
-
-                <section class="box">
-                    <div class="box-title">BLOG</div>
-                    <p><strong>> LOG ENTRY: 07.2026</strong><br>Learning coding yay...</p>
                 </section>
 
                 <div class="divider"><span>SHOP / GET IN CONTACT</span></div>
@@ -116,33 +103,22 @@
                     <div class="box-title">BEATS FOR SALE</div>
                     <div class="audio-header">
                         <span id="now-playing">> STATUS: IDLE</span>
-                        <div class="volume-control">
-                            <label for="vol-slider">VOL:</label>
-                            <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.5">
-                        </div>
+                        <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.5">
                     </div>
-                    <ul class="tracklist">
+                    <ul class="tracklist" style="list-style: none; padding: 0;">
                         <li class="track" data-src="music/widow.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">widow.mp3</span></li>
                         <li class="track" data-src="music/error.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">error.mp3</span></li>
                         <li class="track" data-src="music/killing.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">killing.mp3</span></li>
                     </ul>
-                    <a href="https://air.bi/nXZu4" target="_blank" class="airbit-link">> ACCESS FULL AIRBIT STORE</a>
                 </section>
 
-                <section class="box">
-                    <div class="box-title">LINKS</div>
-                    <nav class="links">
-                        <a href="https://www.instagram.com/sonnyvro">> INSTAGRAM</a>
-                        <a href="https://soundcloud.com/user-11954578">> SOUNDCLOUD</a>
-                    </nav>
-                </section>
-                
                 <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
             </main>
         </div>
     </div>
 
 <script>
+    // Rain Engine
     const canvas = document.getElementById('rain-canvas');
     const ctx = canvas.getContext('2d');
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -161,11 +137,10 @@
     }
     animate();
 
+    // Audio Engine
     const audioEngine = new Audio();
     const nowPlayingText = document.getElementById('now-playing');
     const volumeSlider = document.getElementById('vol-slider');
-    
-    // Initialize volume correctly
     audioEngine.volume = volumeSlider.value;
     volumeSlider.addEventListener('input', function() { audioEngine.volume = this.value; });
 
@@ -189,5 +164,5 @@
     });
 </script>
 </body>
-</html>
+</html>\
  
