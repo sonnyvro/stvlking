@@ -117,61 +117,116 @@
 
     <div class="content-box">
         <div class="header-section">
-            <h1>OPEN A DOSSIER</h1>
-            <p class="subtitle">...tell me exactly what you're looking for...</p>
+            <h1 id="ui-title">LOADING...</h1>
+            <p class="subtitle" id="ui-subtitle">...</p>
         </div>
         
         <form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST">
             
             <div class="form-grid">
                 <div>
-                    <label for="name">Alias (Who are you?)</label>
-                    <input type="text" id="name" name="name" placeholder="Leave a name..." required>
+                    <label for="name" id="ui-lbl-name">Alias</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
                 <div>
-                    <label for="email">Drop Location (Email)</label>
-                    <input type="email" id="email" name="email" placeholder="Where can I find you?" required>
+                    <label for="email" id="ui-lbl-email">Email</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
 
                 <div class="full-width">
-                    <label for="vibe">Sonic Profile</label>
+                    <label for="vibe" id="ui-lbl-vibe">Vibe</label>
                     <select name="vibe" id="vibe">
-                        <option value="none" disabled selected>-- Select a trace --</option>
+                        <option value="none" id="ui-opt-vibe" disabled selected>-- Select --</option>
                         <option value="dark-trap">Dark / Aggressive Trap</option>
                         <option value="ambient">Ambient / Eerie Cinematic</option>
                         <option value="alternative">Alternative / Gritty</option>
-                        <option value="custom">Other (Elaborate below)</option>
+                        <option value="custom">Other (Describe heavily below)</option>
                     </select>
                 </div>
 
                 <div>
-                    <label for="bpm">Pulse (Target BPM - Optional)</label>
+                    <label for="bpm" id="ui-lbl-bpm">Target BPM (Optional)</label>
                     <input type="text" id="bpm" name="bpm" placeholder="e.g., 140, 90-100">
                 </div>
                 <div>
-                    <label for="references">Evidence (Reference Links - Optional)</label>
+                    <label for="references" id="ui-lbl-ref">References (Optional)</label>
                     <input type="url" id="references" name="references" placeholder="YouTube, Spotify, Soundcloud...">
                 </div>
 
                 <div class="full-width">
-                    <label for="message">The Specifics</label>
-                    <textarea id="message" name="message" placeholder="Describe the exact mood, the structure, the feeling... leave nothing out. I need to know exactly what you want..." rows="6" required></textarea>
+                    <label for="message" id="ui-lbl-msg">Details</label>
+                    <textarea id="message" name="message" rows="6" required></textarea>
                 </div>
             </div>
             
-            <button type="submit">LEAVE THE DROP</button>
+            <button type="submit" id="ui-btn">SEND</button>
         </form>
     </div>
 
     <script>
-        // Custom Cursor Logic
+        // --- RANDOM THEME GENERATOR ---
+        const themes = [
+            {
+                title: "INITIATE_CUSTOM_PROTOCOL",
+                subtitle: "// Establish neural link for audio generation",
+                lblName: "Alias / Artist Name", plcName: "Who are you?",
+                lblEmail: "Contact Beacon (Email)", plcEmail: "Where do I send it?",
+                lblVibe: "Primary Sonic Aesthetic", plcVibe: "-- Select an atmosphere --",
+                lblBPM: "Target BPM (Optional)",
+                lblRef: "Reference Links (Optional)",
+                lblMsg: "Detailed Vision", plcMsg: "Describe the mood, instrumentation, structure, or any specific elements you need...",
+                btn: "TRANSMIT REQUEST"
+            },
+            {
+                title: "SUMMON A SOUNDSCAPE",
+                subtitle: "...describe the nightmare you wish to hear...",
+                lblName: "What do they call you? (Alias)", plcName: "Your artist name...",
+                lblEmail: "Where can I haunt you? (Email)", plcEmail: "Your contact beacon...",
+                lblVibe: "Choose Your Atmosphere", plcVibe: "-- Choose your poison --",
+                lblBPM: "Heartbeat (Target BPM - Optional)",
+                lblRef: "Echoes of Others (Reference Links)",
+                lblMsg: "Flesh Out The Details", plcMsg: "Describe the mood, the instruments of torture, the structure, or any specific dread you want to inflict on the listener...",
+                btn: "SEAL THE PACT"
+            },
+            {
+                title: "OPEN A DOSSIER",
+                subtitle: "...tell me exactly what you're looking for...",
+                lblName: "Alias (Who are you?)", plcName: "Leave a name...",
+                lblEmail: "Drop Location (Email)", plcEmail: "Where can I find you?",
+                lblVibe: "Sonic Profile", plcVibe: "-- Select a trace --",
+                lblBPM: "Pulse (Target BPM - Optional)",
+                lblRef: "Evidence (Reference Links - Optional)",
+                lblMsg: "The Specifics", plcMsg: "Describe the exact mood, the structure, the feeling... leave nothing out. I need to know exactly what you want...",
+                btn: "LEAVE THE DROP"
+            }
+        ];
+
+        // Pick a random theme
+        const t = themes[Math.floor(Math.random() * themes.length)];
+
+        // Apply it to the DOM
+        document.getElementById('ui-title').innerText = t.title;
+        document.getElementById('ui-subtitle').innerText = t.subtitle;
+        document.getElementById('ui-lbl-name').innerText = t.lblName;
+        document.getElementById('name').placeholder = t.plcName;
+        document.getElementById('ui-lbl-email').innerText = t.lblEmail;
+        document.getElementById('email').placeholder = t.plcEmail;
+        document.getElementById('ui-lbl-vibe').innerText = t.lblVibe;
+        document.getElementById('ui-opt-vibe').innerText = t.plcVibe;
+        document.getElementById('ui-lbl-bpm').innerText = t.lblBPM;
+        document.getElementById('ui-lbl-ref').innerText = t.lblRef;
+        document.getElementById('ui-lbl-msg').innerText = t.lblMsg;
+        document.getElementById('message').placeholder = t.plcMsg;
+        document.getElementById('ui-btn').innerText = t.btn;
+
+
+        // --- CUSTOM CURSOR LOGIC ---
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => { 
             cursor.style.left = e.clientX + 'px'; 
             cursor.style.top = e.clientY + 'px'; 
         });
 
-        // Add hover effect to inputs for the cursor
         const inputs = document.querySelectorAll('input, select, textarea, button');
         inputs.forEach(input => {
             input.addEventListener('mouseenter', () => cursor.style.transform = 'scale(1.5)');
