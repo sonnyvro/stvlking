@@ -1,5 +1,6 @@
 /* ===================================
-   SONNYVRO // STVLKING // v1.1
+   SONNYVRO // STVLKING
+   VERSION 1.0
 =================================== */
 
 :root {
@@ -10,67 +11,384 @@
     --text: #ffe7e7;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 html, body {
-    width: 100%; height: 100%; overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     font-family: 'VT323', monospace;
     background: black;
     color: var(--text);
-    cursor: crosshair;
 }
 
-/* --- OVERLAYS & LAYERS --- */
-#crt-overlay {
-    position: fixed; inset: 0; z-index: 100; pointer-events: none;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    background-size: 100% 4px, 6px 100%;
-}
+/* ==========================
+      WORLD
+========================== */
 
 #world {
-    position: fixed; inset: 0; z-index: 0;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
     background: linear-gradient(to bottom, #080808, #120404, #020202);
 }
 
-#world::after {
-    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle at 50% 30%, rgba(100, 0, 0, 0.2), rgba(0,0,0,0.5));
+/* ==========================
+      STARS
+========================== */
+
+#stars {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(white 1px, transparent 1px);
+    background-size: 90px 90px;
+    opacity: .18;
+    animation: twinkle 6s infinite;
 }
 
-/* --- ANIMATED BACKGROUNDS --- */
-#stars { position: absolute; inset: 0; background-image: radial-gradient(white 1px, transparent 1px); background-size: 90px 90px; opacity: .18; animation: twinkle 6s infinite; }
-#moon { position: absolute; right: 7%; top: 70px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, #fff8f5 0%, #ffd9d9 45%, rgba(255,180,180,.15) 75%, transparent 100%); opacity: .9; filter: blur(.4px); box-shadow: 0 0 80px rgba(255,120,120,.35); animation: moonFloat 8s ease-in-out infinite; }
-#clouds { position: absolute; top: 0; left: 0; width: 200%; height: 320px; background: url("../images/clouds.png") repeat-x; background-size: auto 100%; image-rendering: pixelated; opacity: .45; z-index: 2; animation: cloudScroll 90s linear infinite; pointer-events: none; }
-#bgCity { position: absolute; left: 0; bottom: 0; width: 200%; height: 420px; background: url("../images/city.png") repeat-x; background-size: auto 100%; image-rendering: pixelated; opacity: .55; animation: cityScroll 60s linear infinite; z-index: 1; }
-#rain { position: absolute; inset: 0; background-image: repeating-linear-gradient(-15deg, transparent 0 14px, rgba(255,255,255,.08) 15px 16px); animation: rain .35s linear infinite; filter: blur(0.5px); }
+/* ==========================
+      MOON
+========================== */
 
-/* --- MAIN SHRINE --- */
-#scene { position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+#moon {
+    position: absolute;
+    right: 7%;
+    top: 70px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff8f5 0%, #ffd9d9 45%, rgba(255, 180, 180, .15) 75%, transparent 100%);
+    opacity: .9;
+    filter: blur(.4px);
+    box-shadow: 0 0 80px rgba(255, 120, 120, .35), 0 0 180px rgba(255, 60, 60, .15);
+    animation: moonFloat 8s ease-in-out infinite;
+}
 
-header { text-align: center; margin-bottom: 30px; }
-header h1 { font-size: 4rem; letter-spacing: 8px; color: white; text-shadow: 0 0 10px #ff2222, 0 0 20px #ff2222; animation: titleFlicker 5s infinite; font-family: 'Press Start 2P', cursive; }
+/* ==========================
+      CLOUDS
+========================== */
 
-#shrine { position: relative; width: 900px; max-width: 92vw; animation: float 4s ease-in-out infinite; }
-#roof { position: relative; height: 60px; background: linear-gradient(to bottom, #341010, #1a0808 55%, #100505); border: 4px solid #772222; clip-path: polygon(6% 100%, 12% 8%, 88% 8%, 94% 100%); overflow: hidden; }
+#clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 320px;
+    background: url("../images/clouds.png") repeat-x;
+    background-size: auto 100%;
+    image-rendering: pixelated;
+    opacity: .45;
+    z-index: 2;
+    animation: cloudScroll 90s linear infinite;
+    pointer-events: none;
+}
 
-/* --- BUTTONS --- */
+/* ==========================
+      CITY
+========================== */
+
+#bgCity {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 200%;
+    height: 420px;
+    background: url("../images/city.png") repeat-x;
+    background-size: auto 100%;
+    image-rendering: pixelated;
+    opacity: .55;
+    animation: cityScroll 60s linear infinite;
+    z-index: 1;
+}
+
+/* ==========================
+      FOG
+========================== */
+
+#fog {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to top, rgba(100, 20, 20, .35), transparent);
+    animation: fogMove 10s ease-in-out infinite;
+}
+
+/* ==========================
+      RAIN
+========================== */
+
+#rain {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(-15deg, transparent 0 14px, rgba(255, 255, 255, .08) 15px 16px);
+    animation: rain .35s linear infinite;
+}
+
+/* ==========================
+      MAIN SCENE
+========================== */
+
+#scene {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================
+      TITLE
+========================== */
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 4rem;
+    letter-spacing: 8px;
+    color: white;
+    text-shadow: 0 0 10px #ff2222, 0 0 20px #ff2222, 0 0 40px #ff0000, 0 0 80px #ff0000;
+    animation: titleFlicker 5s infinite;
+}
+
+header p {
+    font-size: 2rem;
+    color: #ff9999;
+}
+
+/* ==========================
+      SHRINE
+========================== */
+
+#shrine {
+    position: relative;
+    width: 900px;
+    max-width: 92vw;
+    animation: float 4s ease-in-out infinite;
+}
+
+#roof {
+    position: relative;
+    height: 60px;
+    background: linear-gradient(to bottom, #341010, #1a0808 55%, #100505);
+    border: 4px solid #772222;
+    clip-path: polygon(6% 100%, 12% 8%, 88% 8%, 94% 100%);
+    box-shadow: 0 5px 0 #220707, 0 0 30px rgba(255, 40, 40, .15), 0 0 60px rgba(255, 40, 40, .08);
+    overflow: hidden;
+}
+
+/* Roof Tiles */
+#roof::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0 28px, rgba(255, 90, 90, .08) 28px 30px),
+                repeating-linear-gradient(180deg, rgba(0, 0, 0, .18) 0 8px, transparent 8px 16px);
+    opacity: .6;
+}
+
+/* Roof Highlight */
+#roof::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, transparent, rgba(255, 120, 120, .4), transparent);
+}
+
+#roofBeam {
+    height: 16px;
+    background: linear-gradient(to bottom, #250909, #120404);
+    border-left: 4px solid #772222;
+    border-right: 4px solid #772222;
+    border-bottom: 4px solid #772222;
+    margin-bottom: -4px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .5);
+}
+
+#crossBeam {
+    height: 12px;
+    background: linear-gradient(to bottom, #411515, #1a0808);
+    border-bottom: 3px solid #772222;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+}
+
+/* ==========================
+        LANTERNS
+========================== */
+
+.lantern {
+    position: absolute;
+    top: 72px;
+    width: 42px;
+    height: 62px;
+    background: linear-gradient(to bottom, #ffb4b4, #ff4747 30%, #b11212 65%, #530000);
+    border: 3px solid #2a0000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255, 70, 70, .45), 0 0 50px rgba(255, 40, 40, .25);
+    animation: swing 5s ease-in-out infinite, lanternGlow 3s ease-in-out infinite;
+}
+
+.lantern.left {
+    left: -30px;
+    transform-origin: top center;
+}
+
+.lantern.right {
+    right: -30px;
+    transform-origin: top center;
+    animation-delay: .4s;
+}
+
+.rope {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    width: 3px;
+    height: 42px;
+    background: linear-gradient(to bottom, #777, #333);
+    transform: translateX(-50%);
+}
+
+.light {
+    position: absolute;
+    inset: 5px;
+    border-radius: 5px;
+    background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, .22) 0 2px, transparent 2px 8px),
+                radial-gradient(circle, #ffdede, #ff4b4b 60%, #6f0000);
+}
+
+#building {
+    display: grid;
+    grid-template-columns: 28px 1fr 28px;
+    background: linear-gradient(90deg, #140707, #0b0505, #140707);
+    border: 4px solid #611;
+    padding: 24px;
+    gap: 20px;
+    align-items: stretch;
+    box-shadow: 0 0 25px rgba(255, 0, 0, .15), 0 0 60px rgba(255, 0, 0, .08);
+}
+
+.pillar {
+    background: linear-gradient(to right, #2d1111, #160707, #2d1111);
+    border-left: 2px solid #772222;
+    border-right: 2px solid #220000;
+    border-radius: 2px;
+    box-shadow: inset 2px 0 rgba(255, 120, 120, .08), inset -2px 0 rgba(0, 0, 0, .4);
+    min-height: 100%;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ==========================
+        SHRINE DOORS
+========================== */
+
+#doors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.door {
+    background: linear-gradient(to bottom, #1b0b0b, #0b0505);
+    border: 4px solid #662222;
+    padding: 18px;
+    position: relative;
+    box-shadow: inset 0 0 25px rgba(255, 60, 60, .06), 0 0 18px rgba(255, 0, 0, .12);
+}
+
+.door::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #331111;
+    transform: translateX(-50%);
+    opacity: .5;
+}
+
+.doorFrame {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.screen {
+    background: black;
+    border: 2px solid #661111;
+    padding: 18px;
+    text-align: center;
+    color: #ff8a8a;
+    min-height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 12px rgba(255, 0, 0, .2);
+}
+
+/* ==========================
+      INNER SHRINE
+========================== */
+
+#innerShrine {
+    position: relative;
+    padding: 30px;
+    border: 5px solid #552020;
+    background: linear-gradient(to bottom, #140707, #080404);
+    box-shadow: inset 0 0 25px rgba(255, 80, 80, .08), 0 0 35px rgba(255, 0, 0, .08);
+}
+
+/* Decorative Corner Pieces */
+#innerShrine::before,
+#innerShrine::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    width: 55px;
+    height: 55px;
+    border-top: 5px solid #772222;
+}
+
+#innerShrine::before {
+    left: -5px;
+    border-left: 5px solid #772222;
+}
+
+#innerShrine::after {
+    right: -5px;
+    border-right: 5px solid #772222;
+}
+
+/* ==========================
+      BUTTONS
+========================== */
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
 button {
-    background: linear-gradient(to bottom, #2b1111, #120707);
-    border: 2px solid #992b2b; color: #ffeaea; padding: 18px; font-family: 'Press Start 2P', cursive;
-    font-size: 1.35rem; cursor: crosshair; transition: .25s;
-}
-button:hover { background: var(--red); color: black; transform: translateY(-3px) scale(1.03); box-shadow: 0 0 25px red; }
-button:active { border-color: white; transform: translate(2px, 2px); }
-
-/* --- ANIMATIONS --- */
-@keyframes cityScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes cloudScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes rain { from { transform: translateY(-120px); } to { transform: translateY(120px); } }
-@keyframes twinkle { 0%, 100% { opacity: .18; } 50% { opacity: .30; } }
-@keyframes moonFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes titleFlicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: .6; } }
-
-#flash { position: fixed; inset: 0; background: white; opacity: 0; pointer-events: none; z-index: 5; animation: lightningFlash 10s infinite; }
-@keyframes lightningFlash { 0%, 92%, 100% { opacity: 0; } 93% { opacity: .25; } 95% { opacity: .5; } }
+    background: linear-gradient(to bottom, #2b1111, #12070
