@@ -18,105 +18,86 @@
             --flip-speed: 0.5s;
         }
 
-        /* Digestive/Squishy Theme */
-        body.internal-mode { 
-            --bg-color: #2e090f; 
-            --box-bg: #5d0f1b; 
-            --neon-color: #ff6b6b; 
-            --neon-dim: #ffb3ba; 
-            color: #ffccd5; 
-            background: radial-gradient(circle at center, #781d28 0%, #2e090f 100%);
-        }
-
-        /* Hide everything else in Internal Mode */
-        body.internal-mode #bg-video,
-        body.internal-mode #bg-gif,
-        body.internal-mode #clouds-overlay,
-        body.internal-mode #cracks-container,
-        body.internal-mode .rain,
-        body.internal-mode body::after,
-        body.internal-mode body::before,
-        body.internal-mode #logo-overlay,
-        body.internal-mode .lightning,
-        body.internal-mode #custom-overlay {
-            display: none !important;
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: #ccc; overflow-x: hidden; cursor: crosshair; transition: background 0.5s; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: #ccc; overflow-x: hidden; cursor: none; } /* Cursor hidden to show custom one */
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor { width: 10px; height: 10px; background: var(--neon-color); border-radius: 50%; position: fixed; pointer-events: none; z-index: 999999; box-shadow: 0 0 10px var(--neon-color); }
 
         /* --- BACKGROUND FX --- */
         #bg-video, #bg-gif { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; filter: blur(3px) grayscale(90%) brightness(0.6); opacity: 0.2; }
         #clouds-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 50vh; background-image: url('clouds.png'); background-size: cover; background-position: top center; opacity: 0.6; pointer-events: none; z-index: 1; -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 100%); mask-image: linear-gradient(to bottom, black 10%, transparent 100%); }
         #cracks-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9996; }
-        .drip { position: fixed; width: 8px; height: 20px; background: rgba(255, 180, 180, 0.4); border-radius: 5px; z-index: 1000; pointer-events: none; animation: fall 3s linear forwards; }
-        @keyframes fall { to { transform: translateY(100vh); } }
-        
+        .crack-mark { position: absolute; width: 150px; height: 150px; background: url('https://www.transparenttextures.com/patterns/cracked-glass.png'); opacity: 0.4; pointer-events: none; filter: invert(1) drop-shadow(0 0 5px var(--neon-color)); }
         .rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/rain.png'); opacity: 0.05; pointer-events: none; z-index: 9997; animation: rain-move 10s linear infinite; }
         body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/noise-lines.png'); opacity: 0.04; pointer-events: none; z-index: 9998; }
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 0, 0, 0.04)); background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 1; }
         #logo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('logo.png'); background-repeat: no-repeat; background-position: center; background-size: 40%; opacity: 0.03; z-index: 1; pointer-events: none; filter: blur(3px); }
         .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--neon-color); pointer-events: none; z-index: 2; animation: lightning 15s linear infinite; mix-blend-mode: overlay; }
         #custom-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9995; background-size: cover; background-position: center; opacity: 0.25; display: none; }
 
-        /* UI Components */
-        .content-box { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 30px; margin: 20px auto; max-width: 800px; color: #fff; animation: pulse-glow 3s infinite ease-in-out; position: relative; z-index: 5; transition: 0.5s; }
-        .internal-mode .content-box { border-radius: 50px 20px; box-shadow: inset 0 0 40px rgba(0,0,0,0.5); border: 2px solid #ffb3ba; animation: squish 4s infinite ease-in-out; }
-        @keyframes squish { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        /* --- UI COMPONENTS --- */
+        .content-box { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 30px; margin: 20px auto; max-width: 800px; color: #fff; animation: pulse-glow 3s infinite ease-in-out; position: relative; z-index: 5; transition: 0.3s; }
+        .nav-btn, .upload-label { background: transparent; border: 1px solid var(--neon-dim); color: #fff; padding: 10px 20px; font-family: 'Bebas Neue'; cursor: pointer; margin: 10px; transition: 0.3s; font-size: 1.2rem; }
+        .nav-btn:hover { border-color: var(--neon-color); transform: scale(1.1); box-shadow: 0 0 20px var(--neon-color); }
+        .shop-card { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 15px 20px; cursor: pointer; color: #fff; text-decoration: none; display: flex; flex-direction: column; align-items: center; width: 220px; transition: 0.3s; }
+        .shop-card:hover { transform: translateY(-10px); border-color: var(--neon-color); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .enter-btn { padding: 15px 30px; font-family: 'Bebas Neue'; font-size: 2rem; background: transparent; color: var(--neon-color); border: 2px solid var(--neon-color); cursor: pointer; }
         
-        .nav-btn { background: transparent; border: 1px solid var(--neon-dim); color: inherit; padding: 10px 20px; font-family: 'Bebas Neue'; cursor: pointer; margin: 10px; font-size: 1.2rem; }
-        .nav-btn:hover { border-color: var(--neon-color); box-shadow: 0 0 15px var(--neon-color); }
-        .shop-card { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 15px 20px; cursor: pointer; color: #fff; text-decoration: none; display: flex; flex-direction: column; align-items: center; width: 220px; min-height: 90px; }
-        
-        .media-list { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 20px; }
-        .media-item { width: 100%; max-width: 500px; border: 3px solid var(--neon-color); border-radius: 20px; transition: 0.3s; }
-        .internal-mode .media-item { border-color: #ffb3ba; }
+        /* About Me Glitch Effect */
+        .glitch-about:hover { animation: ghostly-glitch 0.5s infinite; }
 
-        .page-section { display: none; }
-        .active { display: block; }
+        /* --- LOADING & ANIMATIONS --- */
         #transition-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 99999; pointer-events: none; opacity: 0; display: flex; justify-content: center; align-items: center; transition: opacity 0.2s; }
         #transition-overlay.active { opacity: 1; }
+        .page-section { display: none; }
+        .active { display: block; }
         @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px var(--neon-dim); } 50% { box-shadow: 0 0 25px var(--neon-color); } }
+        @keyframes ghostly-glitch { 0%, 100% { transform: translate(0); } 25% { transform: translate(-2px, 2px); } 50% { transform: translate(2px, -2px); } }
     </style>
 </head>
 <body>
-
-    <div id="transition-overlay"><div class="vhs-text" style="color:white; font-family:'Bebas Neue'; font-size:3rem;">LOADING...</div></div>
+    <div class="cursor" id="cursor"></div>
+    <div id="transition-overlay"><div class="vhs-text" style="color:white; font-family:'Bebas Neue';">LOADING...</div></div>
+    
     <video id="bg-video" loop muted playsinline><source src="background.mp4" type="video/mp4"></video>
     <img id="bg-gif" style="display: none;" alt="Background GIF">
     <div id="clouds-overlay"></div>
     <div id="custom-overlay"></div>
+    <div id="logo-overlay"></div>
     <div id="cracks-container"></div>
     <div class="rain"></div>
     <div class="lightning"></div>
     <audio id="bg-audio" loop></audio>
-    <audio id="ambient-audio" loop></audio>
 
     <div id="start-screen" style="position: fixed; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; justify-content: center; align-items: center;">
-        <button onclick="startAudio()" style="background:transparent; color: #f00; font-family:'Bebas Neue'; font-size: 3rem; border:2px solid #f00; padding:20px; cursor:pointer;">ENTER</button>
+        <button class="enter-btn" onclick="startAudio()">ENTER</button>
     </div>
 
     <div id="site-wrapper">
+        <header style="text-align: center; padding-top: 50px;">
+            <h1 class="glitch-text" style="font-size: 4rem;">SONNYVRO/STVLKING</h1>
+        </header>
+
         <main class="main-container">
-            <div style="text-align: center; padding-top: 50px;">
+            <div style="text-align: center;">
                 <button class="nav-btn" onclick="showPage('home-section')">HOME</button>
                 <button class="nav-btn" onclick="showPage('about-section')">ABOUT ME</button>
-                <button class="nav-btn" onclick="accessHost()">HOST</button>
             </div>
 
             <div id="content-flipper">
                 <div id="home-section" class="page-section active">
-                    <div class="content-box"><h1>SONNYVRO/STVLKING</h1></div>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 40px;">
+                        <a href="https://air.bi/nXZu4" target="_blank" class="shop-card"><h3>STOCK</h3></a>
+                        <div class="shop-card" onclick="alert('Contact for Custom Beats!')"><h3>Custom Beats</h3></div>
+                        <a href="https://cash.app/$sonnyvro" target="_blank" style="text-decoration:none;"><div class="shop-card"><h3>Premade Beats</h3></div></a>
+                    </div>
                 </div>
 
                 <div id="about-section" class="page-section">
-                    <div class="content-box"><h2>WHO AM I?</h2><p>21, USA. Producing dark, atmospheric beats.</p></div>
-                </div>
-
-                <div id="host-section" class="page-section">
-                    <div class="content-box" style="text-align: center;">
-                        <h2 style="font-family: cursive; margin-bottom: 20px;">♡ Internal Archive ♡</h2>
-                        <div class="media-list" id="host-media-list"></div>
+                    <div class="content-box glitch-about">
+                        <h2>WHO AM I?</h2>
+                        <p>21, USA. Producing dark, atmospheric beats.</p>
+                        <p style="margin-top:10px; font-size: 0.8rem; opacity: 0.6;">(Hover over this card to see me glitch)</p>
                     </div>
                 </div>
             </div>
@@ -124,69 +105,38 @@
     </div>
 
     <script>
-        const HOST_PASSWORD = "gorevoreandlore"; 
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
         const pageTracks = {
             'home-section': { file: 'killing.mp3' },
-            'about-section': { file: 'letmefall.mp3' },
-            'host-section': { file: 'pretty.mp3', ambient: 'digestion.mp3' }
+            'about-section': { file: 'letmefall.mp3' }
         };
-
-        const mediaList = document.getElementById('host-media-list');
-        for(let i=0; i<10; i++) mediaList.innerHTML += `<video class="media-item" controls></video>`;
-        for(let i=0; i<25; i++) mediaList.innerHTML += `<img class="media-item" src="https://via.placeholder.com/500x300">`;
 
         function startAudio() { 
             const audio = document.getElementById('bg-audio');
+            audio.volume = 0.3; 
             audio.src = pageTracks['home-section'].file;
             audio.play(); 
             document.getElementById('start-screen').style.display = 'none'; 
             document.getElementById('bg-video').play();
         }
 
-        function accessHost() {
-            if (prompt("Enter Password:") === HOST_PASSWORD) showPage('host-section');
-            else alert("Denied");
-        }
-
-        let dripInterval;
-        function startDripping() {
-            dripInterval = setInterval(() => {
-                const drip = document.createElement('div');
-                drip.className = 'drip';
-                drip.style.left = Math.random() * 100 + 'vw';
-                drip.style.top = '-20px';
-                document.body.appendChild(drip);
-                setTimeout(() => drip.remove(), 3000);
-            }, 800);
-        }
-
         function showPage(pageId) {
-            const ambient = document.getElementById('ambient-audio');
-            const bgAudio = document.getElementById('bg-audio');
-
-            if (pageId === 'host-section') {
-                document.body.classList.add('internal-mode');
-                bgAudio.src = pageTracks['host-section'].file;
-                ambient.src = pageTracks['host-section'].ambient;
-                ambient.play();
-                bgAudio.play();
-                startDripping();
-            } else {
-                document.body.classList.remove('internal-mode');
-                ambient.pause();
-                clearInterval(dripInterval);
-            }
-
             const target = document.getElementById(pageId);
             const transition = document.getElementById('transition-overlay');
             transition.classList.add('active');
-            
             setTimeout(() => {
                 document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
                 target.classList.add('active');
-                if (pageTracks[pageId] && pageId !== 'host-section') {
-                    bgAudio.src = pageTracks[pageId].file;
-                    bgAudio.play();
+                if (pageTracks[pageId]) {
+                    const audio = document.getElementById('bg-audio');
+                    audio.src = pageTracks[pageId].file;
+                    audio.play();
                 }
                 setTimeout(() => transition.classList.remove('active'), 200);
             }, 600);
