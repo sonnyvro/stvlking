@@ -12,37 +12,52 @@
     <style>
         :root { 
             --bg-color: #050505; 
-            --box-bg: rgba(10, 10, 10, 0.85); 
-            --neon-red: #ff3333; 
-            --neon-red-dim: rgba(255, 51, 51, 0.4);
-            --text-color: #d3d3d3;
-            --ui-border: #444;
+            /* Deep, dark red theme matching the image */
+            --box-bg: #0a0202; 
+            --panel-bg: #150505;
+            --border-red: #5a1111;
+            --border-highlight: #7a1515;
+            --neon-red: #ff5555; 
+            --neon-red-dim: rgba(255, 51, 51, 0.2);
+            --text-color: #ffb3b3; /* Soft pinkish-red text */
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            font-family: 'VT323', monospace; /* Pixelated reading font */
+            font-family: 'VT323', monospace; 
             background-color: var(--bg-color); 
             color: var(--text-color); 
             line-height: 1.4; 
             overflow-x: hidden; 
-            cursor: crosshair; /* Retro crosshair cursor */
-            font-size: 1.4rem;
+            cursor: crosshair; 
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         } 
 
-        /* Hard, blocky pixel shadows instead of smooth blurs */
-        h1, h2, h3 { 
-            font-family: 'Press Start 2P', cursive; /* Chunky 8-bit header font */
+        h1, h2, h3, h4 { 
+            font-family: 'Press Start 2P', cursive; 
             text-shadow: 3px 3px 0px #000;
-            color: #fff;
+            color: var(--neon-red);
             text-transform: uppercase;
+            text-align: center;
         }
 
-        h1 { font-size: 2rem; margin-bottom: 20px; text-shadow: 4px 4px 0px var(--neon-red-dim); }
-        h2 { font-size: 1.2rem; margin-bottom: 20px; color: var(--neon-red); }
-        h3 { font-size: 0.8rem; }
+        h1 { font-size: 2rem; margin-top: 50px; margin-bottom: 20px; color: #ffcccc; }
+        h4 { font-size: 0.65rem; margin-bottom: 10px; }
         
+        /* Red Tint Overlay for the Background */
+        #red-tint {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(50, 0, 0, 0.35); /* Creates the deep red hue */
+            mix-blend-mode: multiply;
+            z-index: 1;
+            pointer-events: none;
+        }
+
         /* CRT Scanline Overlay */
         #crt-overlay {
             position: fixed;
@@ -57,21 +72,20 @@
         #bg-video { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
             z-index: 0; pointer-events: none; 
-            image-rendering: pixelated; /* Forces pixelation on the video */
-            filter: brightness(0.7) contrast(1.2); 
+            image-rendering: pixelated; 
+            filter: brightness(0.8) contrast(1.2); 
         }
         
         /* 8-Bit Rain Roof Effect */
         .rain { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            /* A base64 pixelated rain pattern */
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38Gxv///2MgAAgwAHAFA6z9w+92AAAAAElFTkSuQmCC');
-            background-size: 8px 8px; /* Scales the "pixels" up */
-            opacity: 0.4;
+            background-size: 8px 8px; 
+            opacity: 0.5;
             pointer-events: none; z-index: 3; 
-            animation: 8bit-rain-move 0.8s steps(4) infinite; /* Choppy, retro animation */
+            animation: 8bit-rain-move 0.8s steps(4) infinite; 
             
-            /* The transparent "roof" mask for the center text area */
+            /* Transparent roof mask */
             -webkit-mask-image: linear-gradient(to right, black 0%, black calc(50% - 350px), transparent calc(50% - 300px), transparent calc(50% + 300px), black calc(50% + 350px), black 100%);
             mask-image: linear-gradient(to right, black 0%, black calc(50% - 350px), transparent calc(50% - 300px), transparent calc(50% + 300px), black calc(50% + 350px), black 100%);
         }
@@ -82,101 +96,149 @@
         }
 
         /* --- UI COMPONENTS --- */
-        /* Chunky 8-bit style window */
-        .content-box { 
-            background: var(--box-bg); 
-            border: 4px solid var(--ui-border); 
-            border-top-color: #777;
-            border-left-color: #777;
-            border-bottom-color: #111;
-            border-right-color: #111;
-            padding: 30px; 
-            margin: 30px auto; 
-            max-width: 600px; 
-            position: relative; 
-            z-index: 10; 
-            box-shadow: 6px 6px 0px rgba(0,0,0,0.8), 0 0 15px var(--neon-red-dim);
+        
+        /* Top Navigation Tabs */
+        .top-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 10;
         }
 
-        p { margin-bottom: 20px; text-shadow: 2px 2px 0px #000; }
+        /* The Main Central Shrine Column */
+        .shrine-container {
+            width: 100%;
+            max-width: 550px;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 50px;
+        }
 
-        /* 8-Bit Buttons */
-        .nav-btn { 
-            background: #222; 
-            border: 3px solid;
-            border-top-color: #555;
-            border-left-color: #555;
-            border-bottom-color: #000;
-            border-right-color: #000;
-            color: #ddd; 
-            padding: 10px 16px; 
+        /* Pure CSS Pixel Roof */
+        .shrine-roof {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .roof-top {
+            width: 90%;
+            height: 30px;
+            background: #1a0505;
+            border: 4px solid var(--border-highlight);
+            border-bottom: none;
+            clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
+        }
+        .roof-base {
+            width: 110%; /* Overhangs the edges */
+            height: 15px;
+            background: var(--panel-bg);
+            border: 4px solid var(--border-highlight);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.8);
+            z-index: 2;
+        }
+
+        /* The Main Body of the Column */
+        .shrine-body {
+            background: var(--box-bg);
+            border: 4px solid var(--border-red);
+            border-top: none;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+        }
+
+        /* Inner bordered panels */
+        .inner-panel {
+            border: 2px solid var(--border-highlight);
+            background: var(--panel-bg);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        /* Grids for button layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .btn { 
+            background: var(--box-bg); 
+            border: 2px solid var(--border-highlight);
+            color: var(--text-color); 
             font-family: 'Press Start 2P', cursive; 
             cursor: crosshair; 
-            margin: 5px; 
-            font-size: 0.6rem;
-            transition: none; /* No smooth transitions in 8-bit */
-            box-shadow: 3px 3px 0px #000;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: none; 
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         
-        .nav-btn:hover { 
-            background: var(--neon-red); 
-            color: #fff; 
-            border-top-color: #ff8888;
-            border-left-color: #ff8888;
-        }
-        
-        .nav-btn:active {
-            border-top-color: #000;
-            border-left-color: #000;
-            border-bottom-color: #555;
-            border-right-color: #555;
-            box-shadow: 1px 1px 0px #000;
-            transform: translate(2px, 2px);
-        }
-        
-        .shop-card { 
-            background: #111; 
-            border: 3px solid #333;
-            padding: 15px; 
-            cursor: crosshair; 
-            color: #fff; 
-            text-decoration: none; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            width: 180px; 
-            box-shadow: 4px 4px 0px #000;
+        .btn:hover { 
+            background: #2a0505; 
+            border-color: var(--neon-red);
+            color: #fff;
         }
 
-        .shop-card:hover { 
-            background: #222; 
-            border-color: var(--neon-red);
-            box-shadow: 4px 4px 0px var(--neon-red-dim);
+        .btn:active { transform: translate(2px, 2px); }
+
+        /* Specific Button Types */
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 0.7rem;
+            border-radius: 4px;
         }
-        
+
+        .sq-btn {
+            aspect-ratio: 1 / 1; /* Makes them perfect squares */
+            font-size: 0.65rem;
+            line-height: 1.4;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .rect-btn {
+            padding: 10px 5px;
+            font-size: 0.55rem;
+            border-radius: 4px;
+        }
+
         .enter-btn { 
             padding: 20px 40px; 
-            font-family: 'Press Start 2P', cursive; 
             font-size: 1.5rem; 
             background: #000; 
-            color: var(--neon-red); 
             border: 4px solid var(--neon-red); 
-            cursor: crosshair; 
+            color: var(--neon-red);
             box-shadow: 5px 5px 0px rgba(255, 51, 51, 0.4);
         }
-        
-        .enter-btn:hover {
-            background: var(--neon-red);
-            color: #000;
-        }
+        .enter-btn:hover { background: var(--neon-red); color: #000; }
 
-        #transition-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99999; pointer-events: none; display: none; }
-        .page-section { display: none; } .active { display: block; }
+        /* Typography spacing inside panels */
+        .inner-panel p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 0px #000;
+        }
     </style>
 </head>
 <body>
     <div id="crt-overlay"></div>
-    <div id="transition-overlay"></div>
+    <div id="red-tint"></div>
     
     <video id="bg-video" loop muted playsinline><source src="retro-city.mp4" type="video/mp4"></video>
     
@@ -184,48 +246,57 @@
     <audio id="bg-audio"></audio>
 
     <div id="start-screen" style="position: fixed; width: 100%; height: 100%; background: #050505; z-index: 99990; display: flex; justify-content: center; align-items: center;">
-        <button class="enter-btn" onclick="startAudio()">START_</button>
+        <button class="btn enter-btn" onclick="startAudio()">START_</button>
     </div>
 
-    <div id="site-wrapper" style="position: relative; z-index: 10;">
-        <header style="text-align: center; padding-top: 50px;">
-            <h1>SONNYVRO/STVLKING</h1>
-        </header>
+    <header>
+        <h1>SONNYVRO/STVLKING</h1>
+    </header>
+    
+    <div class="top-nav">
+        <button class="btn nav-btn">HOME</button>
+        <button class="btn nav-btn">ABOUT ME</button>
+    </div>
 
-        <main class="main-container">
-            <div style="text-align: center;">
-                <button class="nav-btn" onclick="showPage('home-section')">HOME</button>
-                <button class="nav-btn" onclick="showPage('about-section')">ABOUT ME</button>
+    <div class="shrine-container">
+        <div class="shrine-roof">
+            <div class="roof-top"></div>
+            <div class="roof-base"></div>
+        </div>
+
+        <div class="shrine-body">
+            
+            <div class="grid-3">
+                <a href="https://air.bi/nXZu4" target="_blank" class="btn sq-btn">STOCK</a>
+                <button class="btn sq-btn" onclick="window.open('form.html', '_blank')">Custom<br>Beats</button>
+                <button class="btn sq-btn" onclick="window.open('misc.html', '_blank')">misc</button>
             </div>
 
-            <div id="content-flipper">
-                <div id="home-section" class="page-section active">
-                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px;">
-                        <a href="https://air.bi/nXZu4" target="_blank" class="shop-card"><h3>STOCK</h3></a>
-                        <div class="shop-card" onclick="window.open('form.html', '_blank')"><h3>CUSTOM</h3></div>
-                        <div class="shop-card" onclick="window.open('misc.html', '_blank')"><h3>MISC</h3></div>
-                    </div>
-                    
-                    <div class="content-box">
-                        <h4 id="track-title" style="margin-bottom: 20px; font-family: 'Press Start 2P', cursive; font-size: 0.8rem; text-align: center; color: var(--neon-red);">SELECT TRACK</h4>
-                        <div style="display: flex; justify-content: center; gap: 10px;">
-                            <button class="nav-btn" onclick="prevTrack()">[<<]</button>
-                            <button class="nav-btn" onclick="togglePlay()" id="play-btn">PLAY</button>
-                            <button class="nav-btn" onclick="nextTrack()">[>>]</button>
-                            <button class="nav-btn" onclick="shuffleTracks()">RND</button>
-                        </div>
-                    </div>
+            <div class="inner-panel">
+                <h4 id="track-title">SELECT A TRACK</h4>
+                
+                <div class="grid-4">
+                    <button class="btn sq-btn" onclick="loadTrack(0)">KILLING</button>
+                    <button class="btn sq-btn" onclick="loadTrack(1)">CCC</button>
+                    <button class="btn sq-btn" onclick="loadTrack(2)">4M</button>
+                    <button class="btn sq-btn" onclick="loadTrack(3)">ALIVE</button>
                 </div>
 
-                <div id="about-section" class="page-section">
-                    <div class="content-box">
-                        <h2>> WHO_AM_I</h2>
-                        <p>my names sonny, im 21 and i started making music in 2022. ive been obessesed with music all my life i started producing about a year ago and have been doing it basically every day since.</p>
-                        <p>i wanted this site to feel a bit more comfortable for reading, so these paragraphs have room to breathe now. you can stack as much text in here as you need without it feeling cramped or overwhelming.</p>
-                    </div>
+                <div class="grid-4">
+                    <button class="btn rect-btn" onclick="prevTrack()">BACK</button>
+                    <button class="btn rect-btn" id="play-btn" onclick="togglePlay()">PLAY</button>
+                    <button class="btn rect-btn" onclick="nextTrack()">NEXT</button>
+                    <button class="btn rect-btn" onclick="shuffleTracks()">SHUFFLE</button>
                 </div>
             </div>
-        </main>
+
+            <div class="inner-panel">
+                <h4 style="text-align: left; color: #ff8888;">WHO AM I?</h4>
+                <p>my names sonny, im 21 and i started making music in 2022. ive been obessesed with music all my life i started producing about a year ago and have been doing it basically every day since.</p>
+                <p>i wanted this site to feel a bit more comfortable for reading, so these paragraphs have room to breathe now. you can stack as much text in here as you need without it feeling cramped or overwhelming.</p>
+            </div>
+
+        </div>
     </div>
 
     <script>
@@ -250,6 +321,7 @@
         }
 
         function loadTrack(index) {
+            currentTrackIndex = index;
             audio.src = playlist[index].file;
             titleDisplay.innerText = playlist[index].title;
             audio.play(); playBtn.innerText = "PAUSE";
@@ -265,28 +337,7 @@
             audio.volume = 0.3; 
             loadTrack(0); 
         }
-
-        function showPage(pageId) {
-            const target = document.getElementById(pageId);
-            const transition = document.getElementById('transition-overlay');
-            
-            /* Retro flicking transition */
-            transition.style.display = 'block';
-            let opacity = 0;
-            
-            let flicker = setInterval(() => {
-                opacity = opacity === 0 ? 1 : 0;
-                transition.style.opacity = opacity;
-            }, 50);
-
-            setTimeout(() => {
-                clearInterval(flicker);
-                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-                target.classList.add('active');
-                transition.style.display = 'none';
-            }, 300);
-        }
     </script>
 </body>
 </html>
-                                 
+ 
