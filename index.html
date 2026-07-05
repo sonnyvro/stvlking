@@ -8,7 +8,7 @@
         /* 1. STRICT COLOR PALETTE */
         :root {
             --bg: #000000;
-            --panel: rgba(10, 0, 0, 0.85); /* Dark transparent red/black */
+            --panel: rgba(10, 0, 0, 0.85); 
             --red: #ff0000;
             --dim-red: #330000;
             --text: #e0a0a0;
@@ -16,10 +16,10 @@
 
         /* 2. THE DIMMED WALLPAPER */
         body { 
-            background-color: #000000 !important; /* Strict fallback */
+            background-color: #000000 !important; 
             background-image: 
                 linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-                url('wallpaper.jpg'); /* CHANGE THIS TO YOUR EXACT FILE NAME */
+                url('wallpaper.jpg'); 
             
             background-size: cover;
             background-position: center;
@@ -36,7 +36,7 @@
         /* 3. THE UNAFFECTED CLOUD LAYER */
         #clouds-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('clouds.png'); /* CHANGE THIS TO YOUR EXACT FILE NAME */
+            background-image: url('clouds.png'); 
             background-repeat: repeat-x;
             opacity: 0.7; 
             z-index: 1;
@@ -60,7 +60,7 @@
         
         header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); }
         
-        /* 6. NEON FLICKER TEXT */
+        /* 6. NEON FLICKER TEXT (Cleaned up for readability) */
         h1 { 
             font-family: 'Press Start 2P'; 
             color: var(--red); 
@@ -72,15 +72,10 @@
         @keyframes neonFlicker {
             0%, 18%, 22%, 25%, 53%, 57%, 100% { 
                 opacity: 1; 
-                text-shadow: 
-                    0 0 4px #ffffff, 
-                    0 0 10px var(--red), 
-                    0 0 20px var(--red), 
-                    0 0 40px var(--red), 
-                    0 0 80px var(--red); 
+                text-shadow: 0 0 5px var(--red), 0 0 15px var(--red); /* Softer, tighter glow */
             }
             20%, 24%, 55% { 
-                opacity: 0.3; 
+                opacity: 0.6; /* Doesn't get quite as dark, making it easier to read mid-flicker */
                 text-shadow: none; 
             }
         }
@@ -104,42 +99,64 @@
     <div id="viewport">
         <div id="camera">
             <main class="layout-stack">
-                <header id="main-header">
+                <header id="main-header" class="rain-collider">
                     <h1>SONNYVRO // STVLKING</h1>
                 </header>
 
-                <section class="box"><div class="box-title">STVLKER</div></section>
-                <section class="box"><div class="box-title">SONNYVRO</div></section>
-                <section class="box"><div class="box-title">PICS</div></section>
-                <section class="box"><div class="box-title">BLOG</div></section>
-                <section class="box"><div class="box-title">BEATS FOR SALE</div><a href="#" class="nav-link" data-dir="pan-right">AIRBIT LINK</a></section>
-                <section class="box"><div class="box-title">LINKS</div><nav class="links"><a href="#">DISCORD</a><a href="#">TWITTER</a></nav></section>
+                <section class="box rain-collider"><div class="box-title">STVLKER</div></section>
+                <section class="box rain-collider"><div class="box-title">SONNYVRO</div></section>
+                <section class="box rain-collider"><div class="box-title">PICS</div></section>
+                <section class="box rain-collider"><div class="box-title">BLOG</div></section>
+                <section class="box rain-collider"><div class="box-title">BEATS FOR SALE</div><a href="#" class="nav-link" data-dir="pan-right">AIRBIT LINK</a></section>
+                <section class="box rain-collider"><div class="box-title">LINKS</div><nav class="links"><a href="#">DISCORD</a><a href="#">TWITTER</a></nav></section>
                 
-                <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
+                <button class="home-btn rain-collider" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
             </main>
         </div>
     </div>
 
     <script>
-        // Rain collision logic
+        // Advanced Rain Collision Logic
         const canvas = document.getElementById('rain-canvas');
         const ctx = canvas.getContext('2d');
-        const header = document.getElementById('main-header');
+        // Grab everything the rain can hit
+        const colliders = document.querySelectorAll('.rain-collider');
+        
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
 
         let drops = [];
-        function createDrop() { return { x: Math.random() * canvas.width, y: -10, speed: 2 + Math.random() * 3, stopped: false }; }
+        function createDrop() { return { x: Math.random() * canvas.width, y: -10, speed: 2 + Math.random() * 3 }; }
+        
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ff0000'; // Red pixel rain
-            const headRect = header.getBoundingClientRect();
-            if (drops.length < 100) drops.push(createDrop());
+            ctx.fillStyle = '#ff0000'; 
+            
+            // Get fresh positions every frame in case of scrolling
+            const rects = Array.from(colliders).map(el => el.getBoundingClientRect());
+
+            // Increased drop count slightly since they disappear now
+            if (drops.length < 150) drops.push(createDrop());
+            
             drops.forEach(d => {
-                if (!d.stopped && d.y >= headRect.top && d.x > headRect.left && d.x < headRect.right) d.stopped = true;
-                if (!d.stopped) d.y += d.speed;
-                ctx.fillRect(d.x, d.y, 2, 6);
-                if (d.y > canvas.height) d.y = -10;
+                let hit = false;
+                
+                // Check if the drop crosses the top boundary of any box
+                for (let r of rects) {
+                    if (d.y >= r.top && d.y <= r.top + 10 && d.x > r.left && d.x < r.right) {
+                        hit = true;
+                        break;
+                    }
+                }
+
+                // If it hits a box OR goes off the bottom of the screen, reset it
+                if (hit || d.y > canvas.height) {
+                    d.y = -10 - Math.random() * 20; 
+                    d.x = Math.random() * canvas.width;
+                } else {
+                    d.y += d.speed;
+                    ctx.fillRect(d.x, d.y, 2, 6);
+                }
             });
             requestAnimationFrame(animate);
         }
