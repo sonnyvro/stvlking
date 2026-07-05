@@ -1,123 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SONNYVRO // STVLKING</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="css/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNYVRO // STVLKING</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
-<!-- Background -->
-<div id="world">
-
- <div id="stars"></div>
-<div id="moon"></div>
-
-<div id="clouds"></div>
-<div id="bgCity"></div>
-
-<div id="fog"></div>
-<div id="rain"></div>
-
-</div>
-
-<!-- Main Shrine -->
-
-<main id="scene">
-
-    <header>
-
-        <h1>SONNYVRO</h1>
-
-        <p>STVLKING</p>
-
-    </header>
-
-<section id="shrine">
-
-    <div id="roof"></div>
-
-    <div class="lantern left">
-        <div class="rope"></div>
-        <div class="light"></div>
+    <div id="crt-overlay"></div>
+    <div id="world">
+        <div id="stars"></div>
+        <div id="moon"></div>
+        <div id="clouds"></div>
+        <div id="bgCity"></div>
+        <div id="fog"></div>
+        <div id="rain"></div>
     </div>
 
-    <div class="lantern right">
-        <div class="rope"></div>
-        <div class="light"></div>
-    </div>
+    <div id="flash"></div>
 
-    <div id="roofBeam"></div>
-    <div id="crossBeam"></div>
-    <div id="building">
+    <main id="scene">
+        <header>
+            <h1>SONNYVRO</h1>
+            <p>STVLKING</p>
+        </header>
 
-        <div class="pillar left"></div>
-
-        <div id="content">
-
-            <!-- Menu -->
+        <section id="shrine">
+            <div id="roof"></div>
+            <div id="roofBeam"></div>
+            <div id="crossBeam"></div>
             
-<div id="innerShrine">
-
-    <div id="doors">
-
-        <div class="door leftDoor">
-
-            <div class="doorFrame">
-
-                <button id="stockBtn">STOCK</button>
-
-                <button id="customBtn">CUSTOM</button>
-
-            </div>
-
-        </div>
-
-        <div class="door rightDoor">
-
-            <div class="doorFrame">
-
-                <button id="miscBtn">MISC</button>
-
-                <div class="screen">
-
-                    NO TRACK LOADED
-
+            <div id="building">
+                <div class="pillar left"></div>
+                <div id="content">
+                    <div id="doors">
+                        <div class="door leftDoor">
+                            <div class="doorFrame">
+                                <button class="btn" onclick="window.open('https://air.bi/nXZu4')">STOCK</button>
+                                <button class="btn" onclick="window.open('form.html')">CUSTOM</button>
+                            </div>
+                        </div>
+                        <div class="door rightDoor">
+                            <div class="doorFrame">
+                                <button class="btn" onclick="window.open('misc.html')">MISC</button>
+                                <div class="screen">NO TRACK LOADED</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="pillar right"></div>
             </div>
+        </section>
+    </main>
 
-        </div>
-
-    </div>
-
-</div>
-
-<div class="panel">
-    <h2>ABOUT</h2>
-    <p>Welcome to the Shrine.</p>
-</div>
-        </div>
-
-        <div class="pillar right"></div>
-
-    </div>
-
-</section>
-
-</main>
-
-<script src="js/app.js"></script>
-
+    <script src="js/app.js"></script>
+    <script>
+        // Mouse tracking for your cursor glow
+        document.addEventListener('mousemove', e => {
+            document.body.style.setProperty('--mouse-x', e.clientX + 'px');
+            document.body.style.setProperty('--mouse-y', e.clientY + 'px');
+        });
+    </script>
 </body>
 </html>
