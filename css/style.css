@@ -377,7 +377,27 @@ transparent
 );
 
 }
+#roofBeam{
 
+height:16px;
+
+background:
+linear-gradient(
+to bottom,
+#250909,
+#120404
+);
+
+border-left:4px solid #772222;
+border-right:4px solid #772222;
+border-bottom:4px solid #772222;
+
+margin-bottom:-4px;
+
+box-shadow:
+0 3px 8px rgba(0,0,0,.5);
+
+}
 }
 
 #building{
