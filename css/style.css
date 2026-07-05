@@ -401,6 +401,10 @@ box-shadow:
 
 #building{
 
+display:grid;
+
+grid-template-columns:28px 1fr 28px;
+
 background:
 linear-gradient(
 90deg,
@@ -411,13 +415,11 @@ linear-gradient(
 
 border:4px solid #611;
 
-padding:30px;
-
-display:flex;
-
-flex-direction:column;
+padding:24px;
 
 gap:20px;
+
+align-items:stretch;
 
 box-shadow:
 0 0 25px rgba(255,0,0,.15),
@@ -425,6 +427,38 @@ box-shadow:
 
 }
 
+.pillar{
+
+background:
+linear-gradient(
+to right,
+#2d1111,
+#160707,
+#2d1111
+);
+
+border-left:2px solid #772222;
+border-right:2px solid #220000;
+
+border-radius:2px;
+
+box-shadow:
+inset 2px 0 rgba(255,120,120,.08),
+inset -2px 0 rgba(0,0,0,.4);
+
+min-height:100%;
+
+}
+
+#content{
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
 /* ==========================
       BUTTONS
 ========================== */
