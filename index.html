@@ -13,41 +13,43 @@
             --text: #ffcccc;
         }
 
-        body { background: var(--bg); color: var(--text); font-family: 'VT323', monospace; overflow: hidden; perspective: 1000px; }
+        body { 
+            background: var(--bg); color: var(--text); font-family: 'VT323', monospace; 
+            overflow: hidden; perspective: 1000px;
+        }
 
-        /* 3D CAMERA SYSTEM */
+        /* 1. CRT SCANLINE EFFECT (Atmosphere) */
+        body::after {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 999;
+        }
+
         #viewport { width: 100vw; height: 100vh; }
         #camera { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* PAN ANIMATIONS */
         .pan-left { transform: rotateY(90deg) translateZ(200px); opacity: 0; }
         .pan-right { transform: rotateY(-90deg) translateZ(200px); opacity: 0; }
         .pan-up { transform: rotateX(-90deg) translateZ(200px); opacity: 0; }
         .pan-down { transform: rotateX(90deg) translateZ(200px); opacity: 0; }
 
-        /* GRID LAYOUT - Clean & Punctual */
-        .layout-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: auto auto 1fr;
-            gap: 20px;
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
+        .layout-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; max-width: 1000px; margin: 40px auto; padding: 20px; }
         header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
-        h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; }
+        h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; text-shadow: 0 0 10px var(--red); }
 
-        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 15px; }
+        /* 2. INTERACTIVE BOXES (Hover states make it feel like a game menu) */
+        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 15px; transition: 0.3s; }
+        .box:hover { border-color: var(--red); box-shadow: 0 0 15px rgba(255, 58, 58, 0.2); }
+        
         .box-title { font-family: 'Press Start 2P'; font-size: 0.7rem; color: var(--red); margin-bottom: 15px; border-bottom: 1px solid var(--dim-red); padding-bottom: 5px; }
 
-        .links a { display: block; color: var(--text); text-decoration: none; margin: 8px 0; }
-        .links a:hover { color: var(--red); }
-        .links a::before { content: "> "; }
-
-        .track-item { cursor: pointer; margin-bottom: 5px; }
-        .track-item:hover { color: var(--red); }
+        .links a { display: block; color: var(--text); text-decoration: none; margin: 8px 0; transition: 0.2s; }
+        .links a:hover { color: var(--red); padding-left: 5px; }
+        
+        /* 3. BLINKING CURSOR (Typing animation) */
+        .cursor::after { content: "_"; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -60,21 +62,18 @@
             </header>
 
             <div class="left-col">
-                <section class="box" id="welcome-box">
+                <section class="box">
                     <div class="box-title">🌙 WELCOME</div>
-                    <p>Welcome to the digital shrine. Sonny, 21. Music production daily. This is the main terminal.</p>
+                    <p>Welcome to the digital shrine. Sonny, 21. Music production daily.</p>
                 </section>
-
-                <section class="box" id="music-box">
+                <section class="box">
                     <div class="box-title">🎵 AUDIO TERMINAL</div>
-                    <div class="track-item" onclick="loadTrack(0)">01 - KILLING.MP3</div>
-                    <div class="track-item" onclick="loadTrack(1)">02 - CCC.MP3</div>
-                    <button class="btn" id="play-btn" onclick="togglePlay()">PLAY / PAUSE</button>
+                    <p id="track-status">STATUS: IDLE...</p>
                 </section>
             </div>
 
             <div class="right-col">
-                <section class="box" id="directory-box">
+                <section class="box">
                     <div class="box-title">⭐ DIRECTORY</div>
                     <nav class="links">
                         <a href="#" class="nav-link" data-dir="pan-left">Home</a>
@@ -83,36 +82,24 @@
                         <a href="#" class="nav-link" data-dir="pan-down">Misc Archive</a>
                     </nav>
                 </section>
-
-                <section class="box" id="activity-box">
+                <section class="box">
                     <div class="box-title">⚡ SYSTEM STATUS</div>
-                    <p>ONLINE.</p>
+                    <p class="cursor">ONLINE // SYNCED</p>
                 </section>
             </div>
-            
-            <section class="box" id="upcoming-box" style="grid-column: 1 / -1;">
-                <div class="box-title">📅 UPCOMING</div>
-                <p>New 808 slides - Posted on Sunday.</p>
-            </section>
         </div>
     </div>
 
     <script>
-        // Camera Panning Logic
+        // Camera Logic
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const camera = document.getElementById('camera');
-                const dir = this.getAttribute('data-dir');
-                camera.classList.add(dir);
+                camera.classList.add(this.getAttribute('data-dir'));
                 setTimeout(() => { window.location.href = this.getAttribute('href'); }, 1200);
             });
         });
-
-        // Audio Logic
-        const audio = new Audio();
-        function togglePlay() { audio.paused ? audio.play() : audio.pause(); }
-        function loadTrack(i) { audio.src = i === 0 ? 'music/killing.mp3' : 'ccc.mp3'; audio.play(); }
     </script>
 </body>
 </html>
