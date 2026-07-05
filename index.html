@@ -63,6 +63,9 @@
         .box::before { content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%); }
         .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); margin-bottom: 20px; border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; }
 
+        .links a { display: block; color: var(--text); text-decoration: none; margin: 10px 0; }
+        .links a:hover { color: var(--red); padding-left: 5px; }
+
         .home-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 20px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 0.8rem; transition: 0.3s; width: 100%; margin-bottom: 100px; }
         .home-btn:hover { background: var(--red); color: #000000; }
 
@@ -110,6 +113,17 @@
                         <li class="track" data-src="music/error.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">error.mp3</span></li>
                         <li class="track" data-src="music/killing.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">killing.mp3</span></li>
                     </ul>
+                    <div class="links" style="margin-top: 20px;">
+                        <a href="https://air.bi/nXZu4" target="_blank">> ACCESS FULL AIRBIT STORE</a>
+                    </div>
+                </section>
+
+                <section class="box">
+                    <div class="box-title">LINKS</div>
+                    <nav class="links">
+                        <a href="https://www.instagram.com/sonnyvro">> INSTAGRAM</a>
+                        <a href="https://soundcloud.com/user-11954578">> SOUNDCLOUD</a>
+                    </nav>
                 </section>
 
                 <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
@@ -164,5 +178,5 @@
     });
 </script>
 </body>
-</html>\
+</html>
  
