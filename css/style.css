@@ -405,40 +405,47 @@ box-shadow:
         LANTERNS
 ========================== */
 
+/* ==========================
+        SHRINE LANTERNS
+========================== */
+
 .lantern{
 
 position:absolute;
 
-top:52px;
+top:72px;
 
-width:32px;
-height:42px;
+width:42px;
+height:62px;
 
 background:
 linear-gradient(
 to bottom,
-#ff8b8b,
-#ff3a3a 45%,
-#7a0000
+#ffb4b4,
+#ff4747 30%,
+#b11212 65%,
+#530000
 );
 
-border:2px solid #441111;
+border:3px solid #2a0000;
 
-border-radius:6px;
+border-radius:8px;
+
+overflow:hidden;
 
 box-shadow:
-0 0 20px rgba(255,70,70,.5),
-0 0 45px rgba(255,70,70,.25);
+0 0 20px rgba(255,70,70,.45),
+0 0 50px rgba(255,40,40,.25);
 
 animation:
 swing 5s ease-in-out infinite,
-lanternGlow 2.8s ease-in-out infinite;
+lanternGlow 3s ease-in-out infinite;
 
 }
 
 .lantern.left{
 
-left:-18px;
+left:-30px;
 
 transform-origin:top center;
 
@@ -446,11 +453,11 @@ transform-origin:top center;
 
 .lantern.right{
 
-right:-18px;
+right:-30px;
 
 transform-origin:top center;
 
-animation-delay:.3s;
+animation-delay:.4s;
 
 }
 
@@ -462,11 +469,21 @@ bottom:100%;
 
 left:50%;
 
-width:2px;
+width:3px;
 
-height:34px;
+height:42px;
 
-background:#444;
+background:
+
+linear-gradient(
+
+to bottom,
+
+#777,
+
+#333
+
+);
 
 transform:translateX(-50%);
 
@@ -476,16 +493,32 @@ transform:translateX(-50%);
 
 position:absolute;
 
-inset:6px;
+inset:5px;
 
-border-radius:4px;
+border-radius:5px;
 
 background:
 
+repeating-linear-gradient(
+
+to bottom,
+
+rgba(255,255,255,.22) 0 2px,
+
+transparent 2px 8px
+
+),
+
 radial-gradient(
+
 circle,
-#ffd0d0,
-#ff4b4b 70%
+
+#ffdede,
+
+#ff4b4b 60%,
+
+#6f0000
+
 );
 
 }
@@ -597,10 +630,17 @@ background:#ff4444;
 
 color:black;
 
-transform:translateY(-2px);
+transform:
+
+translateY(-3px)
+
+scale(1.03);
 
 box-shadow:
-0 0 25px red;
+
+0 0 25px red,
+
+0 0 40px rgba(255,80,80,.45);
 
 }
 
@@ -610,14 +650,24 @@ box-shadow:
 
 .panel{
 
-background:#181818;
+background:
+linear-gradient(
+to bottom,
+#1b1b1b,
+#111
+);
 
-border:2px solid #500;
+border:2px solid #661515;
 
-padding:20px;
+padding:22px;
+
+box-shadow:
+
+inset 0 0 12px rgba(255,40,40,.08),
+
+0 0 18px rgba(0,0,0,.45);
 
 }
-
 /* ==========================
       ANIMATIONS
 ========================== */
