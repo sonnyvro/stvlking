@@ -4,104 +4,63 @@
     <meta charset="UTF-8">
     <title>SONNYVRO // STVLKING</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #050101;
-            --panel: rgba(15, 5, 5, 0.9);
-            --red: #ff3a3a;
-            --dim-red: #551111;
-            --text: #ffcccc;
-        }
-
-        body { 
-            background: var(--bg); color: var(--text); font-family: 'VT323', monospace; 
-            overflow: hidden; perspective: 1000px;
-        }
-
-        /* 1. CRT SCANLINE EFFECT (Atmosphere) */
-        body::after {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 999;
-        }
-
-        #viewport { width: 100vw; height: 100vh; }
-        #camera { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
-
-        .pan-left { transform: rotateY(90deg) translateZ(200px); opacity: 0; }
-        .pan-right { transform: rotateY(-90deg) translateZ(200px); opacity: 0; }
-        .pan-up { transform: rotateX(-90deg) translateZ(200px); opacity: 0; }
-        .pan-down { transform: rotateX(90deg) translateZ(200px); opacity: 0; }
-
-        .layout-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; max-width: 1000px; margin: 40px auto; padding: 20px; }
-        header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
-        h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; text-shadow: 0 0 10px var(--red); }
-
-        /* 2. INTERACTIVE BOXES (Hover states make it feel like a game menu) */
-        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 15px; transition: 0.3s; }
-        .box:hover { border-color: var(--red); box-shadow: 0 0 15px rgba(255, 58, 58, 0.2); }
-        
-        .box-title { font-family: 'Press Start 2P'; font-size: 0.7rem; color: var(--red); margin-bottom: 15px; border-bottom: 1px solid var(--dim-red); padding-bottom: 5px; }
-
-        .links a { display: block; color: var(--text); text-decoration: none; margin: 8px 0; transition: 0.2s; }
-        .links a:hover { color: var(--red); padding-left: 5px; }
-        
-        /* 3. BLINKING CURSOR (Typing animation) */
-        .cursor::after { content: "_"; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div id="viewport">
-    <div id="camera">
-        <div class="layout-grid">
-            <header>
-                <h1>SONNYVRO // STVLKING</h1>
-            </header>
+    <div id="viewport">
+        <div id="camera">
+            <main class="layout-grid">
+                
+                <header>
+                    <h1>SONNYVRO</h1>
+                    <p>// STVLKING //</p>
+                </header>
 
-            <div class="left-col">
-                <section class="box">
-                    <div class="box-title">🌙 WELCOME</div>
-                    <p>Welcome to the digital shrine. Sonny, 21. Music production daily.</p>
+                <section class="box" id="stvlker">
+                    <div class="box-title">STVLKER</div>
+                    <p>Main profile and about section. Here is where the bio lives.</p>
                 </section>
-                <section class="box">
-                    <div class="box-title">🎵 AUDIO TERMINAL</div>
-                    <p id="track-status">STATUS: IDLE...</p>
-                </section>
-            </div>
 
-            <div class="right-col">
-                <section class="box">
-                    <div class="box-title">⭐ DIRECTORY</div>
+                <section class="box" id="sonnyvro">
+                    <div class="box-title">SONNYVRO</div>
+                    <p>Details about the artist and production background.</p>
+                </section>
+
+                <section class="box" id="pics">
+                    <div class="box-title">PICS</div>
+                    <div class="placeholder-img">[IMG_GRID]</div>
+                </section>
+
+                <section class="box" id="blog">
+                    <div class="box-title">BLOG</div>
+                    <p>> Latest update...</p>
+                </section>
+
+                <section class="box" id="beats">
+                    <div class="box-title">BEATS FOR SALE</div>
+                    <a href="https://air.bi/nXZu4" target="_blank" class="nav-link">AIRBIT LINK</a>
+                </section>
+
+                <section class="box" id="links">
+                    <div class="box-title">LINKS</div>
                     <nav class="links">
-                        <a href="#" class="nav-link" data-dir="pan-left">Home</a>
-                        <a href="#" class="nav-link" data-dir="pan-up">About Me</a>
-                        <a href="https://air.bi/nXZu4" target="_blank">Stock Beats</a>
-                        <a href="#" class="nav-link" data-dir="pan-down">Misc Archive</a>
+                        <a href="#">DISCORD</a>
+                        <a href="#">TWITTER</a>
                     </nav>
                 </section>
-                <section class="box">
-                    <div class="box-title">⚡ SYSTEM STATUS</div>
-                    <p class="cursor">ONLINE // SYNCED</p>
-                </section>
-            </div>
+
+                <button class="home-btn" onclick="scrollToTop()">[ RETURN HOME ]</button>
+
+            </main>
         </div>
     </div>
 
     <script>
-        // Camera Logic
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const camera = document.getElementById('camera');
-                camera.classList.add(this.getAttribute('data-dir'));
-                setTimeout(() => { window.location.href = this.getAttribute('href'); }, 1200);
-            });
-        });
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
-
  
