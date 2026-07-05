@@ -1,59 +1,37 @@
-:root {
-    --bg: #050101;
-    --border: #ff3333;
-    --text: #ffcccc;
-}
+/* ... Keep your Camera and Scanline CSS here ... */
 
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'VT323', monospace;
-    overflow: hidden;
-}
-
-/* 3D Viewport */
-#viewport { perspective: 1000px; width: 100vw; height: 100vh; }
-#camera { 
-    transform-style: preserve-3d; 
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); 
-}
-
-/* Grid Layout (The "Punctual" feel) */
-.grid-layout {
+.layout-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-    max-width: 900px;
-    margin: 50px auto;
+    grid-template-columns: repeat(3, 1fr); /* 3 Columns */
+    gap: 25px;
+    max-width: 1100px; /* Made wider for bigger boxes */
+    margin: 40px auto;
+    padding: 20px;
 }
 
-.panel {
-    border: 1px solid var(--border);
+.box { 
+    border: 1px solid var(--red); 
+    background: var(--panel); 
+    padding: 20px; 
+    min-height: 220px; /* Larger boxes */
+    display: flex;
+    flex-direction: column;
+}
+
+.home-btn {
+    grid-column: 1 / -1; /* Spans full width at bottom */
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
     padding: 15px;
-    background: rgba(10, 0, 0, 0.9);
-}
-
-.panel-header {
-    font-family: 'Press Start 2P';
-    font-size: 0.7rem;
-    color: var(--border);
-    margin-bottom: 15px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 5px;
-}
-
-.directory-list a {
-    display: block;
-    color: var(--text);
-    text-decoration: none;
-    margin: 5px 0;
     cursor: pointer;
+    font-family: 'Press Start 2P';
 }
 
-/* Panning Classes */
-.pan-left  { transform: rotateY(90deg); opacity: 0; }
-.pan-right { transform: rotateY(-90deg); opacity: 0; }
-.pan-up    { transform: rotateX(-90deg); opacity: 0; }
-.pan-down  { transform: rotateX(90deg); opacity: 0; }
-.pan-in    { transform: translateZ(500px); opacity: 0; }
+.home-btn:hover { background: var(--red); color: black; }
+
+.placeholder-img {
+    height: 100px; border: 1px dashed var(--dim-red); 
+    display: flex; align-items: center; justify-content: center;
+}
  
