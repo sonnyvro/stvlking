@@ -1,39 +1,30 @@
-:root {
-    /* STRICT BLACK & RED PALETTE */
-    --bg: #000000;             /* Absolute black */
-    --panel: #0a0000;          /* Deep dark red-black */
-    --red: #ff0000;            /* Neon Red */
-    --dim-red: #330000;        /* Very dark, desaturated red */
-    --text: #e0a0a0;           /* Soft, readable muted red-white */
-    --text-highlight: #ff3a3a; 
+/* Stack Layout */
+.layout-stack {
+    display: grid;
+    grid-template-columns: 1fr; /* One single stack */
+    gap: 25px;
+    max-width: 600px; /* Narrower width keeps text readable/clean */
+    margin: 40px auto;
+    padding: 20px;
 }
 
-/* Force everything to adhere to the dark theme */
-body, html {
-    background-color: var(--bg) !important;
-    color: var(--text) !important;
-    background-image: none; /* If snow is distracting, we can disable this */
-}
-
-/* Ensure boxes are pitch black/dark red */
 .box { 
     border: 1px solid var(--dim-red); 
-    background: var(--panel) !important; 
-    padding: 20px; 
-    min-height: 220px; 
+    background: var(--panel); 
+    padding: 25px; 
+    min-height: 200px; 
     position: relative;
 }
 
-/* Force title to remain red */
-h1, .box-title {
-    color: var(--red) !important;
-    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+/* The Shrine "Roof" effect */
+.box::before { 
+    content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; 
+    background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%);
 }
 
-/* Force links to be dark-red */
-.links a {
-    color: var(--text) !important;
+.home-btn { 
+    background: transparent; border: 1px solid var(--red); color: var(--red); 
+    padding: 20px; cursor: pointer; font-family: 'Press Start 2P'; font-size: 0.8rem;
+    transition: 0.3s;
 }
-.links a:hover {
-    color: var(--red) !important;
-}
+.home-btn:hover { background: var(--red); color: black; }
