@@ -4,337 +4,344 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SONNYVRO // STVLKING</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-
+    
     <style>
-        /* ===================================
-           SONNYVRO // STVLKING
-           VERSION 1.0
-        =================================== */
-        
-        :root{
-            --bg:#050505;
-            --panel:#111;
-            --red:#ff3a3a;
-            --darkred:#741818;
-            --text:#ffe7e7;
+        :root {
+            --bg: #050101; /* Deep, almost-black red */
+            --panel-bg: rgba(15, 5, 5, 0.85); /* Dark tinted panels */
+            --border: #ff3333; /* Neon Red */
+            --border-dim: #551111; /* Dim Red */
+            --text-main: #ffcccc; /* Soft pinkish-white for readability */
+            --text-highlight: #ff3333; /* Neon Red */
+            --link-hover: #ffffff;
         }
-        
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-        
-        html,body{
-            width:100%;
-            height:100%;
-            overflow:hidden;
-            font-family:VT323, monospace;
-            background:black;
-            color:var(--text);
-        }
-        
-        /* ==========================
-              WORLD
-        ========================== */
-        #world{
-            position:fixed;
-            inset:0;
-            overflow:hidden;
-            z-index:0;
-            background: linear-gradient(to bottom, #080808, #120404, #020202);
-        }
-        
-        /* ==========================
-              STARS
-        ========================== */
-        #stars{
-            position:absolute;
-            inset:0;
-            background-image: radial-gradient(white 1px, transparent 1px);
-            background-size:90px 90px;
-            opacity:.18;
-            animation:twinkle 6s infinite;
-        }
-        
-        /* ==========================
-              MOON
-        ========================== */
-        #moon{
-            position:absolute;
-            right:7%;
-            top:70px;
-            width:220px;
-            height:220px;
-            border-radius:50%;
-            background: radial-gradient(circle, #fff8f5 0%, #ffd9d9 45%, rgba(255,180,180,.15) 75%, transparent 100%);
-            opacity:.9;
-            filter:blur(.4px);
-            box-shadow: 0 0 80px rgba(255,120,120,.35), 0 0 180px rgba(255,60,60,.15);
-            animation:moonFloat 8s ease-in-out infinite;
-        }
-        
-        /* ==========================
-              CLOUDS
-        ========================== */
-        #clouds{
-            position:absolute;
-            top:0;
-            left:0;
-            width:200%;
-            height:320px;
-            background:url("images/clouds.png") repeat-x;
-            background-size:auto 100%;
-            image-rendering:pixelated;
-            opacity:.45;
-            z-index:2;
-            animation:cloudScroll 90s linear infinite;
-            pointer-events:none;
-        }
-        
-        /* ==========================
-              CITY
-        ========================== */
-        #bgCity{
-            position:absolute;
-            left:0;
-            bottom:0;
-            width:200%;
-            height:420px;
-            background:url("images/city.png") repeat-x;
-            background-size:auto 100%;
-            image-rendering:pixelated;
-            opacity:.55;
-            animation:cityScroll 60s linear infinite;
-            z-index:1;
-        }
-        
-        /* ==========================
-              FOG
-        ========================== */
-        #fog{
-            position:absolute;
-            bottom:0;
-            width:100%;
-            height:200px;
-            background: linear-gradient(to top, rgba(100,20,20,.35), transparent);
-            animation:fogMove 10s ease-in-out infinite;
-        }
-        
-        /* ==========================
-              RAIN
-        ========================== */
-        #rain{
-            position:absolute;
-            inset:0;
-            background-image: repeating-linear-gradient(-15deg, transparent 0 14px, rgba(255,255,255,.08) 15px 16px);
-            animation:rain .35s linear infinite;
-        }
-        
-        /* ==========================
-              MAIN SCENE
-        ========================== */
-        #scene{
-            position:relative;
-            z-index:10;
-            height:100%;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-        }
-        
-        /* ==========================
-              TITLE
-        ========================== */
-        header{
-            text-align:center;
-            margin-bottom:30px;
-        }
-        
-        header h1{
-            font-size:4rem;
-            letter-spacing:8px;
-            color:white;
-            text-shadow: 0 0 10px #ff2222, 0 0 20px #ff2222, 0 0 40px #ff0000, 0 0 80px #ff0000;
-            animation:titleFlicker 5s infinite;
-        }
-        
-        header p{
-            font-size:2rem;
-            color:#ff9999;
-        }
-        
-        /* ==========================
-              SHRINE
-        ========================== */
-        #shrine{
-            position:relative;
-            width:900px;
-            max-width:92vw;
-            animation:float 4s ease-in-out infinite;
-        }
-        
-        #roof{
-            position:relative;
-            height:60px;
-            background: linear-gradient(to bottom, #341010, #1a0808 55%, #100505);
-            border:4px solid #772222;
-            clip-path:polygon(6% 100%, 12% 8%, 88% 8%, 94% 100%);
-            box-shadow: 0 5px 0 #220707, 0 0 30px rgba(255,40,40,.15), 0 0 60px rgba(255,40,40,.08);
-            overflow:hidden;
-        }
-        
-        /* Roof Tiles */
-        #roof::before{
-            content:"";
-            position:absolute;
-            inset:0;
-            background: repeating-linear-gradient(90deg, transparent 0 28px, rgba(255,90,90,.08) 28px 30px),
-                        repeating-linear-gradient(180deg, rgba(0,0,0,.18) 0 8px, transparent 8px 16px);
-            opacity:.6;
-        }
-        
-        /* Roof Highlight */
-        #roof::after{
-            content:"";
-            position:absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:8px;
-            background: linear-gradient(to right, transparent, rgba(255,120,120,.4), transparent);
-        }
-        
-        #roofBeam{
-            height:16px;
-            background: linear-gradient(to bottom, #250909, #120404);
-            border-left:4px solid #772222;
-            border-right:4px solid #772222;
-            border-bottom:4px solid #772222;
-            margin-bottom:-4px;
-            box-shadow: 0 3px 8px rgba(0,0,0,.5);
-        }
-        
-        #crossBeam{
-            height:12px;
-            background: linear-gradient(to bottom, #411515, #1a0808);
-            border-bottom:3px solid #772222;
-            margin-bottom:20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,.5);
-        }
-        
-        /* ==========================
-                LANTERNS
-        ========================== */
-        .lantern{
-            position:absolute;
-            top:72px;
-            width:42px;
-            height:62px;
-            background: linear-gradient(to bottom, #ffb4b4, #ff4747 30%, #b11212 65%, #530000);
-            border:3px solid #2a0000;
-            border-radius:8px;
-            overflow:hidden;
-            box-shadow: 0 0 20px rgba(255,70,70,.45), 0 0 50px rgba(255,40,40,.25);
-            animation: swing 5s ease-in-out infinite, lanternGlow 3s ease-in-out infinite;
-        }
-        
-        .lantern.left{ left:-30px; transform-origin:top center; }
-        .lantern.right{ right:-30px; transform-origin:top center; animation-delay:.4s; }
-        
-        .rope{
-            position:absolute;
-            bottom:100%;
-            left:50%;
-            width:3px;
-            height:42px;
-            background: linear-gradient(to bottom, #777, #333);
-            transform:translateX(-50%);
-        }
-        
-        .light{
-            position:absolute;
-            inset:5px;
-            border-radius:5px;
-            background: repeating-linear-gradient(to bottom, rgba(255,255,255,.22) 0 2px, transparent 2px 8px),
-                        radial-gradient(circle, #ffdede, #ff4b4b 60%, #6f0000);
-        }
-        
-        #building{
-            display:grid;
-            grid-template-columns:28px 1fr 28px;
-            background: linear-gradient(90deg, #140707, #0b0505, #140707);
-            border:4px solid #611;
-            padding:24px;
-            gap:20px;
-            align-items:stretch;
-            box-shadow: 0 0 25px rgba(255,0,0,.15), 0 0 60px rgba(255,0,0,.08);
-        }
-        
-        .pillar{
-            background: linear-gradient(to right, #2d1111, #160707, #2d1111);
-            border-left:2px solid #772222;
-            border-right:2px solid #220000;
-            border-radius:2px;
-            box-shadow: inset 2px 0 rgba(255,120,120,.08), inset -2px 0 rgba(0,0,0,.4);
-            min-height:100%;
-        }
-        
-        #content{
-            display:flex;
-            flex-direction:column;
-            gap:20px;
-        }
-        
-        /* ==========================
-                SHRINE DOORS
-        ========================== */
-        #doors{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:24px;
-        }
-        
-        .door{
-            background: linear-gradient(to bottom, #1b0b0b, #0b0505);
-            border:4px solid #662222;
-            padding:18px;
-            position:relative;
-            box-shadow: inset 0 0 25px rgba(255,60,60,.06), 0 0 18px rgba(255,0,0,.12);
-        }
-        
-        .door::before{
-            content:"";
-            position:absolute;
-            left:50%;
-            top:0;
-            width:3px;
-            height:100%;
-            background:#331111;
-            transform:translateX(-50%);
-            opacity:.5;
-        }
-        
-        .doorFrame{
-            display:flex;
-            flex-direction:column;
-            gap:16px;
-        }
-        
-        .screen{
-            background:black;
-            border:2px solid #661111;
-            padding:18px;
-            text-align:center;
-            color:#ff8a8a;
-            min-height:90px;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            box-shadow: inset 0
 
-             
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            line-height: 1.4;
+            /* Simple animated starry background */
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: starsMove 100s linear infinite;
+        }
+
+        @keyframes starsMove {
+            from { background-position: 0 0; }
+            to { background-position: -1000px 500px; }
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: 2fr 1fr; 
+            gap: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header / Logo */
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--text-highlight);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5); /* Red glow */
+            margin-bottom: 5px;
+        }
+
+        header h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 5px;
+        }
+
+        /* Cyber Panels */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-dim);
+            border-top: 1px solid var(--border);
+            border-left: 1px solid var(--border);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(255, 51, 51, 0.05), 0 5px 15px rgba(0,0,0,0.5); /* Red tint inner shadow */
+            border-radius: 2px;
+        }
+
+        .panel-header {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--text-highlight);
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px dashed var(--border-dim);
+            padding-bottom: 10px;
+        }
+
+        /* Text & Links */
+        p {
+            margin-bottom: 15px;
+        }
+
+        a, .fake-link {
+            color: var(--text-highlight);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a:hover, .fake-link:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+            text-shadow: 0 0 5px var(--text-highlight);
+        }
+
+        /* Content Specifics */
+        .profile-section {
+            display: flex;
+            gap: 15px;
+        }
+
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--border);
+            background: #110000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        ul.cyber-list {
+            list-style: none;
+            margin-left: 10px;
+        }
+
+        ul.cyber-list li::before {
+            content: "> ";
+            color: var(--text-highlight);
+        }
+
+        /* Buttons & Audio Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--border-dim);
+            color: var(--text-main);
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            padding: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            border-color: var(--border);
+            color: var(--text-highlight);
+            background: rgba(255, 51, 51, 0.1); /* Red hover background */
+        }
+
+        .track-list {
+            margin-top: 10px;
+            height: 120px;
+            overflow-y: auto;
+            border: 1px solid var(--border-dim);
+            padding: 5px;
+        }
+        
+        .track-item {
+            padding: 2px 5px;
+            cursor: pointer;
+        }
+        
+        .track-item:hover {
+            background: var(--border-dim);
+            color: #fff;
+        }
+        
+        .now-playing {
+            color: var(--text-highlight);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        /* Scrollbar customization for the cyber look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border-dim); }
+        ::-webkit-scrollbar-thumb { background: var(--border-dim); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+
+    <div class="container">
+        
+        <header>
+            <h1>SONNYVRO</h1>
+            <h2>// STVLKING //</h2>
+        </header>
+
+        <div class="left-col">
+            
+            <div class="panel">
+                <div class="panel-header">🌙 WELCOME TO MY SITE</div>
+                <div class="profile-section">
+                    <div class="avatar-placeholder">
+                        [IMG<br>PLACEHOLDER]
+                    </div>
+                    <div>
+                        <p>Welcome to the digital shrine. My name's Sonny, I'm 21, and I started making music in 2022. I've been obsessed with music all my life.</p>
+                        <p>I started producing about a year ago and have been doing it basically every day since. This is where I dump my tracks, beats, and thoughts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">🎵 AUDIO TERMINAL</div>
+                <div class="now-playing" id="now-playing">STATUS: IDLE // SELECT A TRACK</div>
+                
+                <div class="track-list" id="track-list">
+                    <div class="track-item" onclick="loadTrack(0)">01 - KILLING.MP3</div>
+                    <div class="track-item" onclick="loadTrack(1)">02 - CCC.MP3</div>
+                    <div class="track-item" onclick="loadTrack(2)">03 - 4M.MP3</div>
+                    <div class="track-item" onclick="loadTrack(3)">04 - ALIVE.MP3</div>
+                    <div class="track-item" onclick="loadTrack(4)">05 - ECHO.MP3</div>
+                    <div class="track-item" onclick="loadTrack(5)">06 - WIDOW.MP3</div>
+                    <div class="track-item" onclick="loadTrack(6)">07 - ERROR.MP3</div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" onclick="prevTrack()"><< PREV</button>
+                    <button class="btn" id="play-btn" onclick="togglePlay()">PLAY</button>
+                    <button class="btn" onclick="nextTrack()">NEXT >></button>
+                    <button class="btn" onclick="shuffleTracks()">SHUFFLE</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right-col">
+            
+            <div class="panel">
+                <div class="panel-header">⭐ DIRECTORY</div>
+                <ul class="cyber-list">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Me</a></li>
+                    <li><a href="https://air.bi/nXZu4" target="_blank">Stock Beats</a></li>
+                    <li><a href="form.html" target="_blank">Custom Beats</a></li>
+                    <li><a href="misc.html" target="_blank">Misc Archive</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">⚡ SYSTEM STATUS</div>
+                <p style="color: #ff3333;">I'm ONLINE!</p>
+                <p style="font-size: 0.9rem; border-top: 1px dotted var(--border-dim); padding-top: 10px;">
+                    <strong>Latest update:</strong><br>
+                    Working on new 808 slides. Site design updated to v2.0.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <audio id="bg-audio"></audio>
+
+    <script>
+        const playlist = [
+            { title: "KILLING.MP3", file: "music/killing.mp3" },
+            { title: "CCC.MP3", file: "ccc.mp3" },
+            { title: "4M.MP3", file: "music/4m.mp3" },
+            { title: "ALIVE.MP3", file: "music/alive.mp3" },
+            { title: "ECHO.MP3", file: "music/echo.mp3" },
+            { title: "WIDOW.MP3", file: "music/widow.mp3" },
+            { title: "ERROR.MP3", file: "music/error.mp3" }
+        ];
+
+        let currentTrackIndex = 0;
+        const audio = document.getElementById('bg-audio');
+        const playBtn = document.getElementById('play-btn');
+        const nowPlayingText = document.getElementById('now-playing');
+
+        function togglePlay() {
+            if (audio.src === "") return; // Don't play if no track is loaded
+            if (audio.paused) { 
+                audio.play(); 
+                playBtn.innerText = "PAUSE"; 
+            } else { 
+                audio.pause(); 
+                playBtn.innerText = "PLAY"; 
+            }
+        }
+
+        function loadTrack(index) {
+            currentTrackIndex = index;
+            audio.src = playlist[index].file;
+            nowPlayingText.innerText = "PLAYING: " + playlist[index].title;
+            audio.play(); 
+            playBtn.innerText = "PAUSE";
+        }
+
+        function nextTrack() { 
+            loadTrack((currentTrackIndex + 1) % playlist.length); 
+        }
+        
+        function prevTrack() { 
+            loadTrack((currentTrackIndex - 1 + playlist.length) % playlist.length); 
+        }
+        
+        function shuffleTracks() { 
+            loadTrack(Math.floor(Math.random() * playlist.length)); 
+        }
+    </script>
+</body>
+</html>
+                         
