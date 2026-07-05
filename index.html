@@ -4,22 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SONNYVRO // STVLKING</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --bg-color: #050505; 
-            /* Deep, dark red theme matching the image */
+            --bg-color: #050101; 
             --box-bg: #0a0202; 
-            --panel-bg: #150505;
-            --border-red: #5a1111;
-            --border-highlight: #7a1515;
-            --neon-red: #ff5555; 
-            --neon-red-dim: rgba(255, 51, 51, 0.2);
-            --text-color: #ffb3b3; /* Soft pinkish-red text */
+            --panel-bg: #1a0505;
+            --border-red: #4a0f0f;
+            --border-highlight: #8a1a1a;
+            --neon-red: #ff3333; 
+            --neon-red-dim: rgba(255, 51, 51, 0.4);
+            --text-color: #ffcccc;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,307 +33,125 @@
             align-items: center;
         } 
 
-        h1, h2, h3, h4 { 
-            font-family: 'Press Start 2P', cursive; 
-            text-shadow: 3px 3px 0px #000;
-            color: var(--neon-red);
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-        h1 { font-size: 2rem; margin-top: 50px; margin-bottom: 20px; color: #ffcccc; }
-        h4 { font-size: 0.65rem; margin-bottom: 10px; }
-        
-        /* Red Tint Overlay for the Background */
-        #red-tint {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(50, 0, 0, 0.35); /* Creates the deep red hue */
-            mix-blend-mode: multiply;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* CRT Scanline Overlay */
+        /* CRT Effect Overlays */
         #crt-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 6px 100%;
-            z-index: 9999;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 100; pointer-events: none; opacity: 0.3;
         }
 
-        /* --- BACKGROUNDS --- */
+        #red-tint {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(100, 0, 0, 0.4);
+            mix-blend-mode: multiply; z-index: 1; pointer-events: none;
+        }
+
+        /* Animated Background Elements */
         #bg-video { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
-            z-index: 0; pointer-events: none; 
-            image-rendering: pixelated; 
-            filter: brightness(0.8) contrast(1.2); 
+            z-index: 0; pointer-events: none; image-rendering: pixelated;
         }
-        
-        /* 8-Bit Rain Roof Effect */
+
         .rain { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABZJREFUeNpi2r9//38Gxv///2MgAAgwAHAFA6z9w+92AAAAAElFTkSuQmCC');
-            background-size: 8px 8px; 
-            opacity: 0.5;
-            pointer-events: none; z-index: 3; 
-            animation: 8bit-rain-move 0.8s steps(4) infinite; 
-            
-            /* Transparent roof mask */
+            background-size: 8px 8px; opacity: 0.3; z-index: 2;
+            animation: 8bit-rain-move 0.8s steps(4) infinite;
             -webkit-mask-image: linear-gradient(to right, black 0%, black calc(50% - 350px), transparent calc(50% - 300px), transparent calc(50% + 300px), black calc(50% + 350px), black 100%);
-            mask-image: linear-gradient(to right, black 0%, black calc(50% - 350px), transparent calc(50% - 300px), transparent calc(50% + 300px), black calc(50% + 350px), black 100%);
-        }
-        
-        @keyframes 8bit-rain-move {
-            0% { background-position: 0px 0px; }
-            100% { background-position: 0px 32px; } 
         }
 
-        /* --- UI COMPONENTS --- */
-        
-        /* Top Navigation Tabs */
-        .top-nav {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 10;
-        }
+        @keyframes 8bit-rain-move { 0% { background-position: 0 0; } 100% { background-position: 0 32px; } }
 
-        /* The Main Central Shrine Column */
-        .shrine-container {
-            width: 100%;
-            max-width: 550px;
-            position: relative;
-            z-index: 10;
-            margin-bottom: 50px;
-        }
+        /* UI Structure */
+        .shrine-container { width: 100%; max-width: 550px; position: relative; z-index: 10; margin-top: 50px; }
 
-        /* Pure CSS Pixel Roof */
-        .shrine-roof {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .roof-top {
-            width: 90%;
-            height: 30px;
-            background: #1a0505;
-            border: 4px solid var(--border-highlight);
-            border-bottom: none;
-            clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
-        }
-        .roof-base {
-            width: 110%; /* Overhangs the edges */
-            height: 15px;
-            background: var(--panel-bg);
-            border: 4px solid var(--border-highlight);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.8);
-            z-index: 2;
-        }
+        .roof-top { width: 90%; height: 35px; background: #0a0202; border: 4px solid var(--border-highlight); margin: 0 auto; clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%); }
+        .roof-base { width: 100%; height: 15px; background: var(--panel-bg); border: 4px solid var(--border-highlight); border-top: none; }
 
-        /* The Main Body of the Column */
-        .shrine-body {
-            background: var(--box-bg);
-            border: 4px solid var(--border-red);
-            border-top: none;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.9);
-        }
+        .shrine-body { background: var(--box-bg); border: 4px solid var(--border-red); border-top: none; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* Inner bordered panels */
-        .inner-panel {
-            border: 2px solid var(--border-highlight);
-            background: var(--panel-bg);
-            padding: 15px;
-            border-radius: 4px;
-        }
+        h1 { font-family: 'Press Start 2P'; font-size: 1.8rem; color: #ffcccc; text-shadow: 4px 4px 0 #000; margin-bottom: 20px; }
+        .btn { font-family: 'Press Start 2P'; background: #1a0505; border: 3px solid var(--border-highlight); color: var(--text-color); padding: 15px; cursor: crosshair; }
+        .btn:hover { background: var(--neon-red); color: #000; }
 
-        /* Grids for button layouts */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-        
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 10px;
-        }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .sq-btn { aspect-ratio: 1/1; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
+        .rect-btn { font-size: 0.5rem; }
 
-        /* Buttons */
-        .btn { 
-            background: var(--box-bg); 
-            border: 2px solid var(--border-highlight);
-            color: var(--text-color); 
-            font-family: 'Press Start 2P', cursive; 
-            cursor: crosshair; 
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: none; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-        
-        .btn:hover { 
-            background: #2a0505; 
-            border-color: var(--neon-red);
-            color: #fff;
-        }
-
-        .btn:active { transform: translate(2px, 2px); }
-
-        /* Specific Button Types */
-        .nav-btn {
-            padding: 10px 20px;
-            font-size: 0.7rem;
-            border-radius: 4px;
-        }
-
-        .sq-btn {
-            aspect-ratio: 1 / 1; /* Makes them perfect squares */
-            font-size: 0.65rem;
-            line-height: 1.4;
-            padding: 10px;
-            border-radius: 6px;
-        }
-
-        .rect-btn {
-            padding: 10px 5px;
-            font-size: 0.55rem;
-            border-radius: 4px;
-        }
-
-        .enter-btn { 
-            padding: 20px 40px; 
-            font-size: 1.5rem; 
-            background: #000; 
-            border: 4px solid var(--neon-red); 
-            color: var(--neon-red);
-            box-shadow: 5px 5px 0px rgba(255, 51, 51, 0.4);
-        }
-        .enter-btn:hover { background: var(--neon-red); color: #000; }
-
-        /* Typography spacing inside panels */
-        .inner-panel p {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 0px #000;
-        }
+        .inner-panel { border: 2px solid var(--border-highlight); padding: 15px; background: var(--panel-bg); }
     </style>
 </head>
 <body>
     <div id="crt-overlay"></div>
     <div id="red-tint"></div>
-    
     <video id="bg-video" loop muted playsinline><source src="retro-city.mp4" type="video/mp4"></video>
-    
     <div class="rain"></div>
-    <audio id="bg-audio"></audio>
-
-    <div id="start-screen" style="position: fixed; width: 100%; height: 100%; background: #050505; z-index: 99990; display: flex; justify-content: center; align-items: center;">
-        <button class="btn enter-btn" onclick="startAudio()">START_</button>
-    </div>
-
-    <header>
-        <h1>SONNYVRO/STVLKING</h1>
-    </header>
     
-    <div class="top-nav">
-        <button class="btn nav-btn">HOME</button>
-        <button class="btn nav-btn">ABOUT ME</button>
+    <div id="start-screen" style="position: fixed; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; align-items: center; justify-content: center;">
+        <button class="btn" onclick="startAudio()" style="padding: 20px 40px; font-size: 1.5rem;">START_</button>
     </div>
+
+    <header><h1>SONNYVRO/STVLKING</h1></header>
 
     <div class="shrine-container">
-        <div class="shrine-roof">
-            <div class="roof-top"></div>
-            <div class="roof-base"></div>
-        </div>
-
+        <div class="roof-top"></div>
+        <div class="roof-base"></div>
         <div class="shrine-body">
-            
             <div class="grid-3">
-                <a href="https://air.bi/nXZu4" target="_blank" class="btn sq-btn">STOCK</a>
-                <button class="btn sq-btn" onclick="window.open('form.html', '_blank')">Custom<br>Beats</button>
-                <button class="btn sq-btn" onclick="window.open('misc.html', '_blank')">misc</button>
+                <a href="https://air.bi/nXZu4" class="btn sq-btn">STOCK</a>
+                <button class="btn sq-btn" onclick="window.open('form.html')">CUSTOM<br>BEATS</button>
+                <button class="btn sq-btn" onclick="window.open('misc.html')">MISC</button>
             </div>
-
             <div class="inner-panel">
-                <h4 id="track-title">SELECT A TRACK</h4>
-                
-                <div class="grid-4">
-                    <button class="btn sq-btn" onclick="loadTrack(0)">KILLING</button>
-                    <button class="btn sq-btn" onclick="loadTrack(1)">CCC</button>
-                    <button class="btn sq-btn" onclick="loadTrack(2)">4M</button>
-                    <button class="btn sq-btn" onclick="loadTrack(3)">ALIVE</button>
-                </div>
-
+                <h4 id="track-title" style="color:var(--neon-red)">SELECT A TRACK</h4>
+                <div class="grid-4" id="track-grid">
+                    </div>
                 <div class="grid-4">
                     <button class="btn rect-btn" onclick="prevTrack()">BACK</button>
                     <button class="btn rect-btn" id="play-btn" onclick="togglePlay()">PLAY</button>
                     <button class="btn rect-btn" onclick="nextTrack()">NEXT</button>
-                    <button class="btn rect-btn" onclick="shuffleTracks()">SHUFFLE</button>
+                    <button class="btn rect-btn" onclick="shuffleTracks()">RND</button>
                 </div>
             </div>
-
             <div class="inner-panel">
-                <h4 style="text-align: left; color: #ff8888;">WHO AM I?</h4>
-                <p>my names sonny, im 21 and i started making music in 2022. ive been obessesed with music all my life i started producing about a year ago and have been doing it basically every day since.</p>
-                <p>i wanted this site to feel a bit more comfortable for reading, so these paragraphs have room to breathe now. you can stack as much text in here as you need without it feeling cramped or overwhelming.</p>
+                <h4 style="text-align:left; color:#ff8888">WHO AM I?</h4>
+                <p>Hey, my names Sonny, I'm 21 and I started making music in 2022. I've been obsessed with music all my life. That's the whole reason i'm here. My sole purpose in life was to create, and now i feel like i'm doing that and more with ever beat/song i make. I'm happy with my musically inclined brain. ITS THE BEST!!!!</p>
             </div>
-
         </div>
     </div>
 
+    <audio id="bg-audio"></audio>
+
     <script>
         const playlist = [
-            { title: "KILLING.MP3", file: "music/killing.mp3" },
-            { title: "CCC.MP3", file: "ccc.mp3" },
-            { title: "4M.MP3", file: "music/4m.mp3" },
-            { title: "ALIVE.MP3", file: "music/alive.mp3" },
-            { title: "ECHO.MP3", file: "music/echo.mp3" },
-            { title: "WIDOW.MP3", file: "music/widow.mp3" },
-            { title: "ERROR.MP3", file: "music/error.mp3" }
+            { title: "KILLING", file: "music/killing.mp3" },
+            { title: "CCC", file: "music/ccc.mp3" },
+            { title: "4M", file: "music/4m.mp3" },
+            { title: "ALIVE", file: "music/alive.mp3" }
         ];
 
-        let currentTrackIndex = 0;
-        const audio = document.getElementById('bg-audio');
-        const titleDisplay = document.getElementById('track-title');
-        const playBtn = document.getElementById('play-btn');
+        const trackGrid = document.getElementById('track-grid');
+        playlist.forEach((track, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn sq-btn';
+            btn.innerText = track.title;
+            btn.onclick = () => loadTrack(i);
+            trackGrid.appendChild(btn);
+        });
 
-        function togglePlay() {
-            if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; } 
-            else { audio.pause(); playBtn.innerText = "PLAY"; }
-        }
+        let audio = document.getElementById('bg-audio');
+        let playBtn = document.getElementById('play-btn');
 
-        function loadTrack(index) {
-            currentTrackIndex = index;
-            audio.src = playlist[index].file;
-            titleDisplay.innerText = playlist[index].title;
-            audio.play(); playBtn.innerText = "PAUSE";
-        }
-
-        function nextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); }
-        function prevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); }
-        function shuffleTracks() { currentTrackIndex = Math.floor(Math.random() * playlist.length); loadTrack(currentTrackIndex); }
-
-        function startAudio() { 
-            document.getElementById('start-screen').style.display = 'none'; 
-            document.getElementById('bg-video').play(); 
-            audio.volume = 0.3; 
-            loadTrack(0); 
-        }
+        function startAudio() { document.getElementById('start-screen').style.display='none'; document.getElementById('bg-video').play(); loadTrack(0); }
+        function togglePlay() { audio.paused ? audio.play() : audio.pause(); playBtn.innerText = audio.paused ? "PLAY" : "PAUSE"; }
+        function loadTrack(i) { audio.src = playlist[i].file; audio.play(); playBtn.innerText = "PAUSE"; }
+        function nextTrack() { loadTrack((currentTrackIndex + 1) % playlist.length); }
+        function prevTrack() { loadTrack((currentTrackIndex - 1 + playlist.length) % playlist.length); }
+        function shuffleTracks() { loadTrack(Math.floor(Math.random() * playlist.length)); }
     </script>
 </body>
 </html>
- 
+
+  
