@@ -8,12 +8,12 @@
     
     <style>
         :root {
-            --bg: #050101; /* Deep, almost-black red */
-            --panel-bg: rgba(15, 5, 5, 0.85); /* Dark tinted panels */
-            --border: #ff3333; /* Neon Red */
-            --border-dim: #551111; /* Dim Red */
-            --text-main: #ffcccc; /* Soft pinkish-white for readability */
-            --text-highlight: #ff3333; /* Neon Red */
+            --bg: #050101; 
+            --panel-bg: rgba(15, 5, 5, 0.85); 
+            --border: #ff3333; 
+            --border-dim: #551111; 
+            --text-main: #ffcccc; 
+            --text-highlight: #ff3333; 
             --link-hover: #ffffff;
         }
 
@@ -23,13 +23,16 @@
             box-sizing: border-box;
         }
 
-        body {
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Prevent normal scrolling so 3D works */
             background-color: var(--bg);
             color: var(--text-main);
             font-family: 'VT323', monospace;
             font-size: 1.2rem;
             line-height: 1.4;
-            /* Simple animated starry background */
+            /* Starry Background */
             background-image: 
                 radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
@@ -46,7 +49,7 @@
             to { background-position: -1000px 500px; }
         }
 
-        /* Scanline Overlay */
+        /* Scanline Overlay (Stays static over the camera) */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -54,6 +57,34 @@
             background-size: 100% 4px;
             z-index: 100;
             pointer-events: none;
+        }
+
+        /* =========================================
+           3D CAMERA SYSTEM
+        ========================================= */
+        #viewport {
+            perspective: 1000px; /* Gives the 3D depth */
+            width: 100vw;
+            height: 100vh;
+            overflow-y: auto; /* Allow scrolling inside the viewport */
+            overflow-x: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        #camera {
+            width: 100%;
+            min-height: 100%;
+            transform-style: preserve-3d;
+            /* The rotation origin is set back, simulating a person turning their head */
+            transform-origin: center center -400px; 
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease-in;
+        }
+
+        /* The class we add with JS when a link is clicked */
+        .turn-camera {
+            transform: translateZ(200px) rotateY(-90deg); /* Zooms in slightly, pans sharp right */
+            opacity: 0; /* Fades into the darkness */
         }
 
         /* Layout Container */
@@ -64,8 +95,6 @@
             display: grid;
             grid-template-columns: 2fr 1fr; 
             gap: 20px;
-            position: relative;
-            z-index: 10;
         }
 
         /* Header / Logo */
@@ -79,7 +108,7 @@
             font-family: 'Press Start 2P', cursive;
             color: var(--text-highlight);
             font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5); /* Red glow */
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
             margin-bottom: 5px;
         }
 
@@ -97,7 +126,7 @@
             border-left: 1px solid var(--border);
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: inset 0 0 10px rgba(255, 51, 51, 0.05), 0 5px 15px rgba(0,0,0,0.5); /* Red tint inner shadow */
+            box-shadow: inset 0 0 10px rgba(255, 51, 51, 0.05), 0 5px 15px rgba(0,0,0,0.5); 
             border-radius: 2px;
         }
 
@@ -182,7 +211,7 @@
         .btn:hover {
             border-color: var(--border);
             color: var(--text-highlight);
-            background: rgba(255, 51, 51, 0.1); /* Red hover background */
+            background: rgba(255, 51, 51, 0.1); 
         }
 
         .track-list {
@@ -209,7 +238,7 @@
             font-size: 1rem;
         }
 
-        /* Scrollbar customization for the cyber look */
+        /* Scrollbar customization */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border-dim); }
         ::-webkit-scrollbar-thumb { background: var(--border-dim); }
@@ -221,73 +250,68 @@
 
     <div class="scanlines"></div>
 
-    <div class="container">
-        
-        <header>
-            <h1>SONNYVRO</h1>
-            <h2>// STVLKING //</h2>
-        </header>
-
-        <div class="left-col">
+    <div id="viewport">
+        <div id="camera">
             
-            <div class="panel">
-                <div class="panel-header">🌙 WELCOME TO MY SITE</div>
-                <div class="profile-section">
-                    <div class="avatar-placeholder">
-                        [IMG<br>PLACEHOLDER]
+            <div class="container">
+                <header>
+                    <h1>SONNYVRO</h1>
+                    <h2>// STVLKING //</h2>
+                </header>
+
+                <div class="left-col">
+                    <div class="panel">
+                        <div class="panel-header">🌙 WELCOME TO MY SITE</div>
+                        <div class="profile-section">
+                            <div class="avatar-placeholder">[IMG<br>PLACEHOLDER]</div>
+                            <div>
+                                <p>Welcome to the digital shrine. My name's Sonny, I'm 21, and I started making music in 2022. I've been obsessed with music all my life.</p>
+                                <p>I started producing about a year ago and have been doing it basically every day since. This is where I dump my tracks, beats, and thoughts.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p>Welcome to the digital shrine. My name's Sonny, I'm 21, and I started making music in 2022. I've been obsessed with music all my life.</p>
-                        <p>I started producing about a year ago and have been doing it basically every day since. This is where I dump my tracks, beats, and thoughts.</p>
+
+                    <div class="panel">
+                        <div class="panel-header">🎵 AUDIO TERMINAL</div>
+                        <div class="now-playing" id="now-playing">STATUS: IDLE // SELECT A TRACK</div>
+                        
+                        <div class="track-list" id="track-list">
+                            <div class="track-item" onclick="loadTrack(0)">01 - KILLING.MP3</div>
+                            <div class="track-item" onclick="loadTrack(1)">02 - CCC.MP3</div>
+                            <div class="track-item" onclick="loadTrack(2)">03 - 4M.MP3</div>
+                            <div class="track-item" onclick="loadTrack(3)">04 - ALIVE.MP3</div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="btn" onclick="prevTrack()"><< PREV</button>
+                            <button class="btn" id="play-btn" onclick="togglePlay()">PLAY</button>
+                            <button class="btn" onclick="nextTrack()">NEXT >></button>
+                            <button class="btn" onclick="shuffleTracks()">SHUFFLE</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="panel">
-                <div class="panel-header">🎵 AUDIO TERMINAL</div>
-                <div class="now-playing" id="now-playing">STATUS: IDLE // SELECT A TRACK</div>
-                
-                <div class="track-list" id="track-list">
-                    <div class="track-item" onclick="loadTrack(0)">01 - KILLING.MP3</div>
-                    <div class="track-item" onclick="loadTrack(1)">02 - CCC.MP3</div>
-                    <div class="track-item" onclick="loadTrack(2)">03 - 4M.MP3</div>
-                    <div class="track-item" onclick="loadTrack(3)">04 - ALIVE.MP3</div>
-                    <div class="track-item" onclick="loadTrack(4)">05 - ECHO.MP3</div>
-                    <div class="track-item" onclick="loadTrack(5)">06 - WIDOW.MP3</div>
-                    <div class="track-item" onclick="loadTrack(6)">07 - ERROR.MP3</div>
+                <div class="right-col">
+                    <div class="panel">
+                        <div class="panel-header">⭐ DIRECTORY</div>
+                        <ul class="cyber-list">
+                            <li><a href="#" class="nav-link">Home</a></li>
+                            <li><a href="#" class="nav-link">About Me</a></li>
+                            <li><a href="https://air.bi/nXZu4" class="nav-link" target="_blank">Stock Beats</a></li>
+                            <li><a href="form.html" class="nav-link">Custom Beats</a></li>
+                            <li><a href="misc.html" class="nav-link">Misc Archive</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">⚡ SYSTEM STATUS</div>
+                        <p style="color: #ff3333;">I'm ONLINE!</p>
+                        <p style="font-size: 0.9rem; border-top: 1px dotted var(--border-dim); padding-top: 10px;">
+                            <strong>Location:</strong> Main Hub<br>
+                            Camera systems initialized.
+                        </p>
+                    </div>
                 </div>
-
-                <div class="controls">
-                    <button class="btn" onclick="prevTrack()"><< PREV</button>
-                    <button class="btn" id="play-btn" onclick="togglePlay()">PLAY</button>
-                    <button class="btn" onclick="nextTrack()">NEXT >></button>
-                    <button class="btn" onclick="shuffleTracks()">SHUFFLE</button>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="right-col">
-            
-            <div class="panel">
-                <div class="panel-header">⭐ DIRECTORY</div>
-                <ul class="cyber-list">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Me</a></li>
-                    <li><a href="https://air.bi/nXZu4" target="_blank">Stock Beats</a></li>
-                    <li><a href="form.html" target="_blank">Custom Beats</a></li>
-                    <li><a href="misc.html" target="_blank">Misc Archive</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-
-            <div class="panel">
-                <div class="panel-header">⚡ SYSTEM STATUS</div>
-                <p style="color: #ff3333;">I'm ONLINE!</p>
-                <p style="font-size: 0.9rem; border-top: 1px dotted var(--border-dim); padding-top: 10px;">
-                    <strong>Latest update:</strong><br>
-                    Working on new 808 slides. Site design updated to v2.0.
-                </p>
             </div>
 
         </div>
@@ -296,14 +320,43 @@
     <audio id="bg-audio"></audio>
 
     <script>
+        /* ========================================
+           POINT & CLICK CAMERA LOGIC
+        ======================================== */
+        const camera = document.getElementById('camera');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Ignore if it opens in a new tab
+                if (this.target === "_blank") return;
+                
+                e.preventDefault(); // Stop instant navigation
+                const targetUrl = this.getAttribute('href');
+
+                // Trigger the camera pan animation
+                camera.classList.add('turn-camera');
+
+                // Wait for the animation to finish (1000ms), then navigate
+                setTimeout(() => {
+                    // For testing empty links, we just snap the camera back
+                    if(targetUrl === '#' || targetUrl === '') {
+                        camera.classList.remove('turn-camera');
+                    } else {
+                        window.location.href = targetUrl;
+                    }
+                }, 1000);
+            });
+        });
+
+        /* ========================================
+           AUDIO PLAYER LOGIC
+        ======================================== */
         const playlist = [
             { title: "KILLING.MP3", file: "music/killing.mp3" },
             { title: "CCC.MP3", file: "ccc.mp3" },
             { title: "4M.MP3", file: "music/4m.mp3" },
-            { title: "ALIVE.MP3", file: "music/alive.mp3" },
-            { title: "ECHO.MP3", file: "music/echo.mp3" },
-            { title: "WIDOW.MP3", file: "music/widow.mp3" },
-            { title: "ERROR.MP3", file: "music/error.mp3" }
+            { title: "ALIVE.MP3", file: "music/alive.mp3" }
         ];
 
         let currentTrackIndex = 0;
@@ -312,7 +365,7 @@
         const nowPlayingText = document.getElementById('now-playing');
 
         function togglePlay() {
-            if (audio.src === "") return; // Don't play if no track is loaded
+            if (audio.src === "") return;
             if (audio.paused) { 
                 audio.play(); 
                 playBtn.innerText = "PAUSE"; 
@@ -330,18 +383,10 @@
             playBtn.innerText = "PAUSE";
         }
 
-        function nextTrack() { 
-            loadTrack((currentTrackIndex + 1) % playlist.length); 
-        }
-        
-        function prevTrack() { 
-            loadTrack((currentTrackIndex - 1 + playlist.length) % playlist.length); 
-        }
-        
-        function shuffleTracks() { 
-            loadTrack(Math.floor(Math.random() * playlist.length)); 
-        }
+        function nextTrack() { loadTrack((currentTrackIndex + 1) % playlist.length); }
+        function prevTrack() { loadTrack((currentTrackIndex - 1 + playlist.length) % playlist.length); }
+        function shuffleTracks() { loadTrack(Math.floor(Math.random() * playlist.length)); }
     </script>
 </body>
 </html>
-                         
+                        
