@@ -9,38 +9,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-color: #020202;
-            --box-bg: #050101;
-            --neon-color: #ff0033;
-            --neon-dim: rgba(255, 0, 51, 0.2);
-        }
-
+        :root { --bg-color: #020202; --box-bg: #050101; --neon-color: #ff0033; --neon-dim: rgba(255, 0, 51, 0.2); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: #ccc; overflow-x: hidden; cursor: none; } 
 
-        /* --- GHOSTLY TEXT FX --- */
-        h1, h2, h3, p, span, button, .nav-btn, .shop-card { 
-            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-            animation: ghostly-flicker 2.5s infinite;
-        }
-        @keyframes ghostly-flicker {
-            0%, 100% { opacity: 1; filter: blur(0px); }
-            50% { opacity: 0.85; filter: blur(0.4px); transform: translateY(-0.5px); }
-        }
+        /* --- GHOSTLY TEXT & FX --- */
+        h1, h2, h3, p, span, button, .nav-btn, .shop-card { text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000; animation: ghostly-flicker 2.5s infinite; }
+        @keyframes ghostly-flicker { 0%, 100% { opacity: 1; filter: blur(0px); } 50% { opacity: 0.85; filter: blur(0.4px); transform: translateY(-0.5px); } }
 
-        /* --- CUSTOM CURSOR --- */
         .cursor { width: 10px; height: 10px; background: var(--neon-color); border-radius: 50%; position: fixed; pointer-events: none; z-index: 999999; box-shadow: 0 0 10px var(--neon-color); }
 
-        /* --- BACKGROUND FX --- */
+        /* --- BACKGROUNDS --- */
         #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; filter: blur(3px) grayscale(90%) brightness(0.6); opacity: 0.2; }
-        #clouds-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 50vh; background-image: url('clouds.png'); background-size: cover; background-position: top center; opacity: 0.25; pointer-events: none; z-index: 1; -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 100%); mask-image: linear-gradient(to bottom, black 10%, transparent 100%); }
-        .rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/rain.png'); opacity: 0.05; pointer-events: none; z-index: 9997; animation: rain-move 10s linear infinite; }
-        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/noise-lines.png'); opacity: 0.04; pointer-events: none; z-index: 9998; }
-        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--neon-color); pointer-events: none; z-index: 2; animation: lightning 15s linear infinite; mix-blend-mode: overlay; }
+        #gif-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; background-size: cover; background-position: center; opacity: 0.15; transition: background 1s ease-in-out; }
+        #clouds-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 50vh; background-image: url('clouds.png'); background-size: cover; background-position: top center; opacity: 0.25; pointer-events: none; z-index: 2; -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 100%); mask-image: linear-gradient(to bottom, black 10%, transparent 100%); }
+        .rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://www.transparenttextures.com/patterns/rain.png'); opacity: 0.05; pointer-events: none; z-index: 3; animation: rain-move 10s linear infinite; }
+        .lightning { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--neon-color); pointer-events: none; z-index: 4; animation: lightning 15s linear infinite; mix-blend-mode: overlay; }
 
         /* --- UI COMPONENTS --- */
-        .content-box { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 30px; margin: 20px auto; max-width: 800px; color: #fff; animation: pulse-glow 3s infinite ease-in-out; position: relative; z-index: 5; }
+        .content-box { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 30px; margin: 20px auto; max-width: 800px; color: #fff; animation: pulse-glow 3s infinite ease-in-out; position: relative; z-index: 10; }
         .nav-btn { background: transparent; border: 1px solid var(--neon-dim); color: #fff; padding: 10px 20px; font-family: 'Bebas Neue'; cursor: pointer; margin: 10px; transition: 0.3s; font-size: 1.2rem; }
         .nav-btn:hover { border-color: var(--neon-color); transform: scale(1.1); box-shadow: 0 0 20px var(--neon-color); }
         .shop-card { background: var(--box-bg); border: 1px solid var(--neon-color); padding: 15px 20px; cursor: pointer; color: #fff; text-decoration: none; display: flex; flex-direction: column; align-items: center; width: 220px; transition: 0.3s; }
@@ -48,35 +35,31 @@
         .enter-btn { padding: 15px 30px; font-family: 'Bebas Neue'; font-size: 2rem; background: transparent; color: var(--neon-color); border: 2px solid var(--neon-color); cursor: pointer; }
         
         #transition-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; z-index: 99999; pointer-events: none; opacity: 0; display: flex; justify-content: center; align-items: center; transition: opacity 0.2s; }
-        #transition-overlay.active { opacity: 1; }
-        .page-section { display: none; }
-        .active { display: block; }
-        
+        .page-section { display: none; } .active { display: block; }
         @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 15px var(--neon-dim); } 50% { box-shadow: 0 0 25px var(--neon-color); } }
-        @keyframes rain-move { from { background-position: 0 0; } to { background-position: 100px 1000px; } }
         @keyframes lightning { 0%, 95%, 98% { opacity: 0; } 96% { opacity: 0.08; } 97% { opacity: 0.02; } }
     </style>
 </head>
 <body>
     <div class="cursor" id="cursor"></div>
-    <div id="transition-overlay"><div class="vhs-text" style="color:white; font-family:'Bebas Neue';">LOADING...</div></div>
-    
+    <div id="transition-overlay"></div>
     <video id="bg-video" loop muted playsinline><source src="background.mp4" type="video/mp4"></video>
+    <div id="gif-background"></div>
     <div id="clouds-overlay"></div>
     <div class="rain"></div>
     <div class="lightning"></div>
-    <audio id="bg-audio" loop></audio>
+    <audio id="bg-audio"></audio>
 
     <div id="start-screen" style="position: fixed; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; justify-content: center; align-items: center;">
         <button class="enter-btn" onclick="startAudio()">ENTER</button>
     </div>
 
     <div id="site-wrapper">
-        <header style="text-align: center; padding-top: 50px;">
-            <h1 class="glitch-text" style="font-size: 4rem;">SONNYVRO/STVLKING</h1>
+        <header style="text-align: center; padding-top: 50px; position: relative; z-index: 10;">
+            <h1 style="font-size: 4rem;">SONNYVRO/STVLKING</h1>
         </header>
 
-        <main class="main-container">
+        <main class="main-container" style="position: relative; z-index: 10;">
             <div style="text-align: center;">
                 <button class="nav-btn" onclick="showPage('home-section')">HOME</button>
                 <button class="nav-btn" onclick="showPage('about-section')">ABOUT ME</button>
@@ -84,7 +67,16 @@
 
             <div id="content-flipper">
                 <div id="home-section" class="page-section active">
-                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 40px;">
+                    <div class="content-box" style="text-align: center; width: 400px;">
+                        <h3 id="track-title" style="margin-bottom: 15px;">INITIALIZING...</h3>
+                        <div style="display: flex; justify-content: center; gap: 10px;">
+                            <button class="nav-btn" onclick="prevTrack()">BACK</button>
+                            <button class="nav-btn" onclick="togglePlay()" id="play-btn">PLAY</button>
+                            <button class="nav-btn" onclick="nextTrack()">NEXT</button>
+                            <button class="nav-btn" onclick="shuffleTracks()">SHUFFLE</button>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 20px;">
                         <a href="https://air.bi/nXZu4" target="_blank" class="shop-card"><h3>STOCK</h3></a>
                         <div class="shop-card" onclick="window.open('form.html', '_blank')"><h3>Custom Beats</h3></div>
                         <div class="shop-card" onclick="window.open('misc.html', '_blank')"><h3>misc</h3></div>
@@ -92,88 +84,61 @@
                 </div>
 
                 <div id="about-section" class="page-section">
-                    <div class="content-box">
-                        <h2>WHO AM I?</h2>
-                        <p>21, USA. Producing dark, atmospheric beats.</p>
-                    </div>
+                    <div class="content-box"><h2>WHO AM I?</h2><p>21, USA. Producing dark, atmospheric beats.</p></div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
 
-    // 1. ADD ALL YOUR TRACKS HERE
-    const playlist = [
-        { title: "KILLING", file: "music/killing.mp3" },
-        { title: "CCC", file: "ccc.mp3" },
-        { title: "4M", file: "music/4m.mp3" },
-        { title: "ALIVE", file: "music/alive.mp3" },
-        { title: "ECHO", file: "music/echo.mp3" },
-        { title: "WIDOW", file: "music/widow.mp3" },
-        { title: "ERROR", file: "music/error.mp3" }
-        
-    ];
+        const playlist = [
+            { title: "KILLING", file: "music/killing.mp3", gif: "gifs/killing.gif" },
+            { title: "CCC", file: "ccc.mp3", gif: "gifs/ccc.gif" },
+            { title: "4M", file: "music/4m.mp3", gif: "gifs/4m.gif" },
+            { title: "ALIVE", file: "music/alive.mp3", gif: "gifs/alive.gif" },
+            { title: "ECHO", file: "music/echo.mp3", gif: "gifs/echo.gif" },
+            { title: "WIDOW", file: "music/widow.mp3", gif: "gifs/widow.gif" },
+            { title: "ERROR", file: "music/error.mp3", gif: "gifs/error.gif" }
+        ];
 
-    let currentTrackIndex = 0;
-    const audio = document.getElementById('bg-audio');
-    const titleDisplay = document.getElementById('track-title');
-    const playBtn = document.getElementById('play-btn');
+        let currentTrackIndex = 0;
+        const audio = document.getElementById('bg-audio');
+        const titleDisplay = document.getElementById('track-title');
+        const playBtn = document.getElementById('play-btn');
+        const gifBackground = document.getElementById('gif-background');
 
-    // 2. PLAYER FUNCTIONS
-    function togglePlay() {
-        if (audio.paused) {
-            audio.play();
-            playBtn.innerText = "PAUSE";
-        } else {
-            audio.pause();
-            playBtn.innerText = "PLAY";
+        function togglePlay() {
+            if (audio.paused) { audio.play(); playBtn.innerText = "PAUSE"; } 
+            else { audio.pause(); playBtn.innerText = "PLAY"; }
         }
-    }
 
-    function loadTrack(index) {
-        audio.src = playlist[index].file;
-        titleDisplay.innerText = playlist[index].title;
-        audio.play();
-        playBtn.innerText = "PAUSE";
-    }
+        function loadTrack(index) {
+            audio.src = playlist[index].file;
+            titleDisplay.innerText = playlist[index].title;
+            gifBackground.style.backgroundImage = `url('${playlist[index].gif}')`;
+            audio.play(); playBtn.innerText = "PAUSE";
+        }
 
-    function nextTrack() {
-        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-        loadTrack(currentTrackIndex);
-    }
+        function nextTrack() { currentTrackIndex = (currentTrackIndex + 1) % playlist.length; loadTrack(currentTrackIndex); }
+        function prevTrack() { currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length; loadTrack(currentTrackIndex); }
+        function shuffleTracks() { currentTrackIndex = Math.floor(Math.random() * playlist.length); loadTrack(currentTrackIndex); }
 
-    function prevTrack() {
-        currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-        loadTrack(currentTrackIndex);
-    }
+        function startAudio() { document.getElementById('start-screen').style.display = 'none'; document.getElementById('bg-video').play(); audio.volume = 0.3; loadTrack(0); }
 
-    function shuffleTracks() {
-        currentTrackIndex = Math.floor(Math.random() * playlist.length);
-        loadTrack(currentTrackIndex);
-    }
-
-    // 3. INITIALIZATION
-    function startAudio() { 
-        document.getElementById('start-screen').style.display = 'none'; 
-        document.getElementById('bg-video').play();
-        audio.volume = 0.3;
-        loadTrack(0); 
-    }
-
-    function showPage(pageId) {
-        const target = document.getElementById(pageId);
-        const transition = document.getElementById('transition-overlay');
-        transition.classList.add('active');
-        setTimeout(() => {
-            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-            target.classList.add('active');
-            setTimeout(() => transition.classList.remove('active'), 200);
-        }, 600);
-    }
-</script>
+        function showPage(pageId) {
+            const target = document.getElementById(pageId);
+            const transition = document.getElementById('transition-overlay');
+            transition.classList.add('active');
+            setTimeout(() => {
+                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+                target.classList.add('active');
+                setTimeout(() => transition.classList.remove('active'), 200);
+            }, 600);
+        }
+    </script>
 </body>
 </html>
-
+ 
