@@ -6,23 +6,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #000000; --panel: rgba(10, 0, 0, 0.85); --red: #ff0000; --dim-red: #330000; --text: #e0a0a0; }
-        
         body.hacked { --red: #00ff33; --dim-red: #004400; --text: #a0e0a0; --panel: rgba(0, 25, 0, 0.85); }
         body.hacked #clouds-layer { filter: sepia(100%) hue-rotate(70deg) saturate(500%) brightness(0.8); }
 
-        body { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; perspective: 1000px; cursor: crosshair; transition: color 0.5s; }
+        body { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; perspective: 1000px; cursor: crosshair; }
 
         /* Atmospheric Effects */
         #clouds-layer { position: fixed; top: 0; left: 0; width: 200%; height: 100%; background: url('clouds.png') repeat-x; z-index: 1; animation: drift 60s linear infinite; pointer-events: none; opacity: 0.5; }
         #rain-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
         
         /* Overlays */
-        #monitor-shell { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10000; border-radius: 50% / 10%; box-shadow: inset 0 0 100px 30px rgba(0,0,0,0.8); background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%); }
+        #monitor-shell { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10000; box-shadow: inset 0 0 100px 30px rgba(0,0,0,0.8); }
         #crt-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9998; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 3px 100%; animation: crt-flicker 0.15s infinite; }
         #transition-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 1s ease-in-out; }
         .fade-in { opacity: 1 !important; }
 
-        /* Animations */
         @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @keyframes crt-flicker { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.98; } }
         .walk-into-house { animation: walkSequence 2.5s ease-in forwards; }
@@ -51,7 +49,6 @@
     <div id="viewport">
         <main class="layout-stack">
             <header><h1>SONNYVRO // STVLKING</h1></header>
-
             <section class="box"><div class="box-title">STVLKING</div><p>Welcome. Hub for all of my projects, art, info about me, and music.</p></section>
             <section class="box"><div class="box-title">SONNYVRO</div><p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Actively coding:(</p></section>
             <section class="box"><div class="box-title">BLOG</div><p id="secret-log"><strong>> LOG ENTRY: 07.2026</strong></p></section>
@@ -60,25 +57,40 @@
                 <div class="box-title">BEATS FOR SALE</div>
                 <ul class="tracklist" style="list-style: none; padding: 0;">
                     <li class="track" data-src="music/widow.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">widow.mp3</span></li>
+                    <li class="track" data-src="music/error.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">error.mp3</span></li>
+                    <li class="track" data-src="music/killing.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">killing.mp3</span></li>
                 </ul>
             </section>
 
-            <section id="house-scene" style="display:none; text-align:center; padding-top: 100px;">
-                <h2 style="color: var(--red);">THE DARK HOUSE</h2>
-                <img src="dark-house.png" style="width: 300px; opacity: 0.5;">
-            </section>
-
-            <button class="home-btn">[ WALK TO HOUSE ]</button>
-        </main>
+           <section id="house-scene" style="display:none; text-align:center; padding-top: 50px;">
+    <h2 style="color: var(--red);">THE DARK HOUSE</h2>
+    
+    <div id="house-container" style="position: relative; width: 300px; height: 300px; margin: 0 auto; background: url('dark-house.png') no-repeat center; background-size: contain;">
+        
+        <button id="door-btn" style="position: absolute; bottom: 15%; left: 42%; width: 60px; height: 100px; background: rgba(255, 0, 0, 0.1); border: 1px dashed var(--red); cursor: pointer;"></button>
+        
     </div>
-
+</section>
 <script>
+    // Audio Engine
+    const audioEngine = new Audio();
+    document.querySelectorAll('.track').forEach(track => {
+        track.addEventListener('click', function() {
+            if(audioEngine.src.includes(this.getAttribute('data-src')) && !audioEngine.paused) {
+                audioEngine.pause(); this.classList.remove('active');
+            } else {
+                audioEngine.src = this.getAttribute('data-src'); audioEngine.play();
+                document.querySelectorAll('.track').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            }
+        });
+    });
+
     // Rain Animation
     const canvas = document.getElementById('rain-layer');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     const drops = Array.from({length: 150}, () => ({x: Math.random()*canvas.width, y: Math.random()*canvas.height, l: Math.random()*15}));
-    
     function animateRain() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = 'rgba(255,255,255,0.15)';
@@ -90,31 +102,22 @@
     }
     animateRain();
 
-    // Transition Logic
+    // Transition & Hack Logic
     document.querySelector('.home-btn').addEventListener('click', function() {
         const overlay = document.getElementById('transition-overlay');
         const stack = document.querySelector('.layout-stack');
         const house = document.getElementById('house-scene');
         const stepSound = document.getElementById('grass-step-sound');
-
         overlay.classList.add('fade-in');
-        
         let steps = 0;
-        const walkInterval = setInterval(() => {
-            stepSound.currentTime = 0; stepSound.play();
-            if (++steps >= 4) clearInterval(walkInterval);
-        }, 500);
-
-        // Swap content once screen is black
-        setTimeout(() => {
-            stack.style.display = 'none';
-            house.style.display = 'block';
-            overlay.classList.remove('fade-in');
-            house.classList.add('walk-into-house');
-        }, 1200);
+        const walkInterval = setInterval(() => { stepSound.currentTime = 0; stepSound.play(); if (++steps >= 4) clearInterval(walkInterval); }, 500);
+        setTimeout(() => { stack.style.display = 'none'; house.style.display = 'block'; overlay.classList.remove('fade-in'); house.classList.add('walk-into-house'); }, 1200);
     });
 
-    // Existing Audio/Hack logic...
+    document.getElementById('secret-log').addEventListener('click', function() {
+        document.body.classList.toggle('hacked');
+        this.innerHTML = document.body.classList.contains('hacked') ? "<strong>> SYSTEM BREACH DETECTED</strong>" : "<strong>> LOG ENTRY: 07.2026</strong>";
+    });
 </script>
 </body>
 </html>
