@@ -90,24 +90,24 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// 4. WALKING TRANSITION TO DARK HOUSE
-const homeBtn = document.querySelector('.home-btn');
-if (homeBtn) {
-    homeBtn.addEventListener('click', function() {
-        const viewport = document.getElementById('viewport');
-        const mainStack = document.querySelector('.layout-stack');
-        const houseScene = document.getElementById('house-scene');
-
-        // 1. Hide the current stack, show the house
-        mainStack.style.opacity = '0';
-        houseScene.style.display = 'block';
-
-        // 2. Trigger the walking animation
-        viewport.classList.add('walking-mode');
-
-        // 3. Redirect after the walk finishes
-        setTimeout(() => {
-            window.location.href = 'house-page.html';
-        }, 2500);
-    });
+document.querySelector('.home-btn').addEventListener('click', function() {
+    const overlay = document.getElementById('transition-overlay');
+    const house = document.getElementById('house-scene');
+    
+    // 1. Reveal the house section
+    house.style.display = 'block';
+    
+    // 2. Start the fade to black
+    overlay.classList.add('fade-in');
+    
+    // 3. Wait for the fade, then animate the walk
+    setTimeout(() => {
+        house.classList.add('walk-into-house');
+    }, 1000);
+    
+    // 4. Finally, redirect to your next scene
+    setTimeout(() => {
+        window.location.href = 'house-page.html'; 
+    }, 3500);
+});
 }
