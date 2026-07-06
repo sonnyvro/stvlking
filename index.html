@@ -15,13 +15,14 @@
 
         /* --- THE EASTER EGG SYSTEM BREACH (GREEN MODE) --- */
         body.hacked {
-            --red: #00ff00;
-            --dim-red: #002200;
+            --red: #00ff33; /* Toxic terminal green */
+            --dim-red: #004400; /* Dark green for borders and accents */
             --text: #a0e0a0;
+            --panel: rgba(0, 25, 0, 0.85); /* Turns the box backgrounds distinct dark green */
         }
         
         body.hacked #clouds-layer {
-            /* This forces the original white/gray clouds into a toxic green */
+            /* Forces the original white/gray clouds into a toxic green */
             filter: sepia(100%) hue-rotate(70deg) saturate(500%) brightness(0.8);
         }
 
@@ -45,9 +46,48 @@
         /* Make clickable items act like a normal pointer */
         a, button, .track, input[type=range], .commlink-btn, #secret-log { cursor: pointer; }
 
+        /* --- ANALOG CRT TV BOOTUP EFFECT --- */
+        #crt-boot {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #ffffff;
+            z-index: 10000;
+            pointer-events: none;
+            animation: crt-power-on 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes crt-power-on {
+            0% { transform: scale(0.001, 0.001); opacity: 1; }
+            30% { transform: scale(1, 0.01); opacity: 1; }
+            60% { transform: scale(1, 1); opacity: 1; background: #ffffff; }
+            100% { transform: scale(1, 1); opacity: 0; background: transparent; visibility: hidden; }
+        }
+
+        /* --- ANALOG CRT TV OVERLAY (Enhanced) --- */
+        #crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 3px, 3px 100%;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.9);
+            animation: crt-flicker 0.15s infinite;
+        }
+
+        @keyframes crt-flicker {
+            0% { opacity: 0.95; }
+            100% { opacity: 1; }
+        }
+
         #boot-screen {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #000; color: var(--red); z-index: 9999;
+            background: #000; color: var(--red); z-index: 9997; /* Behind the CRT overlay */
             display: flex; flex-direction: column; padding: 40px;
             font-family: 'VT323', monospace; font-size: 1.5rem;
             pointer-events: none; transition: opacity 0.5s;
@@ -85,7 +125,7 @@
         .divider:not(:empty)::before { margin-right: 15px; }
         .divider:not(:empty)::after { margin-left: 15px; }
 
-        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; min-height: 150px; position: relative; line-height: 1.6; transition: border-color 0.5s, box-shadow 0.3s; }
+        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; min-height: 150px; position: relative; line-height: 1.6; transition: border-color 0.5s, box-shadow 0.3s, background 0.5s; }
         .box::before { content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%); transition: background 0.5s; }
         .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); margin-bottom: 20px; border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; transition: 0.5s; }
 
@@ -124,8 +164,9 @@
 </head>
 <body>
 
+    <div id="crt-boot"></div>
+    <div id="crt-overlay"></div>
     <div id="boot-screen"></div>
-
     <div id="clouds-layer"></div>
     <canvas id="rain-canvas"></canvas>
 
@@ -190,7 +231,7 @@
                 <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
 
                 <div id="visitor-counter">
-                    > UNIQUE_CONNECTIONS: <span id="hit-count">004815</span>
+                    > UNIQUE_CONNECTIONS: <span id="hit-count">000000</span>
                 </div>
 
             </main>
@@ -198,7 +239,7 @@
     </div>
 
 <script>
-    // Boot Sequence
+    // Boot Sequence Delay Setup
     const bootScreen = document.getElementById('boot-screen');
     const bootLines = [
         "> INITIALIZING AUDIO ENGINE... OK",
@@ -206,7 +247,9 @@
         "> ESTABLISHING SECURE CONNECTION...",
         "> ACCESSING STVLKER MAINFRAME..."
     ];
-    let bootDelay = 0;
+    
+    // Wait for the CRT white flash animation to finish before typing text
+    let bootDelay = 800; 
     bootLines.forEach((line) => {
         setTimeout(() => { bootScreen.innerHTML += `<div>${line}</div>`; }, bootDelay += 600);
     });
@@ -214,6 +257,21 @@
         bootScreen.style.opacity = '0';
         setTimeout(() => bootScreen.remove(), 500);
     }, bootDelay + 800);
+
+
+    // AUTHENTIC LIVE VISITOR COUNTER
+    // This hits a free counter API to truly track visits persistently.
+    fetch('https://api.counterapi.dev/v1/stvlking_online/visitor_count/up')
+        .then(response => response.json())
+        .then(data => {
+            const counterElement = document.getElementById('hit-count');
+            if (counterElement && data.count) {
+                // Formats the real number into 6 digits (e.g. "004815")
+                counterElement.innerText = data.count.toString().padStart(6, '0');
+            }
+        })
+        .catch(error => console.error("Could not fetch counter:", error));
+
 
     // Dynamic Rain Color Variable (Starts Red)
     let rainColor = '#ff0000';
@@ -223,7 +281,7 @@
         document.body.classList.toggle('hacked');
         
         if(document.body.classList.contains('hacked')) {
-            rainColor = '#00ff00'; // Switches rain to toxic green
+            rainColor = '#00ff33'; // Switches rain to toxic green
             this.innerHTML = "<strong>> SYSTEM BREACH DETECTED... THEY ARE WATCHING</strong>";
             this.classList.add('glitch-text');
         } else {
@@ -232,15 +290,6 @@
             this.classList.remove('glitch-text');
         }
     });
-
-    // Fake Live Visitor Counter
-    setInterval(() => {
-        const counter = document.getElementById('hit-count');
-        if(counter && Math.random() > 0.6) {
-            let num = parseInt(counter.innerText) + 1;
-            counter.innerText = num.toString().padStart(6, '0');
-        }
-    }, 4000);
 
     // Rain Engine
     const canvas = document.getElementById('rain-canvas');
