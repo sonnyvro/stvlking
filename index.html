@@ -5,120 +5,49 @@
     <title>SONNYVRO // STVLKING</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #000000;
-            --panel: rgba(10, 0, 0, 0.85); 
-            --red: #ff0000;
-            --dim-red: #330000;
-            --text: #e0a0a0;
-        }
+        :root { --bg: #000000; --panel: rgba(10, 0, 0, 0.85); --red: #ff0000; --dim-red: #330000; --text: #e0a0a0; }
 
         /* --- THE EASTER EGG SYSTEM BREACH (GREEN MODE) --- */
-        body.hacked {
-            --red: #00ff33;
-            --dim-red: #004400;
-            --text: #a0e0a0;
-            --panel: rgba(0, 25, 0, 0.85);
-        }
-        
-        body.hacked #clouds-layer {
-            filter: sepia(100%) hue-rotate(70deg) saturate(500%) brightness(0.8);
-        }
+        body.hacked { --red: #00ff33; --dim-red: #004400; --text: #a0e0a0; --panel: rgba(0, 25, 0, 0.85); }
+        body.hacked #clouds-layer { filter: sepia(100%) hue-rotate(70deg) saturate(500%) brightness(0.8); }
 
-        /* GLOBALLY APPLY RETRO CROSSHAIR CURSOR */
-        body { 
-            background-color: #000000 !important; 
-            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('wallpaper.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: var(--text) !important; 
-            font-family: 'VT323', monospace; 
-            margin: 0; 
-            overflow: hidden; /* Changed to hidden to support monitor curve */
-            perspective: 1000px;
-            cursor: crosshair;
-            transition: color 0.5s;
-        }
+        body { background-color: #000000 !important; background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('wallpaper.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; perspective: 1000px; cursor: crosshair; transition: color 0.5s; }
 
-        /* --- CURVED SURVEILLANCE MONITOR EFFECT --- */
-        /* This pushes the content into a rounded "tube" shape */
-        #monitor-shell {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 10000;
-            border-radius: 50% / 10%;
-            box-shadow: inset 0 0 100px 30px rgba(0,0,0,0.8);
-            background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%);
-        }
-
-        /* --- ANALOG CRT TV OVERLAY --- */
-        #crt-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 9998;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 4px, 3px 100%;
-            animation: crt-flicker 0.15s infinite;
-        }
-
+        /* --- SURVEILLANCE MONITOR EFFECT --- */
+        #monitor-shell { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10000; border-radius: 50% / 10%; box-shadow: inset 0 0 100px 30px rgba(0,0,0,0.8); background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%); }
+        #crt-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9998; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 3px 100%; animation: crt-flicker 0.15s infinite; }
         @keyframes crt-flicker { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.98; } }
 
-        /* All your existing styles continue below... */
-        #boot-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; color: var(--red); z-index: 9997; display: flex; flex-direction: column; padding: 40px; font-family: 'VT323', monospace; font-size: 1.5rem; pointer-events: none; transition: opacity 0.5s; }
-        #crt-boot { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; z-index: 10000; pointer-events: none; animation: crt-power-on 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes crt-power-on { 0% { transform: scale(0.001, 0.001); opacity: 1; } 30% { transform: scale(1, 0.01); opacity: 1; } 60% { transform: scale(1, 1); opacity: 1; background: #ffffff; } 100% { transform: scale(1, 1); opacity: 0; background: transparent; visibility: hidden; } }
+        /* --- WALKING ANIMATION --- */
+        .walking-mode { animation: walkToHouse 2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes walkToHouse { 0% { transform: rotateY(0deg) translateZ(0px); } 30% { transform: rotateY(45deg) translateZ(0px); } 100% { transform: rotateY(0deg) translateZ(800px); } }
 
-        #clouds-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('clouds.png'); background-repeat: repeat-x; opacity: 0.7; z-index: 1; pointer-events: none; animation: cloudDrift 120s linear infinite; transition: filter 1s ease; }
+        /* --- EXISTING STYLES --- */
+        #boot-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; color: var(--red); z-index: 9997; display: flex; flex-direction: column; padding: 40px; font-size: 1.5rem; transition: opacity 0.5s; }
+        #crt-boot { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; z-index: 10000; pointer-events: none; animation: crt-power-on 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        @keyframes crt-power-on { 0% { transform: scale(0.001, 0.001); opacity: 1; } 60% { transform: scale(1, 1); opacity: 1; background: #ffffff; } 100% { opacity: 0; visibility: hidden; } }
+
+        #clouds-layer { position: fixed; width: 100%; height: 100%; background-image: url('clouds.png'); z-index: 1; pointer-events: none; animation: cloudDrift 120s linear infinite; }
         @keyframes cloudDrift { from { background-position: 0 0; } to { background-position: 1000px 0; } }
 
-        #rain-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+        #rain-canvas { position: fixed; z-index: 2; pointer-events: none; }
         #viewport { position: relative; z-index: 3; width: 100vw; height: 100vh; overflow-y: auto; }
-
-        .layout-stack { display: grid; grid-template-columns: 1fr; gap: 25px; max-width: 600px; margin: 40px auto; padding: 20px; }
-        header { text-align: center; margin-bottom: 20px; padding: 20px; border: 1px solid var(--dim-red); background: var(--panel); transition: 0.5s; }
-        h1, .divider span { font-family: 'Press Start 2P'; color: var(--red); margin: 0; animation: neonFlicker 4s infinite; transition: 0.5s; }
-        h1 { font-size: 2rem; }
-        .divider span { font-size: 0.7rem; }
-        @keyframes neonFlicker { 0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); } 20%, 24%, 55% { opacity: 0.75; text-shadow: none; } }
-        .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; }
-        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--red); transition: 0.5s; }
-        .divider:not(:empty)::before { margin-right: 15px; }
-        .divider:not(:empty)::after { margin-left: 15px; }
-
-        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; min-height: 150px; position: relative; line-height: 1.6; transition: border-color 0.5s, box-shadow 0.3s, background 0.5s; }
-        .box::before { content: ""; position: absolute; top: -8px; left: -1px; right: -1px; height: 8px; background: var(--dim-red); clip-path: polygon(0% 100%, 5% 0%, 95% 0%, 100% 100%); transition: background 0.5s; }
-        .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); margin-bottom: 20px; border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; transition: 0.5s; }
-        .box.playing { border-color: var(--red); animation: borderPulse 1s infinite alternate; }
-        .box.playing::before { background: var(--red); }
-        @keyframes borderPulse { from { box-shadow: 0 0 5px var(--dim-red); } to { box-shadow: 0 0 20px var(--red); } }
-
-        .links a { display: block; color: var(--text); text-decoration: none; margin: 10px 0; transition: 0.3s; }
-        .links a:hover { color: var(--red); padding-left: 5px; }
-        .home-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 20px; font-family: 'Press Start 2P'; font-size: 0.8rem; transition: 0.3s; width: 100%; margin-bottom: 20px; }
-        .home-btn:hover { background: var(--red); color: #000000; }
-        .audio-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--dim-red); padding-bottom: 15px; margin-bottom: 15px; font-size: 0.9rem; transition: 0.5s; }
-        #now-playing { color: var(--red); animation: pulse 2s infinite; transition: 0.5s; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .track { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #110000; transition: 0.5s; }
-        .play-btn { width: 85px; padding: 5px; background: var(--dim-red); color: var(--text); font-family: 'Press Start 2P'; font-size: 0.6rem; text-align: center; border: 1px solid var(--red); transition: 0.5s; }
-        .track:hover .play-btn { background: var(--red); color: #000; }
-        .track.active .play-btn { background: var(--red); color: #000; }
-        .track-name { flex-grow: 1; margin-left: 15px; }
-        .commlink-input { background: #000; border: 1px solid var(--dim-red); color: var(--red); font-family: 'VT323', monospace; padding: 15px; width: 100%; box-sizing: border-box; margin-bottom: 15px; font-size: 1.2rem; resize: none; transition: 0.5s; }
-        .commlink-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 10px var(--dim-red); }
-        .commlink-input::placeholder { color: var(--dim-red); }
-        .commlink-btn { background: var(--dim-red); border: 1px solid var(--red); color: var(--text); font-family: 'Press Start 2P'; font-size: 0.7rem; padding: 15px; width: 100%; transition: 0.5s; }
-        .commlink-btn:hover { background: var(--red); color: #000; }
+        .layout-stack { display: grid; gap: 25px; max-width: 600px; margin: 40px auto; padding: 20px; transition: opacity 0.5s; }
+        
+        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; position: relative; }
+        .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; }
+        
+        .home-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 20px; font-family: 'Press Start 2P'; font-size: 0.8rem; width: 100%; }
+        .home-btn:hover { background: var(--red); color: #000; }
+        
+        /* Utility styles for existing elements */
+        h1 { font-family: 'Press Start 2P'; color: var(--red); font-size: 2rem; margin: 0; animation: neonFlicker 4s infinite; }
+        @keyframes neonFlicker { 0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 2px var(--red), 0 0 8px var(--red); } }
         .glitch-text { animation: neonFlicker 0.1s infinite !important; color: #fff !important; }
-        #visitor-counter { text-align: center; font-size: 0.9rem; color: var(--dim-red); margin-bottom: 50px; transition: 0.5s; }
+        #visitor-counter { text-align: center; font-size: 0.9rem; color: var(--dim-red); margin-bottom: 50px; }
     </style>
 </head>
 <body>
-
     <div id="monitor-shell"></div>
     <div id="crt-boot"></div>
     <div id="crt-overlay"></div>
@@ -131,119 +60,53 @@
             <main class="layout-stack">
                 <header><h1>SONNYVRO // STVLKING</h1></header>
 
-                <section class="box">
-                    <div class="box-title">STVLKING</div>
-                    <p>Welcome. This website serves as a hub for all of my projects, art, info about me, and a store where you can buy beats, feats, and more!</p>
-                </section>
-
-                <section class="box">
-                    <div class="box-title">SONNYVRO</div>
-                    <p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Actively coding:(</p>
-                    <p>Growing up listening to music every second of the day really helps me when creating as i never really run out of ideas. I excel in dark, atmospheric, and gloomy vibes while also recording alternative rock, dark trap, and indie music.</p>
-                </section>
-
-                <section class="box">
-                    <div class="box-title">BLOG</div>
-                    <p id="secret-log"><strong>> LOG ENTRY: 07.2026</strong></p>
-                    <p>Learning coding yay...</p>
-                </section>
-
-                <div class="divider"><span>SHOP / GET IN CONTACT</span></div>
+                <section class="box"><div class="box-title">STVLKING</div><p>Welcome. Projects, art, info, and store.</p></section>
+                <section class="box"><div class="box-title">SONNYVRO</div><p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Actively coding:(</p></section>
+                <section class="box"><div class="box-title">BLOG</div><p id="secret-log"><strong>> LOG ENTRY: 07.2026</strong></p></section>
 
                 <section class="box" id="beats-box">
                     <div class="box-title">BEATS FOR SALE</div>
-                    <div class="audio-header">
-                        <span id="now-playing">> STATUS: IDLE</span>
-                        <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.5">
-                    </div>
                     <ul class="tracklist" style="list-style: none; padding: 0;">
                         <li class="track" data-src="music/widow.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">widow.mp3</span></li>
-                        <li class="track" data-src="music/error.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">error.mp3</span></li>
-                        <li class="track" data-src="music/killing.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">killing.mp3</span></li>
                     </ul>
-                    <div class="links" style="margin-top: 20px;">
-                        <a href="https://air.bi/nXZu4" target="_blank">> ACCESS FULL AIRBIT STORE</a>
-                    </div>
                 </section>
 
-                <section class="box">
-                    <div class="box-title">COMMLINK</div>
-                    <form action="https://formspree.io/f/mjgqldkb" method="POST">
-                        <input type="text" name="name" class="commlink-input" placeholder="> ENTER_DESIGNATION" required>
-                        <input type="email" name="email" class="commlink-input" placeholder="> ENTER_RETURN_ADDRESS" required>
-                        <textarea name="message" class="commlink-input" rows="3" placeholder="> ENTER_MESSAGE..." required></textarea>
-                        <button type="submit" class="commlink-btn">[ TRANSMIT ]</button>
-                    </form>
+                <section id="house-scene" style="display:none; text-align:center; padding-top: 100px;">
+                    <h2 style="color: var(--red);">THE DARK HOUSE</h2>
+                    <img src="dark-house.png" style="width: 300px; opacity: 0.5;">
                 </section>
 
-                <section class="box">
-                    <div class="box-title">LINKS</div>
-                    <nav class="links">
-                        <a href="https://www.instagram.com/sonnyvro" target="_blank">> INSTAGRAM</a>
-                        <a href="https://soundcloud.com/user-11954578" target="_blank">> SOUNDCLOUD</a>
-                    </nav>
-                </section>
-
-                <button class="home-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">[ RETURN HOME ]</button>
-
-                <div id="visitor-counter">
-                    > UNIQUE_CONNECTIONS: <span id="hit-count">000000</span>
-                </div>
+                <button class="home-btn">[ WALK TO HOUSE ]</button>
+                <div id="visitor-counter">> UNIQUE_CONNECTIONS: <span id="hit-count">000000</span></div>
             </main>
         </div>
     </div>
 
 <script>
-    // Boot Sequence
+    // Boot & Counter
     const bootScreen = document.getElementById('boot-screen');
-    const bootLines = ["> INITIALIZING AUDIO ENGINE... OK", "> LOADING RAIN PROTOCOL... OK", "> ESTABLISHING SECURE CONNECTION...", "> ACCESSING STVLKER MAINFRAME..."];
-    let bootDelay = 800; 
-    bootLines.forEach((line) => { setTimeout(() => { bootScreen.innerHTML += `<div>${line}</div>`; }, bootDelay += 600); });
-    setTimeout(() => { bootScreen.style.opacity = '0'; setTimeout(() => bootScreen.remove(), 500); }, bootDelay + 800);
+    const bootLines = ["> INITIALIZING...", "> ACCESSING MAINFRAME..."];
+    let delay = 800;
+    bootLines.forEach(line => setTimeout(() => bootScreen.innerHTML += `<div>${line}</div>`, delay += 600));
+    setTimeout(() => { bootScreen.style.opacity = '0'; setTimeout(() => bootScreen.remove(), 500); }, delay + 800);
 
-    // Live Counter
     fetch('https://api.counterapi.dev/v1/stvlking_online/visitor_count/up')
-        .then(response => response.json())
-        .then(data => { const counterElement = document.getElementById('hit-count'); if (counterElement && data.count) counterElement.innerText = data.count.toString().padStart(6, '0'); });
+        .then(r => r.json()).then(d => document.getElementById('hit-count').innerText = d.count.toString().padStart(6, '0'));
 
-    let rainColor = '#ff0000';
+    // Walking Animation
+    document.querySelector('.home-btn').addEventListener('click', function() {
+        const viewport = document.getElementById('viewport');
+        document.querySelector('.layout-stack').style.opacity = '0';
+        document.getElementById('house-scene').style.display = 'block';
+        viewport.classList.add('walking-mode');
+        setTimeout(() => { window.location.href = 'house.html'; }, 2000);
+    });
+
+    // Easter Egg
     document.getElementById('secret-log').addEventListener('click', function() {
         document.body.classList.toggle('hacked');
-        if(document.body.classList.contains('hacked')) { rainColor = '#00ff33'; this.innerHTML = "<strong>> SYSTEM BREACH DETECTED... THEY ARE WATCHING</strong>"; this.classList.add('glitch-text'); }
-        else { rainColor = '#ff0000'; this.innerHTML = "<strong>> LOG ENTRY: 07.2026</strong>"; this.classList.remove('glitch-text'); }
+        this.innerHTML = document.body.classList.contains('hacked') ? "<strong>> SYSTEM BREACH DETECTED</strong>" : "<strong>> LOG ENTRY: 07.2026</strong>";
     });
-
-    const canvas = document.getElementById('rain-canvas');
-    const ctx = canvas.getContext('2d');
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.onresize = resize; resize();
-    let drops = [];
-    function createDrop() { return { x: Math.random() * canvas.width, y: -10, speed: 2 + Math.random() * 3 }; }
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = rainColor;
-        if (drops.length < 150) drops.push(createDrop());
-        drops.forEach(d => { if (d.y > canvas.height) { d.y = -10; d.x = Math.random() * canvas.width; } else { d.y += d.speed; ctx.fillRect(d.x, d.y, 2, 6); } });
-        requestAnimationFrame(animate);
-    }
-    animate();
-
-    const audioEngine = new Audio();
-    const nowPlayingText = document.getElementById('now-playing');
-    const volumeSlider = document.getElementById('vol-slider');
-    const beatsBox = document.getElementById('beats-box');
-    audioEngine.volume = volumeSlider.value;
-    volumeSlider.addEventListener('input', function() { audioEngine.volume = this.value; });
-    document.body.addEventListener('click', function(e) {
-        const track = e.target.closest('.track');
-        if (track) {
-            const src = track.getAttribute('data-src');
-            const btn = track.querySelector('.play-btn');
-            if (audioEngine.src.includes(src) && !audioEngine.paused) { audioEngine.pause(); btn.innerText = '[ PLAY ]'; nowPlayingText.innerText = '> STATUS: IDLE'; beatsBox.classList.remove('playing'); }
-            else { document.querySelectorAll('.play-btn').forEach(b => b.innerText = '[ PLAY ]'); audioEngine.src = src; audioEngine.play(); btn.innerText = '[ STOP ]'; nowPlayingText.innerText = '> PLAYING: ' + track.querySelector('.track-name').innerText; beatsBox.classList.add('playing'); }
-        }
-    });
-    audioEngine.addEventListener('ended', () => { document.querySelectorAll('.play-btn').forEach(b => b.innerText = '[ PLAY ]'); nowPlayingText.innerText = '> STATUS: IDLE'; beatsBox.classList.remove('playing'); });
 </script>
 </body>
 </html>
