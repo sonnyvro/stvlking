@@ -8,118 +8,53 @@
         :root { --bg: #000000; --panel: rgba(10, 0, 0, 0.85); --red: #ff0000; --dim-red: #330000; --text: #e0a0a0; }
         
         body.hacked { --red: #00ff33; --dim-red: #004400; --text: #a0e0a0; --panel: rgba(0, 25, 0, 0.85); }
-        body.hacked #clouds-layer { filter: sepia(100%) hue-rotate(70deg) saturate(500%) brightness(0.8); }
+        
+        body { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; cursor: crosshair; }
 
-        body { background-color: var(--bg) !important; background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('wallpaper.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; perspective: 1000px; cursor: crosshair; transition: color 0.5s; }
-
-        /* Overlays */
-        #monitor-shell { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10000; border-radius: 50% / 10%; box-shadow: inset 0 0 100px 30px rgba(0,0,0,0.8); background: radial-gradient(circle at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%); }
-        #crt-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9998; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 3px 100%; animation: crt-flicker 0.15s infinite; }
+        /* Layers */
+        #clouds-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('clouds.png') repeat-x; opacity: 0.3; z-index: 1; animation: drift 60s linear infinite; pointer-events: none; }
+        #rain-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
+        #monitor-shell { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10000; box-shadow: inset 0 0 100px 30px rgba(0,0,0,0.8); }
+        #crt-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9998; background: linear-gradient(rgba(0,0,0,0.25) 50%, transparent 50%); background-size: 100% 4px; opacity: 0.2; }
         #transition-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 1s ease-in-out; }
-        .fade-in { opacity: 1 !important; }
-
-        /* Animations */
-        @keyframes crt-flicker { 0% { opacity: 0.95; } 50% { opacity: 1; } 100% { opacity: 0.98; } }
-        .walk-into-house { animation: walkSequence 2.5s ease-in forwards; }
-        @keyframes walkSequence { 0% { transform: scale(1) translateY(0); } 100% { transform: scale(3) translateY(-10%); } }
-
-        /* Layout */
-        #viewport { position: relative; z-index: 3; width: 100vw; height: 100vh; overflow-y: auto; }
-        .layout-stack { display: grid; gap: 25px; max-width: 600px; margin: 40px auto; padding: 20px; transition: opacity 0.5s; }
-        .box { border: 1px solid var(--dim-red); background: var(--panel); padding: 25px; position: relative; }
-        .box-title { font-family: 'Press Start 2P'; font-size: 0.8rem; color: var(--red); border-bottom: 1px solid var(--dim-red); padding-bottom: 10px; }
-        .track { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #110000; cursor: pointer; }
-        .play-btn { width: 80px; font-family: 'Press Start 2P'; font-size: 0.6rem; color: var(--text); }
-        .track.active .track-name { color: var(--red); }
-        .home-btn { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 20px; font-family: 'Press Start 2P'; font-size: 0.8rem; width: 100%; cursor: pointer; }
+        
+        @keyframes drift { from { background-position: 0 0; } to { background-position: 1000px 0; } }
+        
+        /* Existing Layout Styles... (Keep your existing .layout-stack, .box, etc.) */
     </style>
 </head>
 <body>
-    <div id="monitor-shell"></div><div id="crt-overlay"></div><div id="transition-overlay"></div>
-    <div id="clouds-layer" style="position:fixed; width:100%; height:100%; background-image:url('clouds.png'); z-index:1; pointer-events:none;"></div>
+    <div id="clouds-layer"></div>
+    <canvas id="rain-layer"></canvas>
+    <div id="monitor-shell"></div>
+    <div id="crt-overlay"></div>
+    <div id="transition-overlay"></div>
     
-    <audio id="grass-step-sound" src="grass-step.mp3"></audio>
-
-    <div id="viewport">
-        <main class="layout-stack">
-            <header><h1>SONNYVRO // STVLKING</h1></header>
-
-            <section class="box">
-                <div class="box-title">STVLKING</div>
-                <p>Welcome. Hub for all of my projects, art, info about me, and music.</p>
-            </section>
-
-            <section class="box">
-                <div class="box-title">SONNYVRO</div>
-                <p><strong>Alias:</strong> Sonny // <strong>Status:</strong> Actively coding:(</p>
-                <p>I excel in dark, atmospheric, and gloomy vibes while also recording alternative rock and dark trap.</p>
-            </section>
-
-            <section class="box">
-                <div class="box-title">BLOG</div>
-                <p id="secret-log"><strong>> LOG ENTRY: 07.2026</strong></p>
-            </section>
-
-            <section class="box" id="beats-box">
-                <div class="box-title">BEATS FOR SALE</div>
-                <ul class="tracklist" style="list-style: none; padding: 0;">
-                    <li class="track" data-src="music/widow.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">widow.mp3</span></li>
-                    <li class="track" data-src="music/error.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">error.mp3</span></li>
-                    <li class="track" data-src="music/killing.mp3"><span class="play-btn">[ PLAY ]</span> <span class="track-name">killing.mp3</span></li>
-                </ul>
-            </section>
-
-            <section id="house-scene" style="display:none; text-align:center; padding-top: 100px;">
-                <h2 style="color: var(--red);">THE DARK HOUSE</h2>
-                <img src="dark-house.png" style="width: 300px; opacity: 0.5;">
-            </section>
-
-            <button class="home-btn">[ WALK TO HOUSE ]</button>
-        </main>
-    </div>
-
-<script>
-    // Audio Engine
-    const audioEngine = new Audio();
-    document.querySelectorAll('.track').forEach(track => {
-        track.addEventListener('click', function() {
-            if(audioEngine.src.includes(this.getAttribute('data-src')) && !audioEngine.paused) {
-                audioEngine.pause();
-                this.classList.remove('active');
-            } else {
-                audioEngine.src = this.getAttribute('data-src');
-                audioEngine.play();
-                document.querySelectorAll('.track').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            }
+    <script>
+    // Rain Effect
+    const canvas = document.getElementById('rain-layer');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const drops = [];
+    for(let i = 0; i < 100; i++) drops.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, l: Math.random()*10});
+    
+    function drawRain() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        drops.forEach(d => {
+            ctx.beginPath();
+            ctx.moveTo(d.x, d.y);
+            ctx.lineTo(d.x, d.y + d.l);
+            ctx.stroke();
+            d.y += 5;
+            if(d.y > canvas.height) d.y = 0;
         });
-    });
-
-    // House Transition
-    document.querySelector('.home-btn').addEventListener('click', function() {
-        const overlay = document.getElementById('transition-overlay');
-        const house = document.getElementById('house-scene');
-        const stepSound = document.getElementById('grass-step-sound');
-
-        document.querySelector('.layout-stack').style.opacity = '0';
-        house.style.display = 'block';
-        overlay.classList.add('fade-in');
-
-        let steps = 0;
-        const walkInterval = setInterval(() => {
-            stepSound.currentTime = 0; stepSound.play();
-            if (++steps >= 4) clearInterval(walkInterval);
-        }, 500);
-
-        setTimeout(() => house.classList.add('walk-into-house'), 1000);
-        setTimeout(() => { window.location.href = 'house.html'; }, 3500);
-    });
-
-    // Easter Egg
-    document.getElementById('secret-log').addEventListener('click', function() {
-        document.body.classList.toggle('hacked');
-        this.innerHTML = document.body.classList.contains('hacked') ? "<strong>> SYSTEM BREACH DETECTED</strong>" : "<strong>> LOG ENTRY: 07.2026</strong>";
-    });
+        requestAnimationFrame(drawRain);
+    }
+    drawRain();
+    
+    // ... Keep your existing Audio and Transition Scripts ...
 </script>
 </body>
 </html>
