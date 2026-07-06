@@ -9,7 +9,7 @@
         body.hacked { --red: #00ff33; --dim-red: #004400; --text: #a0e0a0; --panel: rgba(0, 25, 0, 0.85); }
         body.hacked #clouds-layer { filter: sepia(100%) hue-rotate(70deg) saturate(500%) brightness(0.8); }
 
-        body { background-color: var(--bg) !important; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; perspective: 1000px; cursor: crosshair; }
+        body { background-color: var(--bg) !important; background-image: url('wallpaper.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text) !important; font-family: 'VT323', monospace; margin: 0; overflow: hidden; perspective: 1000px; cursor: crosshair; }
 
         /* Atmospheric Effects */
         #clouds-layer { position: fixed; top: 0; left: 0; width: 200%; height: 100%; background: url('clouds.png') repeat-x; z-index: 1; animation: drift 60s linear infinite; pointer-events: none; opacity: 0.5; }
@@ -110,10 +110,18 @@
         const overlay = document.getElementById('transition-overlay');
         const stack = document.querySelector('.layout-stack');
         const house = document.getElementById('house-scene');
+        
         overlay.classList.add('fade-in');
         
         setTimeout(() => {
+            // HIDE ATMOSPHERE
+            document.getElementById('clouds-layer').style.display = 'none';
+            document.getElementById('rain-layer').style.display = 'none';
+            document.body.style.backgroundImage = 'none';
+            document.body.style.backgroundColor = '#000';
             stack.style.display = 'none';
+            
+            // SHOW HOUSE
             house.style.display = 'block';
             overlay.classList.remove('fade-in');
         }, 1000);
@@ -125,13 +133,11 @@
         this.style.display = 'none';
         if(doorVideo) {
             doorVideo.play();
-            setTimeout(() => {
-                doorVideo.style.transition = "transform 1.5s ease-in, opacity 1s";
-                doorVideo.style.transform = "scale(4)";
-                doorVideo.style.opacity = "0";
-            }, 1500);
+            // SLOW ZOOM
+            doorVideo.style.transition = "transform 4s ease-in-out";
+            doorVideo.style.transform = "scale(4)";
         }
-        setTimeout(() => { window.location.href = 'inside-house.html'; }, 3000);
+        setTimeout(() => { window.location.href = 'inside-house.html'; }, 4000);
     });
 
     document.getElementById('secret-log').addEventListener('click', function() {
