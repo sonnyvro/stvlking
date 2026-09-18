@@ -73,8 +73,7 @@ import {
     formatElapsed
 } from './shared.js';
 
-import { setMasterVolume, resumeAudio } from './audio.js';
-
+import { setMasterVolume, resumeAudio, setEqBand, getEqBand } from './audio.js';
 // ------------------------------------------------------------
 // Initial boot
 // ------------------------------------------------------------
@@ -437,6 +436,124 @@ if (miniPlayerToggle) {
         else audio.pause();
     });
 }
+// ------------------------------------------------------------
+// EQ popover
+// ------------------------------------------------------------
+
+const EQ_STORAGE_KEY = 'stvlking_eq';
+const eqPopover = document.getElementById('eq-popover');
+const eqBtn = document.getElementById('mini-player-eq-btn');
+const eqResetBtn = document.getElementById('eq-popover-reset');
+const eqSliders = {
+    low: document.getElementById('eq-slider-low'),
+    mid: document.getElementById('eq-slider-mid'),
+    high: document.getElementById('eq-slider-high')
+};
+const eqValues = {
+    low: document.getElementById('eq-value-low'),
+    mid: document.getElementById('eq-value-mid'),
+    high: document.getElementById('eq-value-high')
+};
+
+function updateEqSliderFill(slider, valueDb) {
+    if (!slider) return;
+    const pct = ((12 - valueDb) / 24) * 100;
+    slider.style.setProperty('--eq-top', pct + '%');
+}
+
+function updateEqReadout(band, valueDb) {
+    const el = eqValues[band];
+    if (!el) return;
+    const sign = valueDb > 0 ? '+' : '';
+    el.innerHTML = `${sign}${valueDb}<span>dB</span>`;
+    el.classList.remove('boost', 'cut');
+    if (valueDb > 0) el.classList.add('boost');
+    else if (valueDb < 0) el.classList.add('cut');
+}
+
+function setBand(band, valueDb) {
+    setEqBand(band, valueDb);
+    if (eqSliders[band]) eqSliders[band].value = valueDb;
+    updateEqSliderFill(eqSliders[band], valueDb);
+    updateEqReadout(band, valueDb);
+}
+
+function saveEqState() {
+    try {
+        const state = {
+            low: parseFloat(eqSliders.low.value) || 0,
+            mid: parseFloat(eqSliders.mid.value) || 0,
+            high: parseFloat(eqSliders.high.value) || 0
+        };
+        localStorage.setItem(EQ_STORAGE_KEY, JSON.stringify(state));
+    } catch (_) {}
+}
+
+function loadEqState() {
+    let state = { low: 0, mid: 0, high: 0 };
+    try {
+        const raw = localStorage.getItem(EQ_STORAGE_KEY);
+        if (raw) state = JSON.parse(raw);
+    } catch (_) {}
+    ['low', 'mid', 'high'].forEach(band => {
+        const v = typeof state[band] === 'number' ? state[band] : 0;
+        if (eqSliders[band]) eqSliders[band].value = v;
+        updateEqSliderFill(eqSliders[band], v);
+        updateEqReadout(band, v);
+        setEqBand(band, v);
+    });
+}
+
+['low', 'mid', 'high'].forEach(band => {
+    const slider = eqSliders[band];
+    if (!slider) return;
+    slider.addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value) || 0;
+        setBand(band, v);
+        saveEqState();
+    });
+});
+
+if (eqResetBtn) {
+    eqResetBtn.addEventListener('click', () => {
+        ['low', 'mid', 'high'].forEach(band => setBand(band, 0));
+        saveEqState();
+    });
+}
+
+function openEqPopover() {
+    if (!eqPopover) return;
+    eqPopover.classList.add('open');
+    if (eqBtn) eqBtn.classList.add('active');
+}
+function closeEqPopover() {
+    if (!eqPopover) return;
+    eqPopover.classList.remove('open');
+    if (eqBtn) eqBtn.classList.remove('active');
+}
+
+if (eqBtn) {
+    eqBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (eqPopover && eqPopover.classList.contains('open')) closeEqPopover();
+        else openEqPopover();
+    });
+}
+
+document.addEventListener('click', (e) => {
+    if (!eqPopover || !eqPopover.classList.contains('open')) return;
+    if (eqPopover.contains(e.target)) return;
+    if (eqBtn && eqBtn.contains(e.target)) return;
+    closeEqPopover();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && eqPopover && eqPopover.classList.contains('open')) {
+        closeEqPopover();
+    }
+});
+
+loadEqState();
 
 // ------------------------------------------------------------
 // Contact form
