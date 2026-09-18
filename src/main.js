@@ -113,7 +113,7 @@ fetchTrackPlays();
 initLastfm();
 
 // Audio-reactive visuals
-wireAudioFlash(document.getElementById('discord-username'));
+// wireAudioFlash(document.getElementById('discord-username'));
 
 // View counter and soundcloud plays need window load for some reason
 window.addEventListener('load', initViewCounter);
@@ -126,19 +126,20 @@ setInterval(fetchTrackPlays, 30000);
 // Keyboard shortcuts
 // ------------------------------------------------------------
 
-document.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'F12') { e.preventDefault(); return false; }
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); return false; }
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); return false; }
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
-});
-document.addEventListener('selectstart', (e) => {
-    const tag = (e.target.tagName || '').toLowerCase();
-    if (tag !== 'input' && tag !== 'textarea') e.preventDefault();
-});
+// ---- DEVTOOLS BLOCK DISABLED FOR DEBUGGING ----
+// document.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
+// document.addEventListener('keydown', (e) => {
+//     if (e.key === 'F12') { e.preventDefault(); return false; }
+//     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); return false; }
+//     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); return false; }
+//     if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
+//     if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
+//     if ((e.ctrlKey || e.metaKey) && (e.key === 'S' || e.key === 's')) { e.preventDefault(); return false; }
+// });
+// document.addEventListener('selectstart', (e) => {
+//     const tag = (e.target.tagName || '').toLowerCase();
+//     if (tag !== 'input' && tag !== 'textarea') e.preventDefault();
+// });
 
 // ------------------------------------------------------------
 // Command palette
@@ -353,14 +354,79 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ------------------------------------------------------------
-// Mini-player toggle button + space bar
+// Mini-player toggle button + volume controls
 // ------------------------------------------------------------
 
+const VOLUME_STORAGE_KEY = 'stvlking_volume';
+let lastNonZeroVolume = 1;
+
 const miniPlayerToggle = document.getElementById('mini-player-toggle');
+const volumeSlider = document.getElementById('mini-player-volume-slider');
+const volumeBtn = document.getElementById('mini-player-mute');
+const volumeIcon = document.getElementById('mini-player-volume-icon');
+
+function getCurrentAudio() {
+    const { playerState } = window.__catalogState || {};
+    return playerState?.currentlyPlayingAudio || document.querySelector('[data-track-audio]');
+}
+
+function applyVolumeToAll(v) {
+    document.querySelectorAll('[data-track-audio]').forEach(a => { a.volume = v; });
+}
+
+function setVolumeIcon(v) {
+    if (!volumeIcon) return;
+    if (v === 0) {
+        volumeIcon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+    } else if (v < 0.5) {
+        volumeIcon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+    } else {
+        volumeIcon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>';
+    }
+}
+
+function updateSliderFill(v) {
+    if (!volumeSlider) return;
+    volumeSlider.style.setProperty('--vol-pct', (v * 100) + '%');
+}
+
+let initialVolume = 1;
+try {
+    const saved = parseFloat(localStorage.getItem(VOLUME_STORAGE_KEY));
+    if (!isNaN(saved) && saved >= 0 && saved <= 1) initialVolume = saved;
+} catch (_) {}
+if (initialVolume > 0) lastNonZeroVolume = initialVolume;
+applyVolumeToAll(initialVolume);
+if (volumeSlider) volumeSlider.value = initialVolume;
+setVolumeIcon(initialVolume);
+updateSliderFill(initialVolume);
+
+if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value);
+        if (v > 0) lastNonZeroVolume = v;
+        applyVolumeToAll(v);
+        setVolumeIcon(v);
+        updateSliderFill(v);
+        try { localStorage.setItem(VOLUME_STORAGE_KEY, String(v)); } catch (_) {}
+    });
+}
+
+if (volumeBtn) {
+    volumeBtn.addEventListener('click', () => {
+        const current = volumeSlider ? parseFloat(volumeSlider.value) : 1;
+        const next = current > 0 ? 0 : lastNonZeroVolume;
+        if (volumeSlider) volumeSlider.value = next;
+        applyVolumeToAll(next);
+        setVolumeIcon(next);
+        updateSliderFill(next);
+        try { localStorage.setItem(VOLUME_STORAGE_KEY, String(next)); } catch (_) {}
+    });
+}
+
 if (miniPlayerToggle) {
     miniPlayerToggle.addEventListener('click', () => {
-        const { playerState } = window.__catalogState || {};
-        const audio = playerState?.currentlyPlayingAudio || document.querySelector('[data-track-audio]');
+        const audio = getCurrentAudio();
         if (!audio) return;
         if (audio.paused) audio.play();
         else audio.pause();

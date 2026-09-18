@@ -2214,7 +2214,120 @@
         .mini-player-meta { font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.5px; margin-top: 2px; }
 
         .mini-player-controls { display: flex; align-items: center; gap: 12px; }
+        .mini-player-volume {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            padding: 0 4px;
+        }
 
+        .mini-player-volume-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            color: var(--text-dim);
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .mini-player-volume-btn:hover {
+            color: var(--accent);
+            border-color: rgba(var(--accent-rgb), 0.4);
+            background: rgba(var(--accent-rgb), 0.08);
+            box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.2);
+        }
+
+        .mini-player-volume-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .mini-player-volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 96px;
+            height: 20px;
+            background: transparent;
+            outline: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mini-player-volume-slider::-webkit-slider-runnable-track {
+            height: 4px;
+            background: linear-gradient(90deg,
+                rgba(var(--accent-rgb), 0.55) 0%,
+                rgba(var(--accent-rgb), 0.55) var(--vol-pct, 100%),
+                rgba(255, 255, 255, 0.06) var(--vol-pct, 100%),
+                rgba(255, 255, 255, 0.06) 100%);
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.15) inset;
+        }
+
+        .mini-player-volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid #0d0d0f;
+            box-shadow: 0 0 10px var(--accent-glow), 0 0 4px rgba(255, 255, 255, 0.2);
+            margin-top: -4px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        }
+
+        .mini-player-volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 16px var(--accent-glow), 0 0 6px rgba(255, 255, 255, 0.3);
+        }
+
+        .mini-player-volume-slider:active::-webkit-slider-thumb {
+            transform: scale(1.05);
+        }
+
+        .mini-player-volume-slider::-moz-range-track {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.15) inset;
+        }
+
+        .mini-player-volume-slider::-moz-range-progress {
+            height: 4px;
+            background: rgba(var(--accent-rgb), 0.55);
+            border-radius: 2px;
+        }
+
+        .mini-player-volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid #0d0d0f;
+            box-shadow: 0 0 10px var(--accent-glow), 0 0 4px rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        }
+
+        .mini-player-volume-slider::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 16px var(--accent-glow), 0 0 6px rgba(255, 255, 255, 0.3);
+        }
         .mini-player-viz {
             display: flex;
             align-items: flex-end;
@@ -2570,6 +2683,8 @@
             .mini-player { padding: 10px 14px; gap: 10px; }
             .mini-player-art { width: 38px; height: 38px; }
             .mini-player-viz { display: none; }
+            .mini-player-volume-slider { width: 64px; }
+            .mini-player-volume { gap: 6px; }
             .track { grid-template-columns: 56px 1fr; gap: 12px; padding: 14px; }
             .track-cover { width: 56px; height: 56px; font-size: 1.4rem; }
             .notify-strip { padding: 14px; flex-direction: column; align-items: stretch; }
@@ -3078,13 +3193,22 @@
         <div class="mini-player-viz" id="mini-player-viz">
             <span></span><span></span><span></span><span></span><span></span>
         </div>
+        <div class="mini-player-volume" id="mini-player-volume">
+            <button class="mini-player-volume-btn" id="mini-player-mute" type="button" aria-label="Mute or unmute">
+                <svg viewBox="0 0 24 24" id="mini-player-volume-icon">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                </svg>
+            </button>
+            <input type="range" class="mini-player-volume-slider" id="mini-player-volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume">
+        </div>
         <div class="mini-player-controls">
             <button class="mini-player-btn" id="mini-player-toggle" type="button" aria-label="Play or pause">
                 <svg viewBox="0 0 24 24" id="mini-player-icon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             </button>
         </div>
     </div>
-
     <div class="toast" id="toast">
         <span class="toast-dot"></span>
         <span id="toast-text">Copied!</span>

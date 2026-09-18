@@ -236,6 +236,14 @@ export function wireTrackPlayers() {
             if (!anyPlaying && onTrackStarted) onTrackStarted(false);
             updatePlayIcon();
         });
+	        // Apply saved volume to new audio elements
+        try {
+            const savedVol = parseFloat(localStorage.getItem('stvlking_volume'));
+            if (!isNaN(savedVol) && savedVol >= 0 && savedVol <= 1) {
+                audio.volume = savedVol;
+            }
+        } catch (_) {}
+
         audio.addEventListener('loadedmetadata', () => {
             if (timeEl) timeEl.textContent = `0:00 / ${formatTime(audio.duration)}`;
         });
