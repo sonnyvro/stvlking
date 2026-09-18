@@ -73,6 +73,8 @@ import {
     formatElapsed
 } from './shared.js';
 
+import { setMasterVolume, resumeAudio } from './audio.js';
+
 // ------------------------------------------------------------
 // Initial boot
 // ------------------------------------------------------------
@@ -371,6 +373,9 @@ function getCurrentAudio() {
 }
 
 function applyVolumeToAll(v) {
+    setMasterVolume(v);
+    // Also set native volume as a fallback for elements that
+    // haven't been attached to the pipeline yet.
     document.querySelectorAll('[data-track-audio]').forEach(a => { a.volume = v; });
 }
 

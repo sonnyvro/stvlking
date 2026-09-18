@@ -2,6 +2,7 @@
 // Track catalog, rendering, playback, beat detail modal, reactions, plays.
 
 import { escapeHtml, formatTime, isConfigured, getClientId, FIREBASE_DB_URL, showToast } from './shared.js';
+import { attachAudio, resumeAudio } from './audio.js';
 
 const TRACKS = [
     { id: 'newidkwhattocallit', title: 'newidkwhattocallit', year: '2026', tags: ['dark', 'trap', 'ambient'], initials: 'NI', cover: 'covers/newidkwhattocallit.jpg', audio: 'newidkwhattocallit.mp3', details: { bpm: '140', key: 'F# min', mood: 'Dark, hypnotic' } },
@@ -196,6 +197,8 @@ export function wireTrackPlayers() {
             document.querySelectorAll('[data-track-audio]').forEach(a => {
                 if (a !== audio && !a.paused) a.pause();
             });
+            attachAudio(audio);
+            resumeAudio();
             playerState.currentlyPlayingAudio = audio;
             playerState.lastPlayedTrackId = trackId;
             const trackEl = audio.closest('.track');
