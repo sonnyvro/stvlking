@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>misc | stvlking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #020202;
+            --neon-color: #ff0033;
+        }
+
+        body {
+            margin: 0; padding: 0; 
+            background-color: var(--bg-color); 
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; cursor: none; 
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor { width: 10px; height: 10px; background: var(--neon-color); border-radius: 50%; position: fixed; pointer-events: none; z-index: 999999; box-shadow: 0 0 10px var(--neon-color); }
+
+        /* --- SOFT FUZZ & STATIC FX --- */
+        /* Smooth, slow drifting noise rather than flashing */
+        .static-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('https://www.transparenttextures.com/patterns/noise-lines.png'), url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.08; z-index: 1; pointer-events: none;
+            animation: slow-drift 15s linear infinite;
+        }
+        
+        /* Dark CRT scanlines to make it feel like an old monitor */
+        .vhs-lines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: repeating-linear-gradient(transparent, transparent 2px, rgba(0,0,0,0.7) 3px);
+            z-index: 2; pointer-events: none; 
+        }
+
+        /* --- THE COUNTDOWN --- */
+        .content-wrapper { text-align: center; position: relative; z-index: 10; }
+
+        #countdown {
+            font-size: 6rem; 
+            color: #444; /* Dim, faded grey/black so it doesn't pop too hard */
+            letter-spacing: 15px;
+            /* Ghostly chromatic aberration glitch */
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
+            animation: subtle-glitch 5s infinite alternate ease-in-out;
+        }
+        
+        .label { 
+            font-size: 1.2rem; letter-spacing: 8px; color: #222; 
+            margin-top: 10px; opacity: 0.8; 
+            animation: subtle-glitch 7s infinite alternate-reverse ease-in-out;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes slow-drift {
+            from { background-position: 0 0; }
+            to { background-position: 200px 200px; }
+        }
+        
+        /* Gently shifts position and splits red/blue shadows */
+        @keyframes subtle-glitch {
+            0%, 100% { transform: translate(0); text-shadow: 1px 0 2px rgba(255,0,0,0.1), -1px 0 2px rgba(0,0,255,0.1); }
+            25% { transform: translate(-1px, 1px); text-shadow: 2px 0 2px rgba(255,0,0,0.1), -2px 0 2px rgba(0,0,255,0.1); }
+            50% { transform: translate(1px, -1px); text-shadow: -1px 0 2px rgba(255,0,0,0.1), 1px 0 2px rgba(0,0,255,0.1); }
+            75% { transform: translate(0px, 1px); text-shadow: 3px 0 2px rgba(255,0,0,0.15), -2px 0 2px rgba(0,0,255,0.15); }
+        }
+
+        @media (max-width: 600px) { #countdown { font-size: 3rem; letter-spacing: 8px; } }
+    </style>
+</head>
+<body>
+    <div class="cursor" id="cursor"></div>
+    <div class="static-bg"></div>
+    <div class="vhs-lines"></div>
+
+    <div class="content-wrapper">
+        <div id="countdown">00 : 00 : 00 : 00</div>
+        <div class="label">...</div>
+    </div>
+
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => { 
+            cursor.style.left = e.clientX + 'px'; 
+            cursor.style.top = e.clientY + 'px'; 
+        });
+
+        // --- SET YOUR COUNTDOWN DATE HERE ---
+        // Format: "Month DD, YYYY HH:MM:SS" (e.g., "Oct 31, 2026 00:00:00")
+        const countDownDate = new Date("Dec 18, 2026 00:00:00").getTime();
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            // Math calculations for time
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Add leading zeros if numbers are less than 10
+            const fDays = days < 10 ? "0" + days : days;
+            const fHours = hours < 10 ? "0" + hours : hours;
+            const fMinutes = minutes < 10 ? "0" + minutes : minutes;
+            const fSeconds = seconds < 10 ? "0" + seconds : seconds;
+
+            document.getElementById("countdown").innerHTML = `${fDays} : ${fHours} : ${fMinutes} : ${fSeconds}`;
+
+            // What happens when the timer hits zero
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("countdown").innerHTML = "00 : 00 : 00 : 00";
+                document.querySelector(".label").innerHTML = "IT HAS BEGUN";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+ 
+
+ 
