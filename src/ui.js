@@ -155,6 +155,7 @@ export function initClock() {
 export function wireAudioFlash(usernameEl) {
     if (prefersReducedMotion) return;
     if (window.__audioFlashWired) return;
+
     const flashLayer = document.getElementById('audio-flash-layer');
     const lightningLayer = document.getElementById('lightning-layer');
     if (!flashLayer || !lightningLayer) return;
@@ -163,72 +164,21 @@ export function wireAudioFlash(usernameEl) {
     const FLASH_PEAK = 0.18;
     const ATTACK = 0.55;
     const RELEASE = 0.2;
-    const BASS_MAX_HZ = 140;
     const SMOOTH_FLOOR = 0.04;
-    const STRIKE_THRESHOLD = 0.55;
-    const STRIKE_COOLDOWN_MS = 320;
-    const STRIKE_RISE = 0.22;
+
+    const STRIKE_THRESHOLD = 0.32;
+    const STRIKE_COOLDOWN_MS = 160;
+    const STRIKE_RISE = 0.08;
+
     const KINETIC_GLITCH_THRESHOLD = 0.7;
     const KINETIC_GLITCH_COOLDOWN = 500;
 
-    let audioCtx = null;
-    let analyser = null;
-    let sourceNode = null;
-    let currentSourceEl = null;
-    let freqData = null;
     let rafId = null;
     let smoothed = 0;
     let prevBass = 0;
     let lastStrikeAt = 0;
     let lastGlitchAt = 0;
     let running = false;
-
-    function ensureContext() {
-        if (audioCtx) return true;
-        try {
-            const Ctx = window.AudioContext || window.webkitAudioContext;
-            if (!Ctx) return false;
-            audioCtx = new Ctx();
-            analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 512;
-            analyser.smoothingTimeConstant = 0.55;
-            freqData = new Uint8Array(analyser.frequencyBinCount);
-            return true;
-        } catch (_) {
-            audioCtx = null;
-            analyser = null;
-            return false;
-        }
-    }
-
-    function attachTo(audioEl) {
-        if (!ensureContext()) return false;
-        if (audioEl === currentSourceEl) return true;
-        try {
-            if (sourceNode) { try { sourceNode.disconnect(); } catch (_) {} }
-            sourceNode = audioCtx.createMediaElementSource(audioEl);
-            sourceNode.connect(analyser);
-            analyser.connect(audioCtx.destination);
-            currentSourceEl = audioEl;
-            return true;
-        } catch (_) {
-            sourceNode = null;
-            currentSourceEl = null;
-            return false;
-        }
-    }
-
-    function bassLevel() {
-        if (!analyser || !freqData) return 0;
-        analyser.getByteFrequencyData(freqData);
-        const nyquist = audioCtx.sampleRate / 2;
-        const binHz = nyquist / freqData.length;
-        const maxBin = Math.min(freqData.length - 1, Math.floor(BASS_MAX_HZ / binHz));
-        let sum = 0;
-        for (let i = 0; i <= maxBin; i++) sum += freqData[i];
-        const avg = sum / (maxBin + 1);
-        return avg / 255;
-    }
 
     function fireStrike() {
         const now = performance.now();
@@ -253,7 +203,12 @@ export function wireAudioFlash(usernameEl) {
 
     function tick() {
         if (!running) return;
-        const raw = bassLevel();
+        // getBassLevel is exported from audio.js; imported via dynamic lookup
+        // to avoid circular import at module load.
+        const getBassLevel = window.__getBassLevel;
+        if (!getBassLevel) { rafId = requestAnimationFrame(tick); return; }
+        const raw = getBassLevel();
+
         const shaped = raw < SMOOTH_FLOOR ? 0 : (raw - SMOOTH_FLOOR) / (1 - SMOOTH_FLOOR);
         const target = shaped * shaped;
         const coeff = target > smoothed ? ATTACK : RELEASE;
@@ -275,14 +230,11 @@ export function wireAudioFlash(usernameEl) {
         rafId = requestAnimationFrame(tick);
     }
 
-    function start(audioEl) {
-        if (!attachTo(audioEl)) return;
-        if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-        if (!running) {
-            running = true;
-            prevBass = 0;
-            rafId = requestAnimationFrame(tick);
-        }
+    function start() {
+        if (running) return;
+        running = true;
+        prevBass = 0;
+        rafId = requestAnimationFrame(tick);
     }
 
     function stop() {
@@ -296,14 +248,18 @@ export function wireAudioFlash(usernameEl) {
         }
     }
 
+    // Hook into audio play/pause events
     document.querySelectorAll('[data-track-audio]').forEach(audio => {
         if (audio.dataset.flashWired === '1') return;
         audio.dataset.flashWired = '1';
-        audio.addEventListener('play', () => start(audio));
-        audio.addEventListener('pause', () => { if (audio === currentSourceEl) stop(); });
-        audio.addEventListener('ended', () => { if (audio === currentSourceEl) stop(); });
-        audio.addEventListener('volumechange', () => {
-            if (audio.volume === 0 && audio === currentSourceEl) stop();
+        audio.addEventListener('play', start);
+        audio.addEventListener('pause', () => {
+            const anyPlaying = Array.from(document.querySelectorAll('[data-track-audio]')).some(a => !a.paused);
+            if (!anyPlaying) stop();
+        });
+        audio.addEventListener('ended', () => {
+            const anyPlaying = Array.from(document.querySelectorAll('[data-track-audio]')).some(a => !a.paused);
+            if (!anyPlaying) stop();
         });
     });
 }

@@ -73,7 +73,7 @@ import {
     formatElapsed
 } from './shared.js';
 
-import { setMasterVolume, resumeAudio, setEqBand, getEqBand } from './audio.js';
+import { setMasterVolume, resumeAudio, setEqBand, getEqBand, getBassLevel } from './audio.js';
 // ------------------------------------------------------------
 // Initial boot
 // ------------------------------------------------------------
@@ -114,7 +114,8 @@ fetchTrackPlays();
 initLastfm();
 
 // Audio-reactive visuals
-// wireAudioFlash(document.getElementById('discord-username'));
+window.__getBassLevel = getBassLevel;
+wireAudioFlash(document.getElementById('discord-username'));
 
 // View counter and soundcloud plays need window load for some reason
 window.addEventListener('load', initViewCounter);

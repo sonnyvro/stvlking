@@ -9,6 +9,8 @@ let masterGain = null;
 let eqLow = null;
 let eqMid = null;
 let eqHigh = null;
+let analyser = null;
+let freqData = null;
 
 const sourceCache = new WeakMap();
 
@@ -37,12 +39,20 @@ export function ensureAudioGraph() {
     eqHigh.frequency.value = 4000;
     eqHigh.gain.value = 0;
 
+       // Analyser sits between eqHigh and masterGain as a passthrough.
+    // It doesn't alter audio; we only read frequency data from it.
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 512;
+    analyser.smoothingTimeConstant = 0.25;
+    freqData = new Uint8Array(analyser.frequencyBinCount);
+
     masterGain = audioCtx.createGain();
     masterGain.gain.value = 1;
 
     eqLow.connect(eqMid);
     eqMid.connect(eqHigh);
-    eqHigh.connect(masterGain);
+    eqHigh.connect(analyser);
+    analyser.connect(masterGain);
     masterGain.connect(audioCtx.destination);
 
     return audioCtx;
@@ -91,4 +101,21 @@ export function getEqBand(band) {
 
 export function isGraphReady() {
     return !!audioCtx;
+}
+// Read bass energy from the shared analyser as a 0–1 value.
+// Returns 0 if the graph isn't ready yet (before first user play).
+export function getBassLevel() {
+    if (!analyser || !freqData || !audioCtx) return 0;
+    analyser.getByteFrequencyData(freqData);
+    const nyquist = audioCtx.sampleRate / 2;
+    const binHz = nyquist / freqData.length;
+        const maxBin = Math.min(freqData.length - 1, Math.floor(180 / binHz));
+    let sum = 0;
+    for (let i = 0; i <= maxBin; i++) sum += freqData[i];
+    const avg = sum / (maxBin + 1);
+    return avg / 255;
+}
+
+export function isAnalyserReady() {
+    return !!analyser && !!audioCtx;
 }
