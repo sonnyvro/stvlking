@@ -2875,321 +2875,178 @@
 
         .magnetic { transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
 
-        /* ─────────────────────────────────────────────────────────
-           Key & BPM Finder styles
-           ───────────────────────────────────────────────────────── */
-        .kbf-card {
-            width: 100%;
-        }
+/* ─────────────────────────────────────────────────────────
+   Discord CTA styles
+   ───────────────────────────────────────────────────────── */
+.discord-card {
+    background:
+        radial-gradient(ellipse 120% 80% at 50% 0%, rgba(var(--accent-rgb), 0.06) 0%, transparent 60%),
+        rgba(7, 7, 9, 0.86);
+    border-color: rgba(var(--accent-rgb), 0.18);
+}
 
-        .kbf-header {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
+.discord-card:hover {
+    border-color: rgba(var(--accent-rgb), 0.32);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.06) inset,
+        0 24px 70px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(var(--accent-rgb), 0.12),
+        0 0 80px rgba(var(--accent-rgb), 0.1);
+}
 
-        .kbf-header h2 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 4vw, 2.8rem);
-            letter-spacing: 3px;
-            line-height: 0.95;
-            color: var(--text);
-            font-weight: 400;
-        }
+.discord-cta-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
 
-        .kbf-header h2 .dot {
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent-glow);
-        }
+.discord-cta-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    letter-spacing: 3px;
+    line-height: 0.95;
+    color: var(--text);
+    font-weight: 400;
+}
 
-        .kbf-header .kbf-sub {
-            font-size: 0.68rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            font-weight: 700;
-        }
+.discord-cta-header h2 .dot {
+    color: var(--accent);
+    text-shadow: 0 0 20px var(--accent-glow);
+}
 
-        .kbf-intro {
-            max-width: 670px;
-            line-height: 1.75;
-            color: rgba(255,255,255,0.65);
-            margin-bottom: 22px;
-            font-size: 0.86rem;
-            font-weight: 400;
-        }
+.discord-cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: rgba(var(--accent-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: var(--radius-pill);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+    text-shadow: 0 0 10px var(--accent-glow);
+}
 
-        .kbf-drop {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 54px 24px;
-            border: 2px dashed rgba(var(--accent-rgb), 0.3);
-            border-radius: 16px;
-            background: rgba(var(--accent-rgb), 0.02);
-            color: var(--text-mid);
-            text-align: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.25s ease, transform 0.15s ease;
-            user-select: none;
-        }
+.discord-cta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
 
-        .kbf-drop:hover {
-            border-color: rgba(var(--accent-rgb), 0.55);
-            background: rgba(var(--accent-rgb), 0.05);
-            box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.1);
-        }
+.discord-cta-lede {
+    max-width: 620px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.72);
+    margin-bottom: 24px;
+    font-size: 0.88rem;
+}
 
-        .kbf-drop.hover {
-            border-color: var(--accent);
-            background: rgba(var(--accent-rgb), 0.09);
-            box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.25);
-            transform: scale(1.005);
-            color: var(--text);
-        }
+.discord-cta-perks {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+}
 
-        .kbf-drop .kbf-icon {
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-            filter: drop-shadow(0 0 12px var(--accent-glow));
-        }
+.discord-cta-perks li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.055);
+    border-radius: 12px;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
 
-        .kbf-drop .kbf-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.6;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
+.discord-cta-perks li:hover {
+    border-color: rgba(var(--accent-rgb), 0.35);
+    background: rgba(var(--accent-rgb), 0.04);
+    transform: translateY(-2px);
+}
 
-        .kbf-drop .kbf-hint {
-            font-size: 0.68rem;
-            letter-spacing: 1.8px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            font-weight: 700;
-            margin-top: 4px;
-        }
+.discord-cta-emoji {
+    font-size: 1.1rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+    filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.4));
+}
 
-        .kbf-status {
-            margin-top: 16px;
-            min-height: 1.4em;
-            font-size: 0.72rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--accent);
-            font-weight: 700;
-            text-align: center;
-            text-shadow: 0 0 14px var(--accent-glow);
-        }
+.discord-cta-perks li > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
 
-        .kbf-status:empty { display: none; }
+.discord-cta-perks strong {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.2px;
+}
 
-        .kbf-status.error {
-            color: var(--dnd);
-            text-shadow: 0 0 14px rgba(242, 63, 67, 0.5);
-        }
+.discord-cta-perks li > div > span {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+}
 
-        .kbf-results {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 26px;
-        }
+.discord-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    border-radius: var(--radius-sm);
+    transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.2s ease;
+    box-shadow: 0 6px 26px rgba(var(--accent-rgb), 0.25);
+}
 
-        .kbf-results:empty { display: none; margin-top: 0; }
+.discord-cta-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px var(--accent-glow);
+}
 
-        .kbf-result {
-            padding: 22px 24px;
-            background: rgba(255, 255, 255, 0.018);
-            border: 1px solid rgba(var(--accent-rgb), 0.2);
-            border-radius: 14px;
-            transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-            animation: kbf-result-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+.discord-cta-arrow {
+    transition: transform 0.25s ease;
+    font-size: 0.9rem;
+}
 
-        @keyframes kbf-result-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.discord-cta-btn:hover .discord-cta-arrow {
+    transform: translateX(4px);
+}
 
-        .kbf-result:hover {
-            border-color: rgba(var(--accent-rgb), 0.45);
-            background: rgba(var(--accent-rgb), 0.035);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(var(--accent-rgb), 0.1);
-        }
+@media (max-width: 900px) {
+    .discord-cta-perks { grid-template-columns: 1fr; }
+}
 
-        .kbf-result-label {
-            font-size: 0.6rem;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .kbf-result-value {
-            font-family: var(--font-display);
-            font-size: 2.6rem;
-            letter-spacing: 2px;
-            line-height: 1;
-            color: var(--accent);
-            text-shadow: 0 0 22px var(--accent-glow);
-            word-break: break-word;
-        }
-
-        .kbf-result-unit {
-            font-size: 0.72rem;
-            color: var(--text-mid);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-left: 6px;
-        }
-
-        .kbf-privacy {
-            margin-top: 20px;
-            font-size: 0.68rem;
-            color: var(--text-dim);
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .kbf-privacy svg {
-            width: 12px;
-            height: 12px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
-            color: var(--accent);
-        }
-
-        @media (max-width: 900px) {
-            .kbf-results { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 560px) {
-            .kbf-drop { padding: 40px 18px; }
-            .kbf-drop .kbf-hint { font-size: 0.6rem; letter-spacing: 1.4px; }
-            .kbf-result { padding: 18px 20px; }
-            .kbf-result-value { font-size: 2.1rem; }
-        }
-
-        @media (max-width: 900px) {
-            .hero-slot { padding: 44px 14px 24px; gap: 24px; }
-            .section-slot { padding: 18px 14px; }
-            .top-row { grid-template-columns: 1fr; gap: 28px; }
-            .side-playing { align-items: flex-start; text-align: left; }
-            .side-playing-art { width: 96px; height: 96px; }
-            .side-playing-title { font-size: 1.5rem; }
-            .main-panel { grid-template-columns: 1fr; grid-template-areas: "header" "left" "right"; padding: 24px; gap: 22px; }
-            .card { padding: 24px; border-radius: 18px; }
-            .username { font-size: 2rem; }
-            .avatar-wrap { width: 54px; height: 54px; }
-            .section-title { font-size: 1.2rem; }
-            .beats-info-grid { grid-template-columns: 1fr; gap: 28px; }
-            .floating-lyric-line { font-size: 1rem; }
-            .floating-lyric-line.active { transform: scale(1.04); }
-            .floating-lyrics-container { height: 190px; }
-            .floating-lyrics { padding: 22px 24px; }
-            .lyrics-fs { padding: 24px 16px 16px; }
-            .lyrics-fs-line { font-size: 1.2rem; line-height: 1.4; padding: 3px 0; }
-            .lyrics-fs-line.active { transform: scale(1.08); }
-            .lyrics-fs-song { font-size: 1.4rem; }
-            .lyrics-fs-art { width: 48px; height: 48px; }
-            .discord-copy-btn { opacity: 1; }
-            .site-nav a { padding-left: 13px; padding-right: 13px; }
-            .site-nav a::after { left: 13px; right: 13px; }
-            .beat-detail-stats { grid-template-columns: 1fr 1fr; }
-            .link { min-width: 120px; }
-            .cursor-spotlight { display: none; }
-            .cart-pill { left: 14px; bottom: 14px; padding: 10px 14px; }
-        }
-
-        @media (max-width: 560px) {
-            .main-panel, .section-slot > .card { padding: 20px; border-radius: 16px; }
-            .header { align-items: flex-start; gap: 16px; }
-            .scroll-hint { display: none; }
-            .username { font-size: 1.9rem; letter-spacing: 2px; }
-            .avatar-wrap { width: 52px; height: 52px; }
-            .site-nav { margin-top: 4px; }
-            .site-nav a { font-size: 0.58rem; letter-spacing: 1.6px; padding-top: 11px; padding-bottom: 12px; }
-            .stat-row { flex-wrap: wrap; }
-            .local-time, .site-views, .sc-plays { flex: 1 1 auto; justify-content: center; }
-            .site-footer { width: calc(100% - 28px); margin-bottom: 28px; align-items: flex-start; flex-direction: column; gap: 12px; }
-            .site-footer-links { justify-content: flex-start; gap: 10px 16px; }
-            .mini-player { padding: 10px 14px; gap: 10px; }
-            .mini-player-art { width: 38px; height: 38px; }
-            .mini-player-viz { display: none; }
-            .mini-player-volume-slider { width: 64px; }
-            .eq-popover {
-                width: calc(100% - 28px);
-                right: 14px;
-                bottom: 76px;
-            }
-            .mini-player-eq-btn span { display: none; }
-            .mini-player-eq-btn { padding: 6px 8px; }
-            .mini-player-volume { gap: 6px; }
-            .track { grid-template-columns: 56px 1fr; gap: 12px; padding: 14px; }
-            .track-cover { width: 56px; height: 56px; font-size: 1.4rem; }
-            .notify-strip { padding: 14px; flex-direction: column; align-items: stretch; }
-            .notify-strip form { min-width: 0; }
-            .floating-lyrics { padding: 18px 20px; }
-            .floating-lyrics-container { height: 160px; }
-            .side-playing-art { width: 84px; height: 84px; }
-            .links { flex-direction: column; }
-            .link { min-width: 0; }
-            .track-progress-wrap { height: 24px; }
-            .cart-pill { padding: 9px 12px; gap: 8px; }
-            .cart-pill-count { min-width: 22px; height: 22px; font-size: 0.9rem; padding: 0 6px; }
-            .cart-pill-label { font-size: 0.6rem; letter-spacing: 1.2px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .rain-drop { display: none; }
-            .grain-layer { animation: none; }
-            .scanline-layer { animation: none; }
-            .glide { opacity: 1; transform: none; transition: none; }
-            .floating-lyrics-inner { transition: none; }
-            .lyrics-fs-inner { transition: none; }
-            .floating-lyric-line { transition: none; }
-            .lyrics-fs-line { transition: none; }
-            .status-badge.online { animation: none; }
-            .live-visitors-dot { animation: none; }
-            .scroll-hint .arrow { animation: none; }
-            .skeleton { animation: none; }
-            .mini-player-viz span { animation: none; height: 8px; }
-            .audio-flash-layer { display: none; }
-            .lightning-layer { display: none; }
-            .cursor-spotlight { display: none; }
-            .entrance-hide { opacity: 1; transform: none; }
-            .whisper { animation: none; opacity: 0.4; }
-            .username { transform: none; }
-            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-        }
-
-        @media (prefers-contrast: more) {
+@media (max-width: 560px) {
+    .discord-cta-btn { width: 100%; justify-content: center; }
+    .discord-cta-perks li { padding: 14px; }
+}        @media (prefers-contrast: more) {
             :root {
                 --text-mid: #c8c8c8;
                 --text-dim: #a0a0a0;
@@ -3263,7 +3120,7 @@
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3.2a.074.074 0 0 0-.079.037c-.2.351-.42.81-.575 1.17a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.582-1.17.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 6.093 4.37a.07.07 0 0 0-.033.027C2.398 9.084 1.474 13.673 1.925 18.2a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.46-.63.872-1.294 1.227-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
                             Join Discord
                         </a>
-                        <a class="scroll-hint" href="#beats-info">
+                        <a class="scroll-hint" href="#discord-cta">
                             Scroll
                             <span class="arrow">↓</span>
                         </a>
@@ -3393,6 +3250,58 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════
+             JOIN THE DISCORD
+             ═══════════════════════════════════════════════════════ -->
+        <div class="section-slot">
+            <div class="card discord-card glide" id="discord-cta">
+                <div class="discord-cta-header">
+                    <h2>join the discord<span class="dot">.</span></h2>
+                    <div class="discord-cta-badge" id="discord-cta-badge" hidden>
+                        <span class="discord-cta-dot"></span>
+                        <span id="discord-cta-count">—</span>
+                    </div>
+                </div>
+
+                <p class="discord-cta-lede">
+                    Free lease giveaway every week. First access to new drops, stems, and direct collab requests.
+                </p>
+
+                <ul class="discord-cta-perks">
+                    <li>
+                        <span class="discord-cta-emoji">🎁</span>
+                        <div>
+                            <strong>Weekly giveaway</strong>
+                            <span>One free lease drawn every Friday. Active members only.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="discord-cta-emoji">⚡</span>
+                        <div>
+                            <strong>First access</strong>
+                            <span>Hear new beats before they hit the site.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="discord-cta-emoji">💬</span>
+                        <div>
+                            <strong>Direct line</strong>
+                            <span>DMs open for customs, stems, and collabs.</span>
+                        </div>
+                    </li>
+                </ul>
+
+                <a class="discord-cta-btn magnetic"
+                   href="https://discord.gg/Mv6FRgD8jQ"
+                   target="_blank"
+                   rel="noopener">
+                    Join the server
+                    <span class="discord-cta-arrow">→</span>
+                </a>
+            </div>
+        </div>
 
         <!-- ═══════════════════════════════════════════════════════
              KEY & BPM FINDER
@@ -3436,6 +3345,7 @@
                 </div>
             </div>
         </div>
+
         <div class="section-slot">
             <div class="card beats-card glide" id="beats-info">
                 <div class="beats-info-grid">
@@ -3776,7 +3686,38 @@
         <span id="toast-text">Copied!</span>
     </div>
 
-        <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/main.js"></script>
+
+    <script type="module">
+        // ─────────────────────────────────────────────────────────────
+        // Discord CTA — live member count from widget API
+        // ─────────────────────────────────────────────────────────────
+        async function initDiscordCTA() {
+            const badge = document.getElementById('discord-cta-badge');
+            const countEl = document.getElementById('discord-cta-count');
+            if (!badge || !countEl) return;
+
+            try {
+                const res = await fetch(
+                    'https://discord.com/api/guilds/1550276581962817586/widget.json',
+                    { cache: 'no-store' }
+                );
+                if (!res.ok) return;
+
+                const data = await res.json();
+                const online = data.presence_count || 0;
+
+                if (online < 1) return;
+
+                countEl.textContent = `${online} online`;
+                badge.hidden = false;
+            } catch (err) {
+                console.warn('Discord CTA: could not load widget', err);
+            }
+        }
+
+        window.addEventListener('load', initDiscordCTA);
+    </script>
 
     <footer class="site-footer">
         <div class="site-footer-brand">STVLKING<span class="dot">.</span></div>
