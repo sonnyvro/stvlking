@@ -86,7 +86,12 @@ initGlideObserver();
 initScrollProgress();
 initClock();
 initMagnetic();
-initKeyBpmFinder();
+// Wait for DOM before wiring (script may load before #drop exists)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initKeyBpmFinder);
+} else {
+  initKeyBpmFinder();
+}
 
 // Wire catalog + players + add buttons
 renderTracks();
