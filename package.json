@@ -14,5 +14,8 @@
   "type": "module",
   "devDependencies": {
     "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "pleco-xa": "^2.0.5"
   }
 }

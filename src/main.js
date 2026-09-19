@@ -74,6 +74,7 @@ import {
 } from './shared.js';
 
 import { setMasterVolume, resumeAudio, setEqBand, getEqBand, getBassLevel } from './audio.js';
+import { initKeyBpmFinder } from './key-bpm-finder.js';
 // ------------------------------------------------------------
 // Initial boot
 // ------------------------------------------------------------
@@ -85,6 +86,7 @@ initGlideObserver();
 initScrollProgress();
 initClock();
 initMagnetic();
+initKeyBpmFinder();
 
 // Wire catalog + players + add buttons
 renderTracks();
