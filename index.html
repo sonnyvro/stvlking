@@ -5685,6 +5685,28 @@ body::after {
         animation: none;
     }
 }
+/* Keep Now Playing title inside the available space */
+.side-playing {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.side-playing-title {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+
+    font-size: clamp(1.1rem, 3vw, 2rem);
+    letter-spacing: clamp(1px, 0.8vw, 4px);
+
+    text-align: right;
+}
 </style>
 </head>
 <body>
