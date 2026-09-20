@@ -6085,22 +6085,16 @@ body::after {
 <!-- AUDIO CONVERTER -->
 <div class="audio-converter">
 
-<div class="ac-header">
-    <h2>audio converter<span class="dot">.</span></h2>
-    <span class="ac-sub">browser-native · private</span>
-</div>
+    <div class="ac-header">
+        <h2>audio converter<span class="dot">.</span></h2>
+        <span class="ac-sub">browser-native · private</span>
     </div>
 
     <p class="ac-intro">
         Convert audio files directly in your browser. Your audio never leaves your device.
     </p>
 
-    <input
-        type="file"
-        id="ac-file"
-        accept="audio/*"
-        hidden
-    >
+    <input type="file" id="ac-file" accept="audio/*" hidden>
 
     <div class="ac-drop" id="ac-drop">
         <div class="ac-icon">
@@ -6110,57 +6104,29 @@ body::after {
                 <path d="M5 21h14"></path>
             </svg>
         </div>
-
-        <div class="ac-drop-title">
-            Drop an audio file here, or click to select
-        </div>
-
-        <div class="ac-formats">
-            WAV · MP3 · M4A · OGG
-        </div>
+        <div class="ac-drop-title">Drop an audio file here, or click to select</div>
+        <div class="ac-formats">WAV · MP3 · M4A · OGG</div>
     </div>
 
     <div class="ac-file-info" id="ac-file-info">
-
-        <div class="ac-file-icon">
-            ♪
-        </div>
-
+        <div class="ac-file-icon">♪</div>
         <div class="ac-file-details">
-            <div class="ac-file-name" id="ac-file-name">
-                —
-            </div>
-
-            <div class="ac-file-meta" id="ac-file-meta">
-                —
-            </div>
+            <div class="ac-file-name" id="ac-file-name">—</div>
+            <div class="ac-file-meta" id="ac-file-meta">—</div>
         </div>
-
-        <button
-            type="button"
-            class="ac-remove"
-            id="ac-remove"
-            aria-label="Remove file"
-        >
-            ×
-        </button>
-
+        <button type="button" class="ac-remove" id="ac-remove" aria-label="Remove file">×</button>
     </div>
 
     <div class="ac-options">
-
         <div class="ac-option">
             <label for="ac-format">OUTPUT FORMAT</label>
-
             <select id="ac-format">
                 <option value="mp3">MP3</option>
                 <option value="wav">WAV</option>
             </select>
         </div>
-
         <div class="ac-option" id="ac-quality-wrap">
             <label for="ac-quality">MP3 QUALITY</label>
-
             <select id="ac-quality">
                 <option value="320">320 kbps</option>
                 <option value="256">256 kbps</option>
@@ -6168,55 +6134,34 @@ body::after {
                 <option value="128">128 kbps</option>
             </select>
         </div>
-
     </div>
 
-    <button
-        type="button"
-        class="ac-convert"
-        id="ac-convert"
-        disabled
-    >
+    <button type="button" class="ac-convert" id="ac-convert" disabled>
         CONVERT AUDIO
     </button>
 
     <div class="ac-progress" id="ac-progress">
-
         <div class="ac-progress-top">
             <span id="ac-progress-text">CONVERTING...</span>
             <span id="ac-progress-percent">0%</span>
         </div>
-
         <div class="ac-progress-bar">
             <div id="ac-progress-fill"></div>
         </div>
-
     </div>
 
     <div class="ac-result" id="ac-result">
-
         <div class="ac-result-icon">✓</div>
-
         <div class="ac-result-info">
             <strong id="ac-result-name">Conversion complete</strong>
             <span id="ac-result-meta">Ready to download</span>
         </div>
-
-        <a
-            id="ac-download"
-            class="ac-download"
-            href="#"
-            download
-        >
-            DOWNLOAD
-        </a>
-
+        <a id="ac-download" class="ac-download" href="#" download>DOWNLOAD</a>
     </div>
 
     <div class="ac-status" id="ac-status"></div>
 
-</div>
-                    </div>
+</div>                    </div>
                     <!-- COMMUNITY -->
                     <div class="page" data-page="community">
                         <div class="discord-cta-header">
