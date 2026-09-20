@@ -229,15 +229,15 @@ body.sleeping .fog-tendrils {
     letter-spacing: 1px;
     text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.35);
   }
-  .clock .meta {
-    font-size: 0.6rem;
+   .clock .meta {
+    font-size: 0.85rem;
+    font-weight: 500;
     letter-spacing: 1px;
     margin-top: 2px;
-    color: var(--text-mute);
+    color: var(--text);
     text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.35);
   }
-  .clock .meta span { margin-left: 8px; }
-  .clock .meta .sep { color: var(--accent); text-shadow: 0 0 6px var(--accent-soft); }
 
   .stage {
     position: relative;
@@ -1673,8 +1673,6 @@ body.cold-open-fading .bio {
     <div class="time" id="clock-time">—:— —</div>
     <div class="meta">
       <span id="clock-date">—</span>
-      <span class="sep">·</span>
-      <span id="clock-weather">—</span>
     </div>
   </div>
 </header>
@@ -1933,31 +1931,6 @@ function tickClock() {
 }
 tickClock();
 setInterval(tickClock, 1000);
-
-async function loadWeather() {
-  try {
-    let lat = 40.7128, lon = -74.0060;
-    if (navigator.geolocation) {
-      try {
-        const pos = await new Promise((res, rej) =>
-          navigator.geolocation.getCurrentPosition(res, rej, { timeout: 3000 })
-        );
-        lat = pos.coords.latitude;
-        lon = pos.coords.longitude;
-      } catch (_) {}
-    }
-    const res = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature`
-    );
-    const data = await res.json();
-    const temp  = Math.round(data.current.temperature_2m);
-    const feels = Math.round(data.current.apparent_temperature);
-    const w = document.getElementById('clock-weather');
-    if (w) w.textContent = `${temp}°c · feels ${feels}°`;
-  } catch (_) {}
-}
-loadWeather();
-setInterval(loadWeather, 600000);
 
 function spawnWisps() {
   if (!els.wisps) return;
