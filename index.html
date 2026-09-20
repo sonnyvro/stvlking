@@ -5712,6 +5712,15 @@ body::after {
 
     text-align: right;
 }
+/* SAFETY: never leave the card invisible */
+@media (prefers-reduced-motion: reduce) {
+    .entrance-hide,
+    .rain-layer.entrance-hide,
+    .glow-layer.entrance-hide {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
 </style>
 </head>
 <body>

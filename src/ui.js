@@ -94,10 +94,24 @@ export function initMagnetic() {
 }
 
 export function initEntrance() {
-    if (prefersReducedMotion) return;
     const glow = document.getElementById('glow-layer');
     const rain = document.getElementById('rain-layer');
     const cards = document.querySelectorAll('.hero-inner > .card, .hero-inner > .top-row');
+
+    // Reduced motion: skip the animation, but STILL reveal the content.
+    // Without this, the card stays at opacity:0 forever for users with
+    // prefers-reduced-motion enabled in their OS/browser settings.
+    if (prefersReducedMotion) {
+        if (glow) glow.classList.add('entrance-show');
+        if (rain) rain.classList.add('entrance-show');
+        cards.forEach(card => {
+            card.hidden = false;
+            card.classList.remove('entrance-hide');
+            card.classList.add('entrance-show');
+        });
+        return;
+    }
+
     window.requestAnimationFrame(() => {
         setTimeout(() => { if (glow) glow.classList.add('entrance-show'); }, 80);
         setTimeout(() => { if (rain) rain.classList.add('entrance-show'); }, 260);
@@ -203,8 +217,6 @@ export function wireAudioFlash(usernameEl) {
 
     function tick() {
         if (!running) return;
-        // getBassLevel is exported from audio.js; imported via dynamic lookup
-        // to avoid circular import at module load.
         const getBassLevel = window.__getBassLevel;
         if (!getBassLevel) { rafId = requestAnimationFrame(tick); return; }
         const raw = getBassLevel();
@@ -248,7 +260,6 @@ export function wireAudioFlash(usernameEl) {
         }
     }
 
-    // Hook into audio play/pause events
     document.querySelectorAll('[data-track-audio]').forEach(audio => {
         if (audio.dataset.flashWired === '1') return;
         audio.dataset.flashWired = '1';
