@@ -196,13 +196,23 @@ async function fetchLyrics(song, artist, durationMs) {
 
     try {
         let track = null;
-        for (const url of candidates) {
-            const data = await fetchJson(url);
-            if (!data) continue;
-            if (Array.isArray(data)) track = pickFromSearchResults(data);
-            else track = data;
-            if (track && track.syncedLyrics) break;
-        }
+       for (const url of candidates) {
+    const data = await fetchJson(url);
+
+    if (!data) {
+        continue;
+    }
+
+    if (Array.isArray(data)) {
+        track = pickFromSearchResults(data);
+    } else {
+        track = data;
+    }
+
+    if (track && (track.syncedLyrics || track.plainLyrics)) {
+        break;
+    }
+}
         if (!track) { parsedLyrics = []; return; }
 
         if (track.syncedLyrics) {
@@ -582,26 +592,32 @@ function isRobloxActivity(activity) {
 }
 
 export function openFullscreenLyrics() {
-    const fsOverlay = document.getElementById('lyrics-fs');
+    const fs = document.getElementById('lyrics-fs');
     const fsArt = document.getElementById('lyrics-fs-art');
     const fsSong = document.getElementById('lyrics-fs-song');
     const fsArtist = document.getElementById('lyrics-fs-artist');
-    if (!fsOverlay) return;
-    fsOverlay.classList.add('open');
+    if (!fs) return;
+
+    fs.classList.add('open');
+    document.body.classList.add('lyrics-fs-open');
+
     if (fsArt) {
         fsArt.src = currentArtUrl;
         fsArt.style.display = currentArtUrl ? '' : 'none';
     }
     if (fsSong) fsSong.textContent = currentSong || '—';
     if (fsArtist) fsArtist.textContent = currentArtist || '—';
+
     renderFsLyrics();
     activeLyricIndex = -1;
     syncLyrics(true);
 }
 
 export function closeFullscreenLyrics() {
-    const fsOverlay = document.getElementById('lyrics-fs');
-    if (fsOverlay) fsOverlay.classList.remove('open');
+    const fs = document.getElementById('lyrics-fs');
+    if (!fs) return;
+    fs.classList.remove('open');
+    document.body.classList.remove('lyrics-fs-open');
 }
 
 export function initPresence() {

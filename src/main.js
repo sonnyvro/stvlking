@@ -381,8 +381,6 @@ function getCurrentAudio() {
 
 function applyVolumeToAll(v) {
     setMasterVolume(v);
-    // Also set native volume as a fallback for elements that
-    // haven't been attached to the pipeline yet.
     document.querySelectorAll('[data-track-audio]').forEach(a => { a.volume = v; });
 }
 
@@ -617,3 +615,78 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch(() => {});
     });
 }
+
+// ─────────────────────────────────────────────────────────────
+// Background particles — floating red embers
+// ─────────────────────────────────────────────────────────────
+(function initSpaceParticles() {
+    const layer = document.getElementById('bg-particles');
+    if (!layer) return;
+
+    // Respect reduced motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const isMobile = window.matchMedia('(max-width: 900px)').matches;
+    const COUNT = isMobile ? 18 : 42;
+
+    for (let i = 0; i < COUNT; i++) {
+        const p = document.createElement('span');
+        p.className = 'bg-particle';
+
+        const r = Math.random();
+        if (r < 0.4) p.classList.add('tiny');
+        else if (r > 0.85) p.classList.add('bright');
+
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.setProperty('--drift', ((Math.random() - 0.5) * 120).toFixed(1) + 'px');
+
+        const dur = 12 + Math.random() * 18; // 12–30s per rise
+        p.style.animationDuration = dur + 's';
+        p.style.animationDelay = (-Math.random() * dur) + 's';
+
+        layer.appendChild(p);
+    }
+})();
+
+// ─────────────────────────────────────────────────────────────
+// Mouse parallax — nebula + orbits react subtly to cursor
+// ─────────────────────────────────────────────────────────────
+(function initSpaceParallax() {
+    const space = document.querySelector('.bg-space');
+    const nebula = document.querySelector('.bg-nebula');
+    const orbits = document.querySelector('.bg-orbits');
+    if (!space || !nebula) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    let tx = 0, ty = 0;
+    let cx = 0, cy = 0;
+    let raf = null;
+
+    window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+        const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+        tx = nx * -14;
+        ty = ny * -14;
+        if (!raf) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+
+    function tick() {
+        cx += (tx - cx) * 0.05;
+        cy += (ty - cy) * 0.05;
+
+        nebula.style.transform =
+            `scale(1.02) translate3d(${cx}px, ${cy}px, 0)`;
+
+        if (orbits) {
+            orbits.style.transform =
+                `translate(-50%, -50%) rotate(-18deg) translate3d(${cx * 0.4}px, ${cy * 0.4}px, 0)`;
+        }
+
+        if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
+            raf = requestAnimationFrame(tick);
+        } else {
+            raf = null;
+        }
+    }
+})();
