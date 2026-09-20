@@ -6521,88 +6521,105 @@ class="tracks-header">
         // ─────────────────────────────────────────────────────────────
         // SPA ROUTER — switches page panes inside the main card
         // ─────────────────────────────────────────────────────────────
-        const ROUTES = {
-            home:      { title: 'stvlking' },
-            music:     { title: 'Music · stvlking' },
-            tools:     { title: 'Tools · stvlking' },
-            community: { title: 'Community · stvlking' },
-            contact:   { title: 'Contact · stvlking' }
-        };
+       const ROUTES = {
+    home:      { title: 'stvlking' },
+    music:     { title: 'Music · stvlking' },
+    tools:     { title: 'Tools · stvlking' },
+    community: { title: 'Community · stvlking' },
+    contact:   { title: 'Contact · stvlking' }
+};
 
-        const DEFAULT_ROUTE = 'home';
+const DEFAULT_ROUTE = 'home';
 
-        function parseHash() {
-            const raw = (location.hash || '').replace(/^#\/?/, '').trim();
-            const route = raw.split('?')[0].split('/')[0].toLowerCase();
-            return ROUTES[route] ? route : DEFAULT_ROUTE;
-        }
+// Prevent browser auto-scroll on hash change
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
 
-        function setActivePage(route) {
-            document.querySelectorAll('.page').forEach(page => {
-                const isActive = page.dataset.page === route;
+// Captured immediately before the hash changes, restored after page swap
+let pendingScrollY = null;
 
-                page.classList.toggle('active', isActive);
+function parseHash() {
+    const raw = (location.hash || '').replace(/^#\/?/, '').trim();
+    const route = raw.split('?')[0].split('/')[0].toLowerCase();
+    return ROUTES[route] ? route : DEFAULT_ROUTE;
+}
 
-                // Keep every route pane hidden unless it is the active route.
-                page.style.display = isActive ? 'block' : 'none';
-                page.style.visibility = isActive ? 'visible' : 'hidden';
-                page.style.opacity = isActive ? '1' : '0';
-                page.style.pointerEvents = isActive ? 'auto' : 'none';
-            });
+function setActivePage(route) {
+    document.querySelectorAll('.page').forEach(page => {
+        const isActive = page.dataset.page === route;
+        page.classList.toggle('active', isActive);
+        page.style.display = isActive ? 'block' : 'none';
+        page.style.visibility = isActive ? 'visible' : 'hidden';
+        page.style.opacity = isActive ? '1' : '0';
+        page.style.pointerEvents = isActive ? 'auto' : 'none';
+    });
 
-            document.querySelectorAll('.card-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.dataset.route === route);
-            });
+    document.querySelectorAll('.card-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.route === route);
+    });
 
-            const meta = ROUTES[route];
-            if (meta && meta.title) {
-                document.title = meta.title;
-            }
-        }
+    const meta = ROUTES[route];
+    if (meta && meta.title) {
+        document.title = meta.title;
+    }
+}
 
-        function handleRouteChange() {
-            const route = parseHash();
-            setActivePage(route);
-        }
+function handleRouteChange() {
+    const route = parseHash();
 
-        function navigateTo(route) {
-            if (!ROUTES[route]) route = DEFAULT_ROUTE;
-            const target = '#/' + route;
-            if (location.hash !== target) {
-                location.hash = target;
-            } else {
-                handleRouteChange();
-            }
-        }
+    // Use the scroll captured before hash changed, or fall back to current
+    const restoreY = pendingScrollY !== null ? pendingScrollY : window.scrollY;
+    pendingScrollY = null;
 
-        // Init
-        window.addEventListener('hashchange', handleRouteChange);
+    setActivePage(route);
 
-        // Intercept clicks on any element with data-route
-        document.addEventListener('click', (e) => {
-            const target = e.target.closest('[data-route]');
-            if (!target) return;
-            const route = target.getAttribute('data-route');
-            if (!route || !ROUTES[route]) return;
-
-            // Only intercept if it's an internal link
-            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            if (target.tagName === 'A' && target.target === '_blank') return;
-
-            e.preventDefault();
-            navigateTo(route);
+    // Double RAF so layout settles before we restore scroll
+    requestAnimationFrame(() => {
+        window.scrollTo({ top: restoreY, behavior: 'instant' });
+        requestAnimationFrame(() => {
+            window.scrollTo({ top: restoreY, behavior: 'instant' });
         });
+    });
+}
 
-        // Initial route
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!location.hash || !ROUTES[parseHash()]) {
-                history.replaceState(null, '', '#/' + DEFAULT_ROUTE);
-            }
-            handleRouteChange();
-        });
+function navigateTo(route) {
+    if (!ROUTES[route]) route = DEFAULT_ROUTE;
 
-        // Load Discord widget
-        window.addEventListener('load', initDiscordCTA);
+    // Save scroll BEFORE changing hash so handleRouteChange can restore it
+    pendingScrollY = window.scrollY;
+
+    const target = '#/' + route;
+    if (location.hash !== target) {
+        location.hash = target;
+    } else {
+        handleRouteChange();
+    }
+}
+
+window.addEventListener('hashchange', handleRouteChange);
+
+document.addEventListener('click', (e) => {
+    const target = e.target.closest('[data-route]');
+    if (!target) return;
+    const route = target.getAttribute('data-route');
+    if (!route || !ROUTES[route]) return;
+
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (target.tagName === 'A' && target.target === '_blank') return;
+
+    e.preventDefault();
+    navigateTo(route);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (!location.hash || !ROUTES[parseHash()]) {
+        history.replaceState(null, '', '#/' + DEFAULT_ROUTE);
+    }
+    handleRouteChange();
+});
+
+window.addEventListener('load', initDiscordCTA);
     </script>
     <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 <script>
