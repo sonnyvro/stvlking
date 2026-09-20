@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ㅤ</title>
     <meta name="description" content="Producer. Beats, leases, and current work.">
     <meta name="theme-color" content="#ff0033">
@@ -22,7 +22,7 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preload" as="image" href="background.png">
     <link rel="manifest" href="manifest.json">
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -371,25 +371,25 @@
                 0 0 80px rgba(var(--accent-rgb), 0.06);
         }
 
-         .floating-lyrics-container {
-    position: relative;
-    height: 260px;
-    overflow: hidden;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
-}
+        .floating-lyrics-container {
+            position: relative;
+            height: 260px;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+        }
 
-                .floating-lyrics-inner {
+        .floating-lyrics-inner {
             transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
             will-change: transform;
         }
 
         .floating-lyrics-inner::before,
-.floating-lyrics-inner::after {
-    content: '';
-    display: block;
-    height: 130px;
-}
+        .floating-lyrics-inner::after {
+            content: '';
+            display: block;
+            height: 130px;
+        }
         .floating-lyric-line {
             font-size: 1.15rem;
             line-height: 1.6;
@@ -1659,7 +1659,7 @@
             white-space: nowrap;
         }
 
-                .live-visitors-dot {
+        .live-visitors-dot {
             width: 6px; height: 6px; border-radius: 50%;
             background: var(--blue);
             box-shadow: 0 0 10px var(--blue-glow);
@@ -3272,6 +3272,417 @@
     .kbf-drop .kbf-hint { font-size: 0.6rem; letter-spacing: 1.4px; }
     .kbf-result { padding: 18px 20px; }
     .kbf-result-value { font-size: 2.1rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE OVERRIDES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Tablet & small laptop — stack the two-column main panel */
+@media (max-width: 900px) {
+    /* Stage & hero adjustments */
+    .hero-slot {
+        padding: 48px 16px 24px;
+        gap: 28px;
+        min-height: auto;
+    }
+    .hero-inner { gap: 28px; }
+
+    /* Top row (lyrics + now playing) becomes a single column */
+    .top-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .floating-lyrics {
+        padding: 22px 22px;
+        order: 2;
+    }
+    .floating-lyrics-container { height: 220px; }
+
+    .side-playing {
+        align-items: center;
+        text-align: center;
+        order: 1;
+        gap: 10px;
+    }
+    .side-playing-art { width: 140px; height: 140px; }
+    .side-playing-title { font-size: 1.8rem; letter-spacing: 3px; }
+
+    /* Main panel — stack into a single column */
+    .main-panel {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "left"
+            "right";
+        gap: 26px;
+        padding: 26px 22px;
+        min-height: 0;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding-bottom: 20px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .header-actions .join-discord,
+    .header-actions .live-visitors,
+    .header-actions .scroll-hint { flex: 1 1 auto; justify-content: center; }
+    .header-actions .scroll-hint { display: none; } /* hide scroll hint on mobile */
+
+    .username { font-size: 2.2rem; letter-spacing: 2px; }
+
+    .col-left, .col-right { gap: 22px; }
+
+    /* Cards */
+    .card { padding: 26px 22px; border-radius: 18px; }
+    .section-slot { padding: 20px 16px; min-height: auto; }
+
+    /* Beats grid — stack */
+    .beats-info-grid {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+
+    /* Track row — let content flow */
+    .track {
+        grid-template-columns: 56px 1fr;
+        padding: 14px;
+        gap: 12px;
+    }
+    .track-cover { width: 56px; height: 56px; font-size: 1.4rem; border-radius: 8px; }
+
+    .track-audio-row { flex-wrap: wrap; gap: 10px; }
+    .track-progress-wrap { flex: 1 1 100%; order: 3; }
+    .track-time { min-width: 76px; text-align: left; order: 4; }
+
+    /* Discord CTA */
+    .discord-cta-perks { grid-template-columns: 1fr; }
+
+    /* Key & BPM results — stack */
+    .kbf-results { grid-template-columns: 1fr; }
+}
+
+/* Phones */
+@media (max-width: 560px) {
+    /* Global font-size floor for body text */
+    body { font-size: 15px; }
+
+    .hero-slot { padding: 32px 12px 16px; }
+    .hero-inner { gap: 22px; }
+    .section-slot { padding: 16px 12px; }
+
+    /* Card padding tighter */
+    .card { padding: 22px 18px; border-radius: 16px; }
+    .main-panel { padding: 22px 18px; gap: 22px; }
+
+    /* Profile / header */
+    .username { font-size: 1.9rem; letter-spacing: 1.5px; }
+    .tagline { font-size: 0.6rem; letter-spacing: 2.5px; }
+    .status-text { font-size: 0.66rem; }
+    .avatar-wrap { width: 54px; height: 54px; }
+    .avatar-wrap::after { inset: -3px; }
+    .status-badge { width: 16px; height: 16px; border-width: 2.5px; }
+
+    /* Header actions — full-width buttons */
+    .header-actions { flex-direction: column; align-items: stretch; gap: 8px; }
+    .header-actions > * { width: 100%; justify-content: center; }
+    .join-discord { padding: 11px 16px; font-size: 0.68rem; }
+    .live-visitors { justify-content: center; padding: 8px 12px; }
+
+    /* Top row */
+    .side-playing-art { width: 110px; height: 110px; border-radius: 12px; }
+    .side-playing-title { font-size: 1.5rem; letter-spacing: 2px; }
+    .side-playing-artist { font-size: 0.72rem; letter-spacing: 1.5px; }
+    .floating-lyrics { padding: 18px 16px; border-radius: 16px; }
+    .floating-lyrics-container { height: 180px; }
+    .floating-lyric-line { font-size: 0.95rem; padding: 7px 0; }
+    .floating-lyric-line.active { transform: scale(1.05); }
+    .lyrics-expand-btn { font-size: 0.6rem; padding: 7px 12px; letter-spacing: 1.2px; }
+
+    /* Section titles */
+    .section-title { font-size: 1.15rem; letter-spacing: 3px; margin-bottom: 12px; }
+    .section-title::after { width: 22px; height: 2px; margin-top: 6px; }
+
+    /* About */
+    .about { font-size: 0.82rem; line-height: 1.65; }
+
+    /* Stat pills — allow them to wrap */
+    .stat-row { gap: 8px; }
+    .local-time, .site-views, .sc-plays {
+        font-size: 0.72rem;
+        padding: 9px 13px;
+        min-height: 38px;
+    }
+    .site-views .count, .sc-plays .count { font-size: 1rem; }
+    .local-time .tz, .site-views .label, .sc-plays .label { font-size: 0.6rem; letter-spacing: 1.2px; }
+
+    /* Links — full width single column */
+    .links { flex-direction: column; gap: 8px; }
+    .link {
+        min-height: 52px;
+        padding: 12px 14px;
+        font-size: 0.82rem;
+        width: 100%;
+    }
+    .link span:last-child { margin-right: 18px; }
+
+    /* Contact form */
+    .contact-form input,
+    .contact-form textarea {
+        font-size: 16px !important; /* Prevents iOS zoom */
+        padding: 12px 14px;
+    }
+    .contact-form-submit {
+        width: 100%;
+        justify-self: stretch;
+        padding: 14px 20px;
+        font-size: 0.72rem;
+    }
+
+    /* Now playing / discord card */
+    .now-playing { padding: 14px 16px; }
+    .np-info .np-song { font-size: 0.9rem; }
+    .discord-copy-btn { opacity: 1; width: 38px; height: 38px; }
+
+    /* Guestbook strip */
+    .guestbook-strip { padding: 13px 14px; }
+    .guestbook-icon { width: 36px; height: 36px; }
+    .guestbook-title { font-size: 0.8rem; }
+    .guestbook-sub { font-size: 0.66rem; }
+    .guestbook-count { font-size: 1.5rem; }
+
+    /* On repeat stats */
+    .lastfm-row { font-size: 0.76rem; padding: 7px 0; }
+    .lastfm-rank { font-size: 0.85rem; }
+    .lastfm-count { font-size: 0.58rem; }
+
+    /* Tracks */
+    .tracks-header h2 { font-size: 1.9rem; }
+    .tracks-header .count { font-size: 0.62rem; }
+
+    /* Track cards — give more room to title/audio */
+    .track { grid-template-columns: 48px 1fr; padding: 12px; gap: 10px; }
+    .track-cover { width: 48px; height: 48px; font-size: 1.2rem; border-radius: 8px; }
+    .track-title { font-size: 0.88rem; }
+    .track-meta { font-size: 0.6rem; letter-spacing: 1px; }
+    .track-tags { margin: 7px 0 9px; gap: 5px; }
+    .track-tag { font-size: 0.55rem; padding: 3px 8px; }
+    .track-play, .track-add { width: 38px; height: 38px; }
+    .track-play svg { width: 14px; height: 14px; }
+    .track-add svg { width: 13px; height: 13px; }
+    .track-time { font-size: 0.6rem; min-width: 70px; }
+    .track-progress-wrap { height: 26px; }
+
+    /* Beat detail modal */
+    .beat-detail-header { padding: 18px 18px 14px; }
+    .beat-detail-title { font-size: 1.6rem; letter-spacing: 2px; }
+    .beat-detail-body { padding: 16px 18px 20px; }
+    .beat-detail-stats { grid-template-columns: 1fr 1fr; }
+    .beat-detail-stat { padding: 11px; }
+    .beat-detail-stat-value { font-size: 1.2rem; }
+    .beat-detail-lease-row { padding: 11px 13px; }
+
+    /* Guestbook modal */
+    .guestbook-modal-backdrop { padding: 12px; align-items: flex-end; }
+    .guestbook-modal {
+        max-height: 92vh;
+        border-radius: 18px 18px 0 0;
+    }
+    .guestbook-modal-header { padding: 20px 18px 14px; }
+    .guestbook-modal-title { font-size: 1.5rem; letter-spacing: 3px; }
+    .guestbook-modal-sub { font-size: 0.68rem; }
+    .guestbook-body { padding: 16px 18px 20px; }
+    .guestbook-form input,
+    .guestbook-form textarea { font-size: 16px !important; }
+    .guestbook-form textarea { font-size: 1.05rem !important; }
+    .guestbook-form-submit { width: 100%; justify-self: stretch; padding: 13px 20px; }
+    .guestbook-entry { padding: 12px 13px; }
+    .guestbook-entry-body { font-size: 1.05rem; }
+
+    /* Contact / cart inputs — prevent iOS zoom */
+    .cart-form input, .cart-form textarea,
+    .notify-strip input {
+        font-size: 16px !important;
+    }
+
+    /* Notify strip — stack */
+    .notify-strip {
+        padding: 16px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .notify-strip-label { text-align: left; min-width: 0; }
+    .notify-strip form { flex-direction: column; min-width: 0; }
+    .notify-strip button { width: 100%; padding: 13px 20px; }
+
+    /* Cart drawer */
+    .cart-drawer-backdrop { padding: 12px; align-items: flex-end; }
+    .cart-drawer {
+        max-height: 92vh;
+        border-radius: 18px 18px 0 0;
+    }
+    .cart-drawer-header { padding: 20px 20px 14px; }
+    .cart-drawer-title { font-size: 1.5rem; letter-spacing: 3px; }
+    .cart-drawer-body { padding: 16px 20px 20px; }
+
+    /* Cart pill — reposition so it doesn't overlap mini-player */
+    .cart-pill {
+        left: 12px;
+        bottom: 88px; /* lift above mini-player when visible */
+        padding: 9px 14px;
+        gap: 8px;
+    }
+    .cart-pill-count { min-width: 22px; height: 22px; font-size: 0.9rem; padding: 0 6px; }
+    .cart-pill-label { font-size: 0.6rem; letter-spacing: 1.2px; }
+
+    /* Mini-player — compact layout */
+    .mini-player {
+        padding: 10px 12px;
+        gap: 10px;
+        flex-wrap: nowrap;
+    }
+    .mini-player-art { width: 38px; height: 38px; border-radius: 7px; }
+    .mini-player-title { font-size: 0.74rem; }
+    .mini-player-meta { font-size: 0.58rem; }
+    .mini-player-viz { width: 22px; height: 18px; gap: 2px; }
+    .mini-player-viz span { width: 2px; }
+    .mini-player-volume { display: none; } /* hide volume on phones to save space */
+    .mini-player-eq-btn { display: none; } /* hide EQ button on phones */
+    .mini-player-controls { margin-left: auto; }
+    .mini-player-btn { width: 36px; height: 36px; }
+
+    /* EQ popover — full width on phones */
+    .eq-popover {
+        left: 12px;
+        right: 12px;
+        bottom: 72px;
+        width: auto;
+    }
+
+    /* Command palette */
+    .command-palette-backdrop { padding: 8vh 12px 12px; }
+    .command-palette { border-radius: 14px; }
+    .command-palette-input { font-size: 16px !important; padding: 14px 16px; }
+    .command-item { padding: 12px 14px; font-size: 0.85rem; }
+
+    /* Shortcuts overlay */
+    .shortcuts-overlay { padding: 12px; }
+    .shortcuts-panel { padding: 22px 20px; border-radius: 16px; }
+    .shortcuts-panel h3 { font-size: 1.5rem; margin-bottom: 18px; }
+    .shortcut-row { font-size: 0.78rem; padding: 9px 0; }
+
+    /* Lyrics fullscreen */
+    .lyrics-fs { padding: 40px 18px 24px; }
+    .lyrics-fs-header { flex-wrap: wrap; gap: 12px; padding-bottom: 16px; margin-bottom: 20px; }
+    .lyrics-fs-meta { gap: 12px; }
+    .lyrics-fs-art { width: 48px; height: 48px; border-radius: 8px; }
+    .lyrics-fs-song { font-size: 1.4rem; letter-spacing: 2px; }
+    .lyrics-fs-artist { font-size: 0.74rem; }
+    .lyrics-fs-actions { margin-left: auto; }
+    .lyrics-fs-body { padding: 20px 0; }
+    .lyrics-fs-line { font-size: 1.15rem; padding: 4px 0; }
+    .lyrics-fs-line.active { transform: scale(1.06); }
+    .lyrics-fs-inner { padding: 0 8px; }
+    .lyrics-fs-inner::before, .lyrics-fs-inner::after { height: 30vh; }
+
+    /* Footer */
+    .site-footer {
+        width: calc(100% - 24px);
+        margin: 4px auto 28px;
+        padding: 16px 0 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 0.58rem;
+        letter-spacing: 1px;
+    }
+    .site-footer-brand { font-size: 1rem; }
+    .site-footer-links { gap: 12px; justify-content: flex-start; }
+    .site-footer-copy { align-self: flex-start; }
+
+    /* Toast */
+    .toast {
+        bottom: 84px; /* lift above mini-player */
+        font-size: 0.7rem;
+        padding: 10px 18px;
+        max-width: calc(100% - 24px);
+    }
+
+    /* Discord CTA card */
+    .discord-cta-header h2 { font-size: 1.9rem; }
+    .discord-cta-lede { font-size: 0.82rem; }
+    .discord-cta-perks li { padding: 13px; }
+    .discord-cta-perks strong { font-size: 0.78rem; }
+    .discord-cta-perks li > div > span { font-size: 0.7rem; }
+    .discord-cta-btn { padding: 13px 20px; font-size: 0.68rem; }
+
+    /* KBF card */
+    .kbf-header h2 { font-size: 1.8rem; }
+    .kbf-intro { font-size: 0.8rem; }
+    .kbf-drop { padding: 36px 16px; }
+    .kbf-drop .kbf-icon { width: 38px; height: 38px; }
+    .kbf-drop { font-size: 0.84rem; }
+    .kbf-result { padding: 16px 18px; }
+    .kbf-result-value { font-size: 1.9rem; letter-spacing: 1px; }
+    .kbf-result-unit { font-size: 0.68rem; }
+
+    /* Beats info / lease cards */
+    .beats-info-text h2,
+    .tracks-header h2,
+    .kbf-header h2,
+    .discord-cta-header h2 { font-size: clamp(1.7rem, 7vw, 2.2rem); }
+    .lease-card { padding: 18px 18px; }
+    .lease-price { font-size: 1.7rem; }
+    .lease-features li { font-size: 0.76rem; }
+    .lease-cta { width: 100%; text-align: center; padding: 13px 18px; }
+
+    /* Disable heavy fixed background effects on low-end devices */
+    .cursor-spotlight { display: none; }
+}
+
+/* Very small phones (e.g. iPhone SE) */
+@media (max-width: 380px) {
+    .username { font-size: 1.7rem; letter-spacing: 1px; }
+    .side-playing-title { font-size: 1.35rem; }
+    .side-playing-art { width: 96px; height: 96px; }
+    .floating-lyrics-container { height: 160px; }
+    .card { padding: 20px 16px; }
+    .main-panel { padding: 20px 16px; gap: 20px; }
+    .section-title { font-size: 1.05rem; letter-spacing: 2.5px; }
+    .header-actions > * { font-size: 0.64rem; }
+    .track { grid-template-columns: 44px 1fr; padding: 10px; gap: 9px; }
+    .track-cover { width: 44px; height: 44px; font-size: 1rem; }
+    .track-play, .track-add { width: 34px; height: 34px; }
+    .mini-player-art { width: 34px; height: 34px; }
+    .mini-player-title { font-size: 0.7rem; }
+}
+
+/* Landscape phones — avoid massive hero taking whole viewport */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+    .hero-slot { min-height: auto; padding: 32px 20px; }
+    .section-slot { min-height: auto; }
+    .floating-lyrics-container { height: 160px; }
+    .side-playing-art { width: 100px; height: 100px; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .rain-layer, .grain-layer, .scanline-layer { display: none; }
 }
     </style>
 </head>
