@@ -5021,26 +5021,37 @@
 
     function handleRouteChange() { setActivePage(parseHash()); }
 
-    function navigateTo(route) {
-        if (!ROUTES[route]) route = DEFAULT_ROUTE;
-        const target = '#/' + route;
-        if (location.hash !== target) history.pushState(null, '', target);
+function navigateTo(route) {
+    if (!ROUTES[route]) route = DEFAULT_ROUTE;
+
+    const target = '#/' + route;
+
+    if (location.hash !== target) {
+        location.hash = target;
+    } else {
         handleRouteChange();
     }
+}
 
     window.addEventListener('hashchange', handleRouteChange);
     window.addEventListener('popstate', handleRouteChange);
 
-    document.addEventListener('click', (e) => {
-        const target = e.target.closest('[data-route]');
-        if (!target) return;
-        const route = target.getAttribute('data-route');
-        if (!route || !ROUTES[route]) return;
-        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-        if (target.tagName === 'A' && target.target === '_blank') return;
-        e.preventDefault();
-        navigateTo(route);
-    });
+document.addEventListener('click', (e) => {
+    const target = e.target.closest('a[data-route]');
+
+    if (!target) return;
+
+    const route = target.dataset.route;
+
+    if (!route || !ROUTES[route]) return;
+
+    // Let Ctrl/Cmd-click, Shift-click, etc. behave normally.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    e.preventDefault();
+
+    navigateTo(route);
+});
 
     window.addEventListener('DOMContentLoaded', () => {
         if (!location.hash || !ROUTES[parseHash()]) {
