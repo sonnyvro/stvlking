@@ -22,7 +22,7 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preload" as="image" href="background.png">
     <link rel="manifest" href="manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -31,11 +31,14 @@
       "url": "https://stvlking.online/",
       "genre": ["Trap", "Ambient", "Cinematic"],
       "sameAs": [
-        "https://instagram.com/sonnyvro",
-        "https://soundcloud.com/user-11954578",
-        "https://youtube.com/@sonnyvro",
-        "https://x.com/stvlked"
-      ]
+  "https://instagram.com/sonnyvro",
+  "https://soundcloud.com/user-11954578",
+  "https://youtube.com/@sonnyvro",
+  "https://x.com/stvlked",
+  "https://www.tiktok.com/@sonnyvro",
+  "https://open.spotify.com/artist/5VwgvQYg9C6oOnFfNpX9Ir",
+  "https://music.apple.com/us/artist/sonnyvro/1685588025"
+]
     }
     </script>
     <script type="application/ld+json">
@@ -137,16 +140,47 @@
             pointer-events: none;
             z-index: 1;
         }
+/* ═══════════════════════════════════════════════════════════════
+   REFINED BACKGROUND — grid layer on top of terminal scanlines
+   ═══════════════════════════════════════════════════════════════ */
 
-        .glow-layer {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 1;
-            background: radial-gradient(ellipse 700px 500px at 50% 40%, rgba(var(--accent-rgb), 0.18) 0%, transparent 65%);
-            transition: background 1.2s ease;
-        }
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 2;
 
+    /* Sharp, faint grid */
+    background-image:
+        linear-gradient(
+            rgba(255, 0, 51, 0.075) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 0, 51, 0.075) 1px,
+            transparent 1px
+        );
+
+    background-size: 56px 56px;
+
+    /* Subtle glow without making the grid blurry */
+    filter:
+        drop-shadow(0 0 2px rgba(255, 0, 51, 0.20))
+        drop-shadow(0 0 5px rgba(255, 0, 51, 0.08));
+
+    opacity: 1;
+
+    /* Keep it visible and crisp */
+    display: block !important;
+    visibility: visible !important;
+
+    /* Important: no mask, so the grid stays sharp across the screen */
+    mask-image: none;
+    -webkit-mask-image: none;
+}
         .grain-layer {
             position: fixed;
             inset: -50%;
@@ -340,19 +374,27 @@
             padding: 32px 20px;
         }
 
-        .hero-inner { width: min(1040px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+       .hero-inner {
+    width: min(1040px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
 
-        .top-row {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 48px;
-            align-items: center;
-        }
+       .top-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 32px;
+    align-items: center;
+}
 
         .floating-lyrics {
-            position: relative;
-            min-width: 0;
+             position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
             text-align: left;
             pointer-events: none;
             display: flex;
@@ -403,18 +445,30 @@
             opacity: 0.2;
             transition: color 0.7s ease, text-shadow 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-            white-space: normal;
-            word-break: break-word;
-            overflow: visible;
+           white-space: normal;
+overflow-wrap: anywhere;
+word-break: normal;
+overflow: visible;
+max-width: 100%;
+box-sizing: border-box;
         }
 
-        .floating-lyric-line.active {
-            color: #fff;
-            opacity: 1;
-            font-weight: 700;
-            transform: scale(1.08);
-            text-shadow: 0 0 14px var(--accent), 0 0 36px var(--accent-glow), 0 2px 14px rgba(0, 0, 0, 1);
-        }
+       .floating-lyric-line.active {
+    color: #fff;
+    opacity: 1;
+    font-weight: 700;
+
+    /* Keep long lyrics inside the box */
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    text-shadow:
+        0 0 10px var(--accent),
+        0 0 28px var(--accent-glow),
+        0 2px 12px rgba(0, 0, 0, 1);
+}
 
         .floating-lyric-empty {
             font-size: 0.9rem;
@@ -3286,7 +3340,517 @@
     flex-shrink: 0;
     color: var(--accent);
 }
+/* ═══════════════════════════════════════════════════════════════
+   AUDIO CONVERTER
+   ═══════════════════════════════════════════════════════════════ */
 
+.audio-converter {
+    margin-top: 42px;
+    padding-top: 42px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ac-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ac-header h2 {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 1.4rem !important;
+    letter-spacing: 1px !important;
+    line-height: 1 !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    text-transform: lowercase !important;
+    margin: 0 !important;
+}
+
+.ac-header h2 .dot {
+    color: var(--term-red-alert) !important;
+    text-shadow: none !important;
+}
+
+.ac-header .ac-sub {
+    display: block;
+    margin-left: auto;
+    text-align: right;
+    white-space: nowrap;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 700;
+}
+/* Drop area */
+
+.ac-drop {
+    margin-top: 24px;
+    min-height: 210px;
+    padding: 34px 24px;
+
+    border: 1px dashed rgba(var(--accent-rgb), 0.28);
+    border-radius: 16px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(var(--accent-rgb), 0.055),
+            transparent 65%
+        ),
+        rgba(255, 255, 255, 0.012);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    cursor: pointer;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.ac-drop:hover,
+.ac-drop.dragover {
+    border-color: rgba(var(--accent-rgb), 0.7);
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(var(--accent-rgb), 0.10),
+            transparent 65%
+        ),
+        rgba(255, 255, 255, 0.018);
+
+    box-shadow:
+        0 0 40px rgba(var(--accent-rgb), 0.08),
+        inset 0 0 40px rgba(var(--accent-rgb), 0.025);
+
+    transform: translateY(-2px);
+}
+
+.ac-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+
+    color: var(--accent);
+
+    filter:
+        drop-shadow(0 0 12px var(--accent-glow));
+}
+
+.ac-icon svg {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ac-drop-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+
+.ac-drop-sub {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: var(--text-mid);
+}
+
+.ac-formats {
+    margin-top: 14px;
+
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: var(--text-dim);
+    font-weight: 700;
+}
+
+/* Selected file */
+
+.ac-file-info {
+    display: none;
+
+    margin-top: 16px;
+    padding: 15px 16px;
+
+    align-items: center;
+    gap: 14px;
+
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+}
+
+.ac-file-info.visible {
+    display: flex;
+}
+
+.ac-file-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+
+    color: var(--accent);
+    font-size: 1.25rem;
+
+    text-shadow: 0 0 14px var(--accent-glow);
+}
+
+.ac-file-details {
+    min-width: 0;
+    flex: 1;
+}
+
+.ac-file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.ac-file-meta {
+    margin-top: 4px;
+
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.7px;
+}
+
+.ac-remove {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    color: var(--text-dim);
+    font-size: 1.2rem;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.ac-remove:hover {
+    color: #fff;
+    background: rgba(var(--accent-rgb), 0.12);
+}
+
+/* Options */
+
+.ac-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+
+    margin-top: 16px;
+}
+
+.ac-option {
+    padding: 15px;
+
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+}
+
+.ac-option label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: var(--text-dim);
+    font-weight: 800;
+}
+
+.ac-option select {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 0.72rem;
+
+    outline: none;
+    cursor: pointer;
+}
+
+.ac-option select:focus {
+    border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+/* Convert button */
+
+.ac-convert {
+    width: 100%;
+    margin-top: 16px;
+    padding: 15px 20px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 10px;
+
+    background: rgba(var(--accent-rgb), 0.08);
+
+    color: var(--accent);
+
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.ac-convert:hover:not(:disabled) {
+    background: rgba(var(--accent-rgb), 0.14);
+    border-color: rgba(var(--accent-rgb), 0.65);
+
+    box-shadow:
+        0 0 28px rgba(var(--accent-rgb), 0.12);
+
+    transform: translateY(-1px);
+}
+
+.ac-convert:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* Progress */
+
+.ac-progress {
+    display: none;
+    margin-top: 18px;
+}
+
+.ac-progress.visible {
+    display: block;
+}
+
+.ac-progress-top {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-size: 0.58rem;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+
+    color: var(--text-dim);
+    font-weight: 800;
+}
+
+.ac-progress-bar {
+    height: 4px;
+
+    overflow: hidden;
+
+    border-radius: 100px;
+
+    background: rgba(255, 255, 255, 0.06);
+}
+
+#ac-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--accent);
+
+    box-shadow:
+        0 0 12px var(--accent-glow);
+
+    transition: width 0.15s ease;
+}
+
+/* Result */
+
+.ac-result {
+    display: none;
+
+    margin-top: 18px;
+    padding: 16px;
+
+    align-items: center;
+    gap: 14px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    border-radius: 12px;
+
+    background: rgba(var(--accent-rgb), 0.035);
+}
+
+.ac-result.visible {
+    display: flex;
+}
+
+.ac-result-icon {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(var(--accent-rgb), 0.12);
+
+    color: var(--accent);
+    font-weight: 900;
+
+    box-shadow:
+        0 0 18px rgba(var(--accent-rgb), 0.1);
+}
+
+.ac-result-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.ac-result-info strong {
+    display: block;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 0.75rem;
+}
+
+.ac-result-info span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 0.6rem;
+    color: var(--text-dim);
+}
+
+.ac-download {
+    flex-shrink: 0;
+
+    padding: 9px 13px;
+
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: 8px;
+
+    background: rgba(var(--accent-rgb), 0.07);
+
+    color: var(--accent);
+
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.ac-download:hover {
+    background: rgba(var(--accent-rgb), 0.14);
+    border-color: rgba(var(--accent-rgb), 0.6);
+}
+
+.ac-status {
+    margin-top: 12px;
+
+    min-height: 1.3em;
+
+    text-align: center;
+
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: var(--text-dim);
+}
+
+.ac-status.error {
+    color: var(--dnd);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .ac-options {
+        grid-template-columns: 1fr;
+    }
+
+    .ac-result {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .ac-download {
+        width: 100%;
+        text-align: center;
+    }
+
+    .ac-drop {
+        min-height: 180px;
+    }
+}
 @media (max-width: 900px) {
     .kbf-results { grid-template-columns: 1fr; }
 }
@@ -3719,12 +4283,19 @@
 }
 .main-panel > .card-tabs::-webkit-scrollbar { display: none; }
 
-/* Pages: hide by default, show when active */
-.main-panel > .page {
-    display: none;
+/* PAGE TABS — only the active page is visible */
+.card.main-panel > .page {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
-.main-panel > .page.active {
-    display: block;
+
+.card.main-panel > .page.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     animation: page-fade-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -3899,12 +4470,1229 @@
         grid-row: auto !important;
     }
 }
-    </style>
+/* ═══════════════════════════════════════════════════════════════
+   TERMINAL SKIN — dark red on black
+   Self-contained. Delete to revert.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+    --bg: #000000;
+    --term-red: #8b1a1a;
+    --term-red-bright: #c62828;
+    --term-red-alert: #ff3333;
+    --term-red-glow: rgba(139, 26, 26, 0.4);
+    --accent: #8b1a1a;
+    --accent-rgb: 139, 26, 26;
+    --accent-glow: rgba(139, 26, 26, 0.5);
+    --accent-dim: rgba(139, 26, 26, 0.15);
+    --accent-soft: rgba(139, 26, 26, 0.05);
+    --text: #d4d4d4;
+    --text-mid: #8a8a8a;
+    --text-dim: #4a4a4a;
+    --border-soft: rgba(139, 26, 26, 0.25);
+    --border-mid: rgba(139, 26, 26, 0.5);
+    --radius-lg: 0px;
+    --radius-md: 0px;
+    --radius-sm: 0px;
+    --radius-pill: 0px;
+    --font-display: 'JetBrains Mono', monospace;
+    --font-body: 'JetBrains Mono', monospace;
+    --font-hand: 'JetBrains Mono', monospace;
+}
+
+/* --- Kill every busy background layer --- */
+body::before,
+body::after,
+.glow-layer,
+.grain-layer,
+.scanline-layer,
+.vignette-layer,
+.whisper-layer,
+.cursor-spotlight,
+.rain-layer,
+.audio-flash-layer,
+.lightning-layer,
+.whisper {
+    display: none !important;
+}
+
+/* --- Base body --- */
+body {
+    background: #000 !important;
+    color: var(--text) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 13px !important;
+    letter-spacing: 0 !important;
+    padding-top: 24px !important;
+}
+
+/* Subtle CRT scanlines — this is the ONLY background layer we keep */
+body::before {
+    content: '' !important;
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 9998 !important;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(139, 26, 26, 0.04) 0px,
+        rgba(139, 26, 26, 0.04) 1px,
+        transparent 1px,
+        transparent 3px
+    ) !important;
+    opacity: 0.6 !important;
+}
+
+/* --- Fonts scoped correctly --- */
+input,
+textarea,
+button,
+select {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* --- Card --- */
+.card,
+.card.main-panel {
+    background: #050505 !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 24px !important;
+}
+
+/* Hide the base card decorations entirely — no conflict */
+.card::before,
+.card::after {
+    display: none !important;
+}
+
+.card:hover,
+.card.main-panel:hover {
+    border-color: var(--border-mid) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* --- Header --- */
+.card.main-panel > .header {
+    border-bottom: 1px solid var(--border-soft) !important;
+    padding-bottom: 16px !important;
+    margin-bottom: 16px !important;
+}
+
+/* --- Username: > stvlking --- */
+.username {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    color: #fff !important;
+    text-shadow: 0 0 8px rgba(139, 26, 26, 0.7) !important;
+    text-transform: lowercase !important;
+}
+
+.username::before {
+    content: '> ' !important;
+    color: var(--term-red-alert) !important;
+}
+
+.username .dot {
+    color: var(--term-red-alert) !important;
+    text-shadow: none !important;
+}
+
+.username.kinetic-glitch {
+    animation: none !important;
+}
+
+/* --- Tagline: [PRODUCER] --- */
+.tagline {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 2px !important;
+    color: var(--term-red) !important;
+    text-transform: uppercase !important;
+    opacity: 1 !important;
+}
+
+/* --- Status text --- */
+.status-text {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.68rem !important;
+    color: var(--text-mid) !important;
+}
+
+.status-text::before {
+    border-radius: 0 !important;
+    background: var(--term-red) !important;
+    box-shadow: 0 0 6px var(--term-red-glow) !important;
+}
+
+/* --- Avatar: sharp square --- */
+.avatar {
+    border-radius: 0 !important;
+    border: 1px solid var(--border-mid) !important;
+    filter: contrast(1.1) saturate(0.7) !important;
+}
+
+.avatar-wrap::after {
+    display: none !important;
+}
+
+.avatar-wrap {
+    border-radius: 0 !important;
+}
+
+/* --- Status badge --- */
+.status-badge {
+    border-radius: 0 !important;
+    border: 1px solid #000 !important;
+}
+
+.status-badge.online {
+    background: var(--term-red-alert) !important;
+    box-shadow: 0 0 6px var(--term-red-alert) !important;
+    animation: none !important;
+}
+
+.status-badge.online::before {
+    background: var(--term-red-alert) !important;
+    inset: 3px !important;
+    border-radius: 0 !important;
+}
+
+.status-badge.offline {
+    background: #333 !important;
+}
+
+/* --- Tabs --- */
+.card-tabs,
+.main-panel > .card-tabs {
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 0 20px !important;
+    gap: 0 !important;
+}
+
+.card-tab {
+    border-radius: 0 !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 1.5px !important;
+    padding: 12px 18px !important;
+    font-weight: 500 !important;
+    color: var(--text-mid) !important;
+    border-right: 1px solid var(--border-soft) !important;
+    text-transform: uppercase !important;
+    background: #000 !important;
+}
+
+.card-tab:last-child {
+    border-right: 0 !important;
+}
+
+.card-tab:hover {
+    color: var(--text) !important;
+    background: rgba(139, 26, 26, 0.08) !important;
+}
+
+.card-tab.active {
+    color: #fff !important;
+    background: rgba(139, 26, 26, 0.15) !important;
+    box-shadow: inset 0 -2px 0 0 var(--term-red-bright) !important;
+}
+
+.card-tab.active::after {
+    display: none !important;
+}
+
+.card-tab .tab-icon {
+    display: none !important;
+}
+
+/* --- Section titles --- */
+.section-title {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 3px !important;
+    color: var(--term-red) !important;
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+}
+
+.section-title::before {
+    content: '> ' !important;
+    color: var(--term-red-alert) !important;
+}
+
+.section-title::after {
+    display: none !important;
+}
+
+/* --- About --- */
+.about {
+    font-size: 0.78rem !important;
+    line-height: 1.75 !important;
+    color: var(--text-mid) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.about strong {
+    color: var(--term-red-bright) !important;
+    font-weight: 600 !important;
+}
+
+/* --- Stats --- */
+.local-time,
+.site-views,
+.sc-plays {
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 0 !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.7rem !important;
+    padding: 8px 14px !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    color: var(--text-mid) !important;
+}
+
+.local-time:hover,
+.site-views:hover,
+.sc-plays:hover {
+    border-color: var(--term-red) !important;
+    background: rgba(139, 26, 26, 0.08) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.site-views .count,
+.sc-plays .count {
+    color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    text-shadow: none !important;
+    font-size: 0.85rem !important;
+}
+
+.site-views .count::before { content: '[' !important; color: var(--text-dim) !important; }
+.site-views .count::after  { content: ']' !important; color: var(--text-dim) !important; }
+.sc-plays .count::before   { content: '[' !important; color: var(--text-dim) !important; }
+.sc-plays .count::after    { content: ']' !important; color: var(--text-dim) !important; }
+
+/* --- Links: terminal rows --- */
+.links {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.link {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--border-soft) !important;
+    padding: 14px 16px !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    color: var(--text) !important;
+}
+
+.link:last-child {
+    border-bottom: 0 !important;
+}
+
+.link:hover {
+    background: rgba(139, 26, 26, 0.12) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.link::before {
+    content: '→ ' !important;
+    color: var(--term-red) !important;
+    margin-right: 4px !important;
+}
+
+.link::after {
+    display: none !important;
+}
+
+.link span:first-child {
+    color: var(--text) !important;
+}
+
+.link:hover span:first-child {
+    color: var(--term-red-alert) !important;
+}
+
+.link span:last-child {
+    color: var(--text-dim) !important;
+    font-size: 0.7rem !important;
+    margin-right: 0 !important;
+    opacity: 1 !important;
+}
+
+.link:hover span:last-child {
+    color: var(--text-mid) !important;
+    opacity: 1 !important;
+}
+
+/* --- Discord username --- */
+.np-song {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.88rem !important;
+    color: var(--term-red-bright) !important;
+}
+
+.discord-copy-btn {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    color: var(--text-dim) !important;
+    opacity: 1 !important;
+}
+
+.discord-copy-btn:hover {
+    color: var(--term-red-bright) !important;
+    border-color: var(--term-red) !important;
+    background: rgba(139, 26, 26, 0.1) !important;
+}
+
+/* --- Now playing / discord activity --- */
+.now-playing {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.now-playing.active {
+    background: #000 !important;
+    border-color: var(--border-soft) !important;
+}
+
+.now-playing.compact {
+    border-style: dashed !important;
+}
+
+.np-status {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text-dim) !important;
+}
+
+/* --- On repeat --- */
+.lastfm-row {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    border-bottom: 1px solid rgba(139, 26, 26, 0.15) !important;
+    padding: 8px 0 !important;
+}
+
+.lastfm-rank {
+    color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.75rem !important;
+    text-shadow: none !important;
+}
+
+.lastfm-name {
+    color: var(--text-mid) !important;
+}
+
+.lastfm-count {
+    color: var(--text-dim) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.lastfm-label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red) !important;
+}
+
+/* --- Lease cards --- */
+.lease-card {
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 0 !important;
+    padding: 18px !important;
+}
+
+.lease-card:hover {
+    border-color: var(--term-red) !important;
+    background: rgba(139, 26, 26, 0.05) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.lease-name {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red) !important;
+    font-size: 0.7rem !important;
+}
+
+.lease-name::before { content: '[' !important; }
+.lease-name::after  { content: ']' !important; }
+
+.lease-price {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red-alert) !important;
+    font-size: 1.5rem !important;
+    text-shadow: 0 0 8px var(--term-red-glow) !important;
+}
+
+.lease-features li {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.72rem !important;
+    color: var(--text-mid) !important;
+}
+
+.lease-features li::before {
+    content: '▪' !important;
+    background: transparent !important;
+    color: var(--term-red) !important;
+    box-shadow: none !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 0.6rem !important;
+    top: 3px !important;
+}
+
+/* --- Buttons: terminal block --- */
+.lease-cta,
+.discord-cta-btn,
+.contact-form-submit,
+.guestbook-form-submit,
+.notify-strip button,
+.cart-submit,
+.join-discord {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    border-radius: 0 !important;
+    background: var(--term-red) !important;
+    color: #fff !important;
+    border: 1px solid var(--term-red-bright) !important;
+    box-shadow: none !important;
+    font-weight: 600 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    font-size: 0.68rem !important;
+    padding: 12px 20px !important;
+}
+
+.lease-cta:hover,
+.discord-cta-btn:hover,
+.contact-form-submit:hover,
+.guestbook-form-submit:hover,
+.notify-strip button:hover,
+.cart-submit:hover {
+    background: var(--term-red-bright) !important;
+    transform: none !important;
+    box-shadow: 0 0 12px var(--term-red-glow) !important;
+}
+
+.join-discord {
+    background: #000 !important;
+    color: var(--term-red-bright) !important;
+    border-color: var(--term-red) !important;
+}
+
+.join-discord:hover {
+    background: var(--term-red) !important;
+    color: #fff !important;
+    box-shadow: 0 0 12px var(--term-red-glow) !important;
+}
+
+/* --- Live visitors --- */
+.live-visitors {
+    border-radius: 0 !important;
+    border: 1px solid var(--term-red) !important;
+    background: #000 !important;
+    color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.65rem !important;
+    padding: 6px 10px !important;
+}
+
+.live-visitors-dot {
+    background: var(--term-red-alert) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 6px var(--term-red-alert) !important;
+    animation: term-blink 1s steps(2) infinite !important;
+}
+
+@keyframes term-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* --- Tracks --- */
+.track {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    padding: 14px !important;
+}
+
+.track:hover {
+    border-color: var(--term-red) !important;
+    background: rgba(139, 26, 26, 0.05) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.track-cover {
+    border-radius: 0 !important;
+    border: 1px solid var(--border-soft) !important;
+    filter: contrast(1.1) saturate(0.6) !important;
+}
+
+.track:hover .track-cover {
+    box-shadow: none !important;
+    transform: none !important;
+    border-color: var(--term-red) !important;
+}
+
+.track-title {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text) !important;
+}
+
+.track-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red) !important;
+}
+
+.track-tag {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    color: var(--text-dim) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.track-play,
+.track-add {
+    border-radius: 0 !important;
+    border: 1px solid var(--term-red) !important;
+    background: #000 !important;
+    color: var(--term-red-bright) !important;
+}
+
+.track-play:hover,
+.track-add:hover {
+    background: var(--term-red) !important;
+    color: #fff !important;
+    transform: none !important;
+    box-shadow: 0 0 10px var(--term-red-glow) !important;
+}
+
+.track-progress-wrap {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+/* --- Tags --- */
+.tag {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    color: var(--text-mid) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.tag:hover,
+.tag.active {
+    background: rgba(139, 26, 26, 0.15) !important;
+    border-color: var(--term-red) !important;
+    color: var(--term-red-bright) !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* --- Big page headers --- */
+.beats-info-text h2,
+.tracks-header h2,
+.kbf-header h2,
+.ac-header h2,
+.discord-cta-header h2 {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 1.4rem !important;
+    letter-spacing: 1px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    text-transform: lowercase !important;
+}
+
+.beats-info-text h2::before,
+.tracks-header h2::before,
+.kbf-header h2::before,
+.ac-header h2::before,
+.discord-cta-header h2::before {
+    content: '> ' !important;
+    color: var(--term-red-alert) !important;
+}
+
+.beats-info-text h2 .dot,
+.tracks-header h2 .dot,
+.kbf-header h2 .dot,
+.ac-header h2 .dot,
+.discord-cta-header h2 .dot {
+    color: var(--term-red-alert) !important;
+    text-shadow: none !important;
+}
+.tracks-header .count {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red) !important;
+}
+
+.tracks-header,
+.discord-cta-header,
+.kbf-header {
+    border-bottom: 1px solid var(--border-soft) !important;
+}
+
+/* --- Discord CTA perks --- */
+.discord-cta-perks li {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.discord-cta-perks li:hover {
+    border-color: var(--term-red) !important;
+    background: rgba(139, 26, 26, 0.08) !important;
+    transform: none !important;
+}
+
+.discord-cta-perks strong {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red-bright) !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+}
+
+.discord-cta-badge {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--term-red) !important;
+    color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* --- Guestbook strip --- */
+.guestbook-strip {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.guestbook-strip:hover {
+    border-color: var(--term-red) !important;
+    background: rgba(139, 26, 26, 0.08) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.guestbook-icon {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--term-red) !important;
+    color: var(--term-red-bright) !important;
+    box-shadow: none !important;
+}
+
+.guestbook-title {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text) !important;
+}
+
+.guestbook-sub {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text-dim) !important;
+}
+
+.guestbook-count {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red-alert) !important;
+    text-shadow: 0 0 8px var(--term-red-glow) !important;
+    font-size: 1.2rem !important;
+}
+
+/* --- Forms --- */
+.contact-form input,
+.contact-form textarea,
+.guestbook-form input,
+.guestbook-form textarea,
+.cart-form input,
+.cart-form textarea,
+.notify-strip input {
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 0 !important;
+    color: var(--text) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.78rem !important;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.guestbook-form input:focus,
+.guestbook-form textarea:focus,
+.cart-form input:focus,
+.cart-form textarea:focus,
+.notify-strip input:focus {
+    border-color: var(--term-red) !important;
+    box-shadow: 0 0 8px var(--term-red-glow) !important;
+    outline: none !important;
+}
+
+.guestbook-form textarea {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.85rem !important;
+}
+
+::placeholder {
+    color: var(--text-dim) !important;
+    opacity: 0.7 !important;
+}
+
+::selection {
+    background: var(--term-red) !important;
+    color: #fff !important;
+}
+
+/* --- Modals --- */
+.guestbook-modal,
+.cart-drawer,
+.beat-detail,
+.command-palette,
+.shortcuts-panel,
+.lyrics-fs {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--term-red) !important;
+    box-shadow: 0 0 30px rgba(139, 26, 26, 0.3) !important;
+}
+
+.guestbook-modal-title,
+.cart-drawer-title,
+.beat-detail-title,
+.eq-popover-title,
+.shortcuts-panel h3 {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: #fff !important;
+    text-transform: lowercase !important;
+}
+
+.guestbook-modal-title .dot,
+.cart-drawer-title .dot,
+.beat-detail-title .dot,
+.eq-popover-title .dot,
+.shortcuts-panel h3 .dot {
+    color: var(--term-red-alert) !important;
+    text-shadow: none !important;
+}
+
+.beat-detail-stat {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.beat-detail-stat-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red-alert) !important;
+    text-shadow: none !important;
+}
+
+.beat-detail-lease-row {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.beat-detail-buy {
+    border-radius: 0 !important;
+    background: var(--term-red) !important;
+    border-color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+/* --- Command palette --- */
+.command-palette-input {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.85rem !important;
+    background: #000 !important;
+}
+
+.command-item {
+    border-radius: 0 !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-size: 0.78rem !important;
+}
+
+.command-item:hover,
+.command-item.selected {
+    background: rgba(139, 26, 26, 0.15) !important;
+    color: var(--term-red-bright) !important;
+}
+
+.command-item-icon {
+    color: var(--term-red-bright) !important;
+}
+
+.command-palette-hint kbd,
+.shortcut-keys kbd,
+.palette-shortcut-row kbd {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red-bright) !important;
+}
+
+/* --- Mini player --- */
+.mini-player {
+    background: #000 !important;
+    border-top: 1px solid var(--term-red) !important;
+    box-shadow: 0 -6px 20px rgba(139, 26, 26, 0.2) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.mini-player-art {
+    border-radius: 0 !important;
+    border: 1px solid var(--term-red) !important;
+    filter: contrast(1.1) saturate(0.7) !important;
+}
+
+.mini-player-title {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text) !important;
+}
+
+.mini-player-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text-dim) !important;
+}
+
+.mini-player-btn {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--term-red) !important;
+    color: var(--term-red-bright) !important;
+}
+
+.mini-player-btn:hover {
+    background: var(--term-red) !important;
+    color: #fff !important;
+    box-shadow: 0 0 10px var(--term-red-glow) !important;
+}
+
+.mini-player-viz span {
+    background: var(--term-red-bright) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 4px var(--term-red-glow) !important;
+}
+
+.mini-player-progress {
+    background: var(--term-red-bright) !important;
+    box-shadow: 0 0 8px var(--term-red-glow) !important;
+}
+
+/* --- Cart pill --- */
+.cart-pill {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--term-red) !important;
+    box-shadow: 0 0 20px var(--term-red-glow) !important;
+    color: var(--text) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.cart-pill:hover {
+    transform: none !important;
+    background: rgba(139, 26, 26, 0.15) !important;
+    box-shadow: 0 0 30px var(--term-red-glow) !important;
+}
+
+.cart-pill-count {
+    border-radius: 0 !important;
+    background: var(--term-red-bright) !important;
+    color: #fff !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    box-shadow: none !important;
+}
+
+.cart-pill-label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red-bright) !important;
+}
+
+/* --- Toast --- */
+.toast {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--term-red) !important;
+    color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    box-shadow: 0 0 20px var(--term-red-glow) !important;
+}
+
+.toast-dot {
+    background: var(--term-red-bright) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 6px var(--term-red-alert) !important;
+}
+
+/* --- Footer --- */
+.site-footer {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    border-top: 1px solid var(--border-soft) !important;
+    color: var(--text-dim) !important;
+}
+
+.site-footer-brand {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--text) !important;
+    text-transform: lowercase !important;
+}
+
+.site-footer-brand .dot {
+    color: var(--term-red-alert) !important;
+    text-shadow: none !important;
+}
+
+.site-footer a:hover {
+    color: var(--term-red-bright) !important;
+}
+
+/* --- Scroll progress --- */
+.scroll-progress {
+    background: var(--term-red-bright) !important;
+    box-shadow: 0 0 8px var(--term-red-glow) !important;
+}
+
+/* --- Guestbook entries / cart items --- */
+.guestbook-entry,
+.cart-item {
+    border-radius: 0 !important;
+    background: #000 !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+.guestbook-entry-name {
+    color: var(--term-red-bright) !important;
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    text-shadow: none !important;
+}
+
+.guestbook-entry-body,
+.guestbook-entry-time,
+.cart-item-title,
+.cart-item-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.guestbook-entry-body {
+    font-size: 0.82rem !important;
+}
+
+/* --- Shortcuts --- */
+.shortcuts-panel {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+
+.shortcut-row {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    border-bottom: 1px solid rgba(139, 26, 26, 0.15) !important;
+}
+
+/* --- Beat detail meta --- */
+.beat-detail-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: var(--term-red) !important;
+}
+
+/* --- Command palette hint --- */
+.command-palette-hint {
+    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    background: #000 !important;
+    border-top: 1px solid var(--border-soft) !important;
+}
+
+/* --- Mobile adjustments --- */
+@media (max-width: 560px) {
+    .card,
+    .card.main-panel {
+        padding: 18px !important;
+    }
+    .username {
+        font-size: 1.3rem !important;
+    }
+    .section-title {
+        font-size: 0.72rem !important;
+    }
+    .card-tab {
+        padding: 10px 12px !important;
+        font-size: 0.6rem !important;
+    }
+}
+/* Force grid layer to always render */
+.bg-grid {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.ac-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+
+.ac-header h2 {
+    margin: 0 !important;
+}
+
+.ac-header .ac-sub {
+    margin-left: auto !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+/* FIX: Only show the currently active tab page */
+.card.main-panel > .page {
+    display: none !important;
+}
+
+.card.main-panel > .page.active {
+    display: block !important;
+}
+ 
+
+/* ROUTE VISIBILITY — applies to every page pane, including Community and Contact */
+.page {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.page.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FRACTURED NEON WEB BACKGROUND
+   Inspired by the STVLKING cyberpunk / fractured-grid look.
+   Keeps the existing background, but adds depth, glow and
+   irregular red network fractures.
+   ═══════════════════════════════════════════════════════════════ */
+
+.fracture-web {
+    position: fixed;
+    inset: -4%;
+    width: 108%;
+    height: 108%;
+    pointer-events: none;
+    z-index: 2;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%20900%22%20preserveAspectRatio%3D%22none%22%3E%0A%3Cg%20fill%3D%22none%22%20stroke%3D%22%23ff0033%22%20stroke-width%3D%221%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.52%22%3E%0A%3Cpath%20d%3D%22M1386%2C44%20L1502%2C75%22%20%2F%3E%0A%3Cpath%20d%3D%22M1386%2C44%20L1423%2C76%20L1497%2C110%22%20%2F%3E%0A%3Cpath%20d%3D%22M1065%2C123%20L1010%2C107%22%20%2F%3E%0A%3Cpath%20d%3D%22M1065%2C123%20L1047%2C204%22%20%2F%3E%0A%3Cpath%20d%3D%22M1047%2C204%20L1056%2C224%20L1083%2C296%22%20%2F%3E%0A%3Cpath%20d%3D%22M805%2C355%20L781%2C311%20L843%2C335%22%20%2F%3E%0A%3Cpath%20d%3D%22M805%2C355%20L822%2C290%20L820%2C300%22%20%2F%3E%0A%3Cpath%20d%3D%22M805%2C355%20L820%2C440%20L811%2C450%22%20%2F%3E%0A%3Cpath%20d%3D%22M1083%2C296%20L1023%2C319%20L1040%2C400%22%20%2F%3E%0A%3Cpath%20d%3D%22M1197%2C151%20L1219%2C108%20L1216%2C122%22%20%2F%3E%0A%3Cpath%20d%3D%22M1197%2C151%20L1272%2C141%20L1264%2C206%22%20%2F%3E%0A%3Cpath%20d%3D%22M1218%2C267%20L1264%2C206%22%20%2F%3E%0A%3Cpath%20d%3D%22M1218%2C267%20L1320%2C330%22%20%2F%3E%0A%3Cpath%20d%3D%22M220%2C266%20L144%2C207%22%20%2F%3E%0A%3Cpath%20d%3D%22M220%2C266%20L201%2C424%22%20%2F%3E%0A%3Cpath%20d%3D%22M843%2C335%20L820%2C300%22%20%2F%3E%0A%3Cpath%20d%3D%22M843%2C335%20L933%2C397%22%20%2F%3E%0A%3Cpath%20d%3D%22M548%2C854%20L540%2C811%20L560%2C800%22%20%2F%3E%0A%3Cpath%20d%3D%22M548%2C854%20L475%2C818%20L476%2C793%22%20%2F%3E%0A%3Cpath%20d%3D%22M548%2C854%20L324%2C810%22%20%2F%3E%0A%3Cpath%20d%3D%22M548%2C854%20L476%2C791%20L300%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M220%2C791%20L285%2C787%20L324%2C810%22%20%2F%3E%0A%3Cpath%20d%3D%22M220%2C791%20L70%2C760%22%20%2F%3E%0A%3Cpath%20d%3D%22M220%2C791%20L275%2C641%22%20%2F%3E%0A%3Cpath%20d%3D%22M220%2C791%20L300%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M666%2C318%20L610%2C430%22%20%2F%3E%0A%3Cpath%20d%3D%22M666%2C318%20L755%2C438%22%20%2F%3E%0A%3Cpath%20d%3D%22M46%2C582%20L120%2C430%22%20%2F%3E%0A%3Cpath%20d%3D%22M46%2C582%20L70%2C760%22%20%2F%3E%0A%3Cpath%20d%3D%22M46%2C582%20L233%2C555%22%20%2F%3E%0A%3Cpath%20d%3D%22M144%2C207%20L82%2C190%20L80%2C130%22%20%2F%3E%0A%3Cpath%20d%3D%22M233%2C555%20L275%2C641%22%20%2F%3E%0A%3Cpath%20d%3D%22M233%2C555%20L269%2C643%20L300%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M233%2C555%20L230%2C493%20L201%2C424%22%20%2F%3E%0A%3Cpath%20d%3D%22M233%2C555%20L120%2C430%22%20%2F%3E%0A%3Cpath%20d%3D%22M933%2C397%20L930%2C491%22%20%2F%3E%0A%3Cpath%20d%3D%22M933%2C397%20L1040%2C400%22%20%2F%3E%0A%3Cpath%20d%3D%22M1502%2C75%20L1501%2C52%20L1497%2C110%22%20%2F%3E%0A%3Cpath%20d%3D%22M1502%2C75%20L1509%2C123%20L1450%2C180%22%20%2F%3E%0A%3Cpath%20d%3D%22M201%2C424%20L151%2C431%20L120%2C430%22%20%2F%3E%0A%3Cpath%20d%3D%22M34%2C101%20L80%2C130%22%20%2F%3E%0A%3Cpath%20d%3D%22M1185%2C745%20L1115%2C799%20L1120%2C760%22%20%2F%3E%0A%3Cpath%20d%3D%22M1185%2C745%20L1120%2C722%22%20%2F%3E%0A%3Cpath%20d%3D%22M866%2C773%20L850%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M866%2C773%20L1120%2C760%22%20%2F%3E%0A%3Cpath%20d%3D%22M811%2C450%20L755%2C438%22%20%2F%3E%0A%3Cpath%20d%3D%22M1348%2C306%20L1320%2C330%22%20%2F%3E%0A%3Cpath%20d%3D%22M1348%2C306%20L1281%2C361%20L1304%2C416%22%20%2F%3E%0A%3Cpath%20d%3D%22M1168%2C514%20L1176%2C557%20L1116%2C590%22%20%2F%3E%0A%3Cpath%20d%3D%22M1168%2C514%20L1102%2C526%20L1065%2C491%22%20%2F%3E%0A%3Cpath%20d%3D%22M324%2C810%20L476%2C793%22%20%2F%3E%0A%3Cpath%20d%3D%22M324%2C810%20L350%2C697%20L300%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M1304%2C416%20L1338%2C357%20L1320%2C330%22%20%2F%3E%0A%3Cpath%20d%3D%22M476%2C793%20L540%2C807%20L560%2C800%22%20%2F%3E%0A%3Cpath%20d%3D%22M476%2C793%20L373%2C757%20L300%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M1116%2C590%20L1094%2C561%20L1065%2C491%22%20%2F%3E%0A%3Cpath%20d%3D%22M1497%2C110%20L1465%2C171%20L1450%2C180%22%20%2F%3E%0A%3Cpath%20d%3D%22M424%2C399%20L360%2C350%22%20%2F%3E%0A%3Cpath%20d%3D%22M424%2C399%20L546%2C385%20L610%2C430%22%20%2F%3E%0A%3Cpath%20d%3D%22M392%2C141%20L402%2C187%20L480%2C180%22%20%2F%3E%0A%3Cpath%20d%3D%22M392%2C141%20L340%2C115%20L250%2C50%22%20%2F%3E%0A%3Cpath%20d%3D%22M392%2C141%20L360%2C350%22%20%2F%3E%0A%3Cpath%20d%3D%22M275%2C641%20L300%2C650%22%20%2F%3E%0A%3Cpath%20d%3D%22M1010%2C107%20L930%2C140%22%20%2F%3E%0A%3Cpath%20d%3D%22M1120%2C722%20L1141%2C746%20L1120%2C760%22%20%2F%3E%0A%3Cpath%20d%3D%22M938%2C7%20L930%2C140%22%20%2F%3E%0A%3Cpath%20d%3D%22M930%2C491%20L1024%2C505%22%20%2F%3E%0A%3Cpath%20d%3D%22M1216%2C122%20L1156%2C82%20L1180%2C60%22%20%2F%3E%0A%3Cpath%20d%3D%22M1065%2C491%20L1024%2C505%22%20%2F%3E%0A%3Cpath%20d%3D%22M1065%2C491%20L1049%2C428%20L1040%2C400%22%20%2F%3E%0A%3Cpath%20d%3D%22M1024%2C505%20L1022%2C429%20L1040%2C400%22%20%2F%3E%0A%3Cpath%20d%3D%22M1109%2C886%20L1082%2C832%20L1120%2C760%22%20%2F%3E%0A%3Cpath%20d%3D%22M80%2C130%20L136%2C148%20L250%2C50%22%20%2F%3E%0A%3Cpath%20d%3D%22M480%2C180%20L402%2C224%20L360%2C350%22%20%2F%3E%0A%3Cpath%20d%3D%22M720%2C70%20L791%2C70%20L930%2C140%22%20%2F%3E%0A%3Cpath%20d%3D%22M720%2C70%20L820%2C300%22%20%2F%3E%0A%3Cpath%20d%3D%22M1500%2C470%20L1451%2C611%20L1430%2C680%22%20%2F%3E%0A%3Cpath%20d%3D%22M1562%2C73%20L963%2C220%22%20%2F%3E%0A%3Cpath%20d%3D%22M365%2C684%20L941%2C515%22%20%2F%3E%0A%3Cpath%20d%3D%22M279%2C170%20L413%2C-6%22%20%2F%3E%0A%3Cpath%20d%3D%22M1366%2C547%20L857%2C389%22%20%2F%3E%0A%3Cpath%20d%3D%22M414%2C104%20L100%2C416%22%20%2F%3E%0A%3Cpath%20d%3D%22M898%2C542%20L1283%2C617%22%20%2F%3E%0A%3Cpath%20d%3D%22M324%2C549%20L-178%2C810%22%20%2F%3E%0A%3Cpath%20d%3D%22M979%2C447%20L1039%2C720%22%20%2F%3E%0A%3Cpath%20d%3D%22M287%2C325%20L705%2C130%22%20%2F%3E%0A%3Cpath%20d%3D%22M1192%2C673%20L1754%2C521%22%20%2F%3E%0A%3Cpath%20d%3D%22M-75%2C850%20L-640%2C769%22%20%2F%3E%0A%3Cpath%20d%3D%22M1630%2C314%20L1851%2C443%22%20%2F%3E%0A%3Cpath%20d%3D%22M282%2C704%20L730%2C421%22%20%2F%3E%0A%3Cpath%20d%3D%22M1319%2C644%20L1498%2C806%22%20%2F%3E%0A%3Cpath%20d%3D%22M-51%2C882%20L463%2C1166%22%20%2F%3E%0A%3Cpath%20d%3D%22M1232%2C690%20L1496%2C934%22%20%2F%3E%0A%3Cpath%20d%3D%22M422%2C532%20L924%2C467%22%20%2F%3E%0A%3Cpath%20d%3D%22M1493%2C461%20L1637%2C698%22%20%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20fill%3D%22%23ff1748%22%20opacity%3D%22.75%22%3E%3Ccircle%20cx%3D%221185%22%20cy%3D%22745%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221218%22%20cy%3D%22267%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%22424%22%20cy%3D%22399%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%22843%22%20cy%3D%22335%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%221320%22%20cy%3D%22330%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22300%22%20cy%3D%22650%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%221120%22%20cy%3D%22722%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221500%22%20cy%3D%22470%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22324%22%20cy%3D%22810%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22548%22%20cy%3D%22854%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%22805%22%20cy%3D%22355%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%22480%22%20cy%3D%22180%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221450%22%20cy%3D%22180%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%221040%22%20cy%3D%22400%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%221065%22%20cy%3D%22491%22%20r%3D%221.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221264%22%20cy%3D%22206%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%22233%22%20cy%3D%22555%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%221120%22%20cy%3D%22760%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221197%22%20cy%3D%22151%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%22811%22%20cy%3D%22450%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%22820%22%20cy%3D%22300%22%20r%3D%221.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22850%22%20cy%3D%22650%22%20r%3D%222%22%20%2F%3E%0A%3Ccircle%20cx%3D%22120%22%20cy%3D%22430%22%20r%3D%221.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221348%22%20cy%3D%22306%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22360%22%20cy%3D%22350%22%20r%3D%221.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22275%22%20cy%3D%22641%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%22755%22%20cy%3D%22438%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221047%22%20cy%3D%22204%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%221109%22%20cy%3D%22886%22%20r%3D%222.5%22%20%2F%3E%0A%3Ccircle%20cx%3D%221065%22%20cy%3D%22123%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%22938%22%20cy%3D%227%22%20r%3D%223%22%20%2F%3E%0A%3Ccircle%20cx%3D%22250%22%20cy%3D%2250%22%20r%3D%223%22%20%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: .48;
+    filter:
+        drop-shadow(0 0 2px rgba(255, 0, 51, .65))
+        drop-shadow(0 0 9px rgba(255, 0, 51, .28))
+        drop-shadow(0 0 24px rgba(255, 0, 51, .12));
+    mix-blend-mode: screen;
+    transform: scale(1.01);
+    animation: fracture-drift 18s ease-in-out infinite alternate;
+}
+
+.fracture-web::before,
+.fracture-web::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.fracture-web::before {
+    background:
+        radial-gradient(circle at 14% 24%, rgba(255, 0, 51, .24) 0 1px, transparent 2px),
+        radial-gradient(circle at 28% 70%, rgba(255, 0, 51, .22) 0 2px, transparent 3px),
+        radial-gradient(circle at 52% 18%, rgba(255, 0, 51, .20) 0 2px, transparent 3px),
+        radial-gradient(circle at 74% 36%, rgba(255, 0, 51, .22) 0 2px, transparent 3px),
+        radial-gradient(circle at 91% 72%, rgba(255, 0, 51, .25) 0 2px, transparent 3px);
+    filter: blur(1px);
+    opacity: .9;
+}
+
+.fracture-web::after {
+    background:
+        radial-gradient(ellipse 38% 28% at 12% 20%, rgba(255, 0, 51, .17), transparent 72%),
+        radial-gradient(ellipse 42% 30% at 88% 18%, rgba(255, 0, 51, .14), transparent 72%),
+        radial-gradient(ellipse 45% 34% at 20% 84%, rgba(255, 0, 51, .12), transparent 72%),
+        radial-gradient(ellipse 48% 35% at 82% 78%, rgba(255, 0, 51, .14), transparent 72%);
+    filter: blur(28px);
+    opacity: .95;
+}
+
+@keyframes fracture-drift {
+    0%   { transform: scale(1.01) translate3d(0, 0, 0); }
+    50%  { transform: scale(1.025) translate3d(-.4%, .25%, 0); }
+    100% { transform: scale(1.01) translate3d(.35%, -.25%, 0); }
+}
+
+/* Brighter ambient red glow around the edges */
+body::after {
+    background:
+        radial-gradient(ellipse 75% 65% at 50% 38%,
+            transparent 0%,
+            rgba(0,0,0,.18) 52%,
+            rgba(0,0,0,.72) 100%),
+        radial-gradient(circle at 8% 18%, rgba(255,0,51,.12), transparent 30%),
+        radial-gradient(circle at 92% 22%, rgba(255,0,51,.10), transparent 28%),
+        radial-gradient(circle at 15% 86%, rgba(255,0,51,.09), transparent 30%),
+        radial-gradient(circle at 86% 84%, rgba(255,0,51,.10), transparent 30%),
+        linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.38) 100%);
+}
+
+/* Make the original grid less uniform so it becomes a secondary layer */
+.bg-grid {
+    opacity: .62 !important;
+    background-size: 62px 62px !important;
+    filter:
+        drop-shadow(0 0 2px rgba(255, 0, 51, .26))
+        drop-shadow(0 0 7px rgba(255, 0, 51, .10)) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fracture-web {
+        animation: none;
+    }
+}
+</style>
 </head>
 <body>
 
-    <div class="scroll-progress" id="scroll-progress"></div>
-    <div class="glow-layer entrance-hide" id="glow-layer"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="fracture-web" aria-hidden="true"></div>
+
+    <div class="scroll-progress" id="scroll-progress"></div>    <div class="glow-layer entrance-hide" id="glow-layer"></div>
     <div class="rain-layer entrance-hide" id="rain-layer"></div>
     <div class="whisper-layer" id="whisper-layer"></div>
     <div class="grain-layer"></div>
@@ -4034,22 +5822,33 @@
                                 </div>
 
                                 <div class="section" id="links-section">
-                                    <h2 class="section-title">Links</h2>
-                                    <div class="links">
-                                        <a class="link" href="https://instagram.com/sonnyvro" target="_blank" rel="noopener">
-                                            <span>Instagram</span><span>@sonnyvro</span>
-                                        </a>
-                                        <a class="link" href="https://soundcloud.com/user-11954578" target="_blank" rel="noopener">
-                                            <span>SoundCloud</span><span>sonnyvro</span>
-                                        </a>
-                                        <a class="link" href="https://youtube.com/@sonnyvro" target="_blank" rel="noopener">
-                                            <span>YouTube</span><span>sonnyvro</span>
-                                        </a>
-                                        <a class="link" href="https://x.com/stvlked" target="_blank" rel="noopener">
-                                            <span>Twitter / X</span><span>@stvlked</span>
-                                        </a>
-                                    </div>
-                                </div>
+    <h2 class="section-title">Links</h2>
+    <div class="links">
+
+        <a class="link" href="https://instagram.com/sonnyvro" target="_blank" rel="noopener">
+            <span>Instagram</span><span>@sonnyvro</span>
+        </a>
+        <a class="link" href="https://soundcloud.com/user-11954578" target="_blank" rel="noopener">
+            <span>SoundCloud</span><span>sonnyvro</span>
+        </a>
+        <a class="link" href="https://youtube.com/@sonnyvro" target="_blank" rel="noopener">
+            <span>YouTube</span><span>sonnyvro</span>
+        </a>
+        <a class="link" href="https://x.com/stvlked" target="_blank" rel="noopener">
+            <span>Twitter / X</span><span>@stvlked</span>
+        </a>
+        <a class="link" href="https://www.tiktok.com/@sonnyvro" target="_blank" rel="noopener">
+            <span>TikTok</span><span>@sonnyvro</span>
+        </a>
+        <a class="link" href="https://open.spotify.com/artist/5VwgvQYg9C6oOnFfNpX9Ir" target="_blank" rel="noopener">
+            <span>Spotify</span><span>stvlking</span>
+        </a>
+        <a class="link" href="https://music.apple.com/us/artist/sonnyvro/1685588025" target="_blank" rel="noopener">
+            <span>Apple Music</span><span>sonnyvro</span>
+        </a>
+
+    </div>
+</div>
                             </div>
 
                             <div class="col-right">
@@ -4254,8 +6053,143 @@
                             </svg>
                             Your file never leaves your device. Detection runs entirely offline in the browser.
                         </div>
-                    </div>
 
+
+<!-- AUDIO CONVERTER -->
+<div class="audio-converter">
+
+<div class="ac-header">
+    <h2>audio converter<span class="dot">.</span></h2>
+    <span class="ac-sub">browser-native · private</span>
+</div>
+    </div>
+
+    <p class="ac-intro">
+        Convert audio files directly in your browser. Your audio never leaves your device.
+    </p>
+
+    <input
+        type="file"
+        id="ac-file"
+        accept="audio/*"
+        hidden
+    >
+
+    <div class="ac-drop" id="ac-drop">
+        <div class="ac-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v12"></path>
+                <path d="M7 8l5-5 5 5"></path>
+                <path d="M5 21h14"></path>
+            </svg>
+        </div>
+
+        <div class="ac-drop-title">
+            Drop an audio file here, or click to select
+        </div>
+
+        <div class="ac-formats">
+            WAV · MP3 · M4A · OGG
+        </div>
+    </div>
+
+    <div class="ac-file-info" id="ac-file-info">
+
+        <div class="ac-file-icon">
+            ♪
+        </div>
+
+        <div class="ac-file-details">
+            <div class="ac-file-name" id="ac-file-name">
+                —
+            </div>
+
+            <div class="ac-file-meta" id="ac-file-meta">
+                —
+            </div>
+        </div>
+
+        <button
+            type="button"
+            class="ac-remove"
+            id="ac-remove"
+            aria-label="Remove file"
+        >
+            ×
+        </button>
+
+    </div>
+
+    <div class="ac-options">
+
+        <div class="ac-option">
+            <label for="ac-format">OUTPUT FORMAT</label>
+
+            <select id="ac-format">
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+            </select>
+        </div>
+
+        <div class="ac-option" id="ac-quality-wrap">
+            <label for="ac-quality">MP3 QUALITY</label>
+
+            <select id="ac-quality">
+                <option value="320">320 kbps</option>
+                <option value="256">256 kbps</option>
+                <option value="192">192 kbps</option>
+                <option value="128">128 kbps</option>
+            </select>
+        </div>
+
+    </div>
+
+    <button
+        type="button"
+        class="ac-convert"
+        id="ac-convert"
+        disabled
+    >
+        CONVERT AUDIO
+    </button>
+
+    <div class="ac-progress" id="ac-progress">
+
+        <div class="ac-progress-top">
+            <span id="ac-progress-text">CONVERTING...</span>
+            <span id="ac-progress-percent">0%</span>
+        </div>
+
+        <div class="ac-progress-bar">
+            <div id="ac-progress-fill"></div>
+        </div>
+
+    </div>
+
+    <div class="ac-result" id="ac-result">
+
+        <div class="ac-result-icon">✓</div>
+
+        <div class="ac-result-info">
+            <strong id="ac-result-name">Conversion complete</strong>
+            <span id="ac-result-meta">Ready to download</span>
+        </div>
+
+        <a
+            id="ac-download"
+            class="ac-download"
+            href="#"
+            download
+        >
+            DOWNLOAD
+        </a>
+
+    </div>
+
+    <div class="ac-status" id="ac-status"></div>
+
+</div>
+                    </div>
                     <!-- COMMUNITY -->
                     <div class="page" data-page="community">
                         <div class="discord-cta-header">
@@ -4322,7 +6256,8 @@
 
                     <!-- CONTACT -->
                     <div class="page" data-page="contact">
-                        <div class="tracks-header">
+                        <div 
+class="tracks-header">
                             <h2>contact<span class="dot">.</span></h2>
                             <span class="count">goes to discord</span>
                         </div>
@@ -4631,32 +6566,26 @@
         }
 
         function setActivePage(route) {
-            // Toggle page panes inside the main card
-            document.querySelectorAll('.page').forEach(el => {
-                if (el.dataset.page === route) {
-                    el.classList.add('active');
-                } else {
-                    el.classList.remove('active');
-                }
+            document.querySelectorAll('.page').forEach(page => {
+                const isActive = page.dataset.page === route;
+
+                page.classList.toggle('active', isActive);
+
+                // Keep every route pane hidden unless it is the active route.
+                page.style.display = isActive ? 'block' : 'none';
+                page.style.visibility = isActive ? 'visible' : 'hidden';
+                page.style.opacity = isActive ? '1' : '0';
+                page.style.pointerEvents = isActive ? 'auto' : 'none';
             });
 
-            // Toggle tab active state
             document.querySelectorAll('.card-tab').forEach(tab => {
-                if (tab.dataset.route === route) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
+                tab.classList.toggle('active', tab.dataset.route === route);
             });
 
-            // Update document title
             const meta = ROUTES[route];
             if (meta && meta.title) {
                 document.title = meta.title;
             }
-
-            // Scroll the card back to top when switching tabs
-            window.scrollTo({ top: 0, behavior: 'auto' });
         }
 
         function handleRouteChange() {
@@ -4703,6 +6632,564 @@
         // Load Discord widget
         window.addEventListener('load', initDiscordCTA);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+<script>
+(function initAudioConverter() {
+
+    const fileInput = document.getElementById('ac-file');
+    const dropZone = document.getElementById('ac-drop');
+
+    const fileInfo = document.getElementById('ac-file-info');
+    const fileName = document.getElementById('ac-file-name');
+    const fileMeta = document.getElementById('ac-file-meta');
+
+    const removeBtn = document.getElementById('ac-remove');
+
+    const formatSelect = document.getElementById('ac-format');
+    const qualitySelect = document.getElementById('ac-quality');
+    const qualityWrap = document.getElementById('ac-quality-wrap');
+
+    const convertBtn = document.getElementById('ac-convert');
+
+    const progress = document.getElementById('ac-progress');
+    const progressFill = document.getElementById('ac-progress-fill');
+    const progressText = document.getElementById('ac-progress-text');
+    const progressPercent = document.getElementById('ac-progress-percent');
+
+    const result = document.getElementById('ac-result');
+    const resultName = document.getElementById('ac-result-name');
+    const resultMeta = document.getElementById('ac-result-meta');
+    const download = document.getElementById('ac-download');
+
+    const status = document.getElementById('ac-status');
+
+    let selectedFile = null;
+    let downloadUrl = null;
+
+    if (!fileInput || !dropZone || !fileInfo || !fileName || !fileMeta || !removeBtn || !formatSelect || !qualitySelect || !qualityWrap || !convertBtn || !progress || !progressFill || !progressText || !progressPercent || !result || !resultName || !resultMeta || !download || !status) return;
+
+    function formatBytes(bytes) {
+
+        if (!bytes) return '0 B';
+
+        const units = ['B', 'KB', 'MB', 'GB'];
+        const index = Math.floor(Math.log(bytes) / Math.log(1024));
+
+        return (
+            bytes / Math.pow(1024, index)
+        ).toFixed(index === 0 ? 0 : 1) + ' ' + units[index];
+    }
+
+    function setStatus(message, error = false) {
+
+        status.textContent = message || '';
+        status.classList.toggle('error', error);
+    }
+
+    function resetResult() {
+
+        result.classList.remove('visible');
+
+        if (downloadUrl) {
+            URL.revokeObjectURL(downloadUrl);
+            downloadUrl = null;
+        }
+
+        download.removeAttribute('href');
+    }
+
+    function selectFile(file) {
+
+        if (!file) return;
+
+        if (!file.type.startsWith('audio/') &&
+            !/\.(mp3|wav|m4a|ogg|flac|aac)$/i.test(file.name)) {
+
+            setStatus('Please select an audio file.', true);
+            return;
+        }
+
+        selectedFile = file;
+
+        fileName.textContent = file.name;
+
+        fileMeta.textContent =
+            `${file.type || 'audio'} · ${formatBytes(file.size)}`;
+
+        fileInfo.classList.add('visible');
+
+        convertBtn.disabled = false;
+
+        resetResult();
+        setStatus('');
+
+        dropZone.classList.remove('dragover');
+    }
+
+    function clearFile() {
+
+        selectedFile = null;
+
+        fileInput.value = '';
+
+        fileInfo.classList.remove('visible');
+
+        convertBtn.disabled = true;
+
+        progress.classList.remove('visible');
+
+        progressFill.style.width = '0%';
+        progressPercent.textContent = '0%';
+
+        resetResult();
+
+        setStatus('');
+    }
+
+    fileInput.addEventListener('change', () => {
+
+        if (fileInput.files.length) {
+            selectFile(fileInput.files[0]);
+        }
+
+    });
+
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', event => {
+
+        event.preventDefault();
+
+        dropZone.classList.add('dragover');
+
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+
+        dropZone.classList.remove('dragover');
+
+    });
+
+    dropZone.addEventListener('drop', event => {
+
+        event.preventDefault();
+
+        dropZone.classList.remove('dragover');
+
+        const file = event.dataTransfer.files[0];
+
+        if (file) {
+            selectFile(file);
+        }
+
+    });
+
+    removeBtn.addEventListener('click', clearFile);
+
+    formatSelect.addEventListener('change', () => {
+
+        qualityWrap.style.display =
+            formatSelect.value === 'mp3'
+                ? ''
+                : 'none';
+
+        resetResult();
+
+    });
+
+    qualityWrap.style.display = formatSelect.value === 'mp3' ? '' : 'none';
+
+    function updateProgress(percent, message) {
+
+        const safePercent = Math.max(
+            0,
+            Math.min(100, Math.round(percent))
+        );
+
+        progressFill.style.width = safePercent + '%';
+        progressPercent.textContent = safePercent + '%';
+
+        if (message) {
+            progressText.textContent = message;
+        }
+
+    }
+
+    async function decodeAudio(file) {
+
+        const arrayBuffer = await file.arrayBuffer();
+
+        const AudioContextClass =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+            throw new Error('Web Audio is not supported by this browser.');
+        }
+
+        const context = new AudioContextClass();
+
+        try {
+
+            return await context.decodeAudioData(arrayBuffer);
+
+        } finally {
+
+            try {
+                await context.close();
+            } catch (_) {}
+
+        }
+
+    }
+
+    function audioBufferToWav(buffer) {
+
+        const numberOfChannels = buffer.numberOfChannels;
+        const sampleRate = buffer.sampleRate;
+
+        const length =
+            buffer.length * numberOfChannels * 2 + 44;
+
+        const arrayBuffer = new ArrayBuffer(length);
+        const view = new DataView(arrayBuffer);
+
+        function writeString(offset, string) {
+
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(
+                    offset + i,
+                    string.charCodeAt(i)
+                );
+            }
+
+        }
+
+        let offset = 0;
+
+        writeString(offset, 'RIFF');
+        offset += 4;
+
+        view.setUint32(
+            offset,
+            36 + buffer.length * numberOfChannels * 2,
+            true
+        );
+
+        offset += 4;
+
+        writeString(offset, 'WAVE');
+        offset += 4;
+
+        writeString(offset, 'fmt ');
+        offset += 4;
+
+        view.setUint32(offset, 16, true);
+        offset += 4;
+
+        view.setUint16(offset, 1, true);
+        offset += 2;
+
+        view.setUint16(offset, numberOfChannels, true);
+        offset += 2;
+
+        view.setUint32(offset, sampleRate, true);
+        offset += 4;
+
+        view.setUint32(
+            offset,
+            sampleRate * numberOfChannels * 2,
+            true
+        );
+
+        offset += 4;
+
+        view.setUint16(
+            offset,
+            numberOfChannels * 2,
+            true
+        );
+
+        offset += 2;
+
+        view.setUint16(offset, 16, true);
+        offset += 2;
+
+        writeString(offset, 'data');
+        offset += 4;
+
+        view.setUint32(
+            offset,
+            buffer.length * numberOfChannels * 2,
+            true
+        );
+
+        offset += 4;
+
+        const channels = [];
+
+        for (let channel = 0; channel < numberOfChannels; channel++) {
+            channels.push(buffer.getChannelData(channel));
+        }
+
+        let sampleIndex = 0;
+
+        while (sampleIndex < buffer.length) {
+
+            for (
+                let channel = 0;
+                channel < numberOfChannels;
+                channel++
+            ) {
+
+                let sample = channels[channel][sampleIndex];
+
+                sample = Math.max(-1, Math.min(1, sample));
+
+                view.setInt16(
+                    offset,
+                    sample < 0
+                        ? sample * 0x8000
+                        : sample * 0x7FFF,
+                    true
+                );
+
+                offset += 2;
+
+            }
+
+            sampleIndex++;
+
+        }
+
+        return new Blob(
+            [arrayBuffer],
+            { type: 'audio/wav' }
+        );
+
+    }
+
+    async function convertToWav(file) {
+
+        updateProgress(10, 'DECODING AUDIO...');
+
+        const audioBuffer = await decodeAudio(file);
+
+        updateProgress(60, 'BUILDING WAV...');
+
+        const blob = audioBufferToWav(audioBuffer);
+
+        updateProgress(100, 'COMPLETE');
+
+        return {
+            blob,
+            extension: 'wav',
+            mime: 'audio/wav'
+        };
+
+    }
+
+    async function convertToMp3(file) {
+
+        if (typeof lamejs === 'undefined') {
+            throw new Error(
+                'MP3 conversion is unavailable because the encoder could not load. Please check your internet connection and reload the page.'
+            );
+        }
+
+        updateProgress(10, 'DECODING AUDIO...');
+
+        const audioBuffer = await decodeAudio(file);
+
+        const sampleRate = audioBuffer.sampleRate;
+
+        const channels = Math.min(
+            audioBuffer.numberOfChannels,
+            2
+        );
+
+        const kbps = parseInt(
+            qualitySelect.value,
+            10
+        ) || 320;
+
+        const encoder = new lamejs.Mp3Encoder(
+            channels,
+            sampleRate,
+            kbps
+        );
+
+        const left = audioBuffer.getChannelData(0);
+
+        const right =
+            channels > 1
+                ? audioBuffer.getChannelData(1)
+                : left;
+
+        const sampleBlockSize = 1152;
+
+        const mp3Chunks = [];
+
+        const totalSamples = left.length;
+
+        for (
+            let i = 0;
+            i < totalSamples;
+            i += sampleBlockSize
+        ) {
+
+            const end = Math.min(
+                i + sampleBlockSize,
+                totalSamples
+            );
+
+            const leftChunk = new Int16Array(end - i);
+            const rightChunk = new Int16Array(end - i);
+
+            for (
+                let j = 0;
+                j < end - i;
+                j++
+            ) {
+
+                const l = Math.max(
+                    -1,
+                    Math.min(1, left[i + j])
+                );
+
+                const r = Math.max(
+                    -1,
+                    Math.min(1, right[i + j])
+                );
+
+                leftChunk[j] =
+                    l < 0
+                        ? l * 0x8000
+                        : l * 0x7FFF;
+
+                rightChunk[j] =
+                    r < 0
+                        ? r * 0x8000
+                        : r * 0x7FFF;
+
+            }
+
+            const encoded =
+                channels === 1
+                    ? encoder.encodeBuffer(leftChunk)
+                    : encoder.encodeBuffer(
+                        leftChunk,
+                        rightChunk
+                    );
+
+            if (encoded.length > 0) {
+                mp3Chunks.push(encoded);
+            }
+
+            if (i % (sampleBlockSize * 20) === 0) {
+
+                updateProgress(
+                    10 + (i / totalSamples) * 85,
+                    'ENCODING MP3...'
+                );
+
+                await new Promise(
+                    resolve => setTimeout(resolve, 0)
+                );
+
+            }
+
+        }
+
+        const end = encoder.flush();
+
+        if (end.length > 0) {
+            mp3Chunks.push(end);
+        }
+
+        updateProgress(100, 'COMPLETE');
+
+        return {
+            blob: new Blob(
+                mp3Chunks,
+                { type: 'audio/mpeg' }
+            ),
+            extension: 'mp3',
+            mime: 'audio/mpeg'
+        };
+
+    }
+
+    convertBtn.addEventListener('click', async () => {
+
+        if (!selectedFile) return;
+
+        convertBtn.disabled = true;
+
+        progress.classList.add('visible');
+
+        resetResult();
+
+        setStatus('');
+
+        updateProgress(0, 'STARTING...');
+
+        try {
+
+            const outputFormat = formatSelect.value;
+
+            const converted =
+                outputFormat === 'mp3'
+                    ? await convertToMp3(selectedFile)
+                    : await convertToWav(selectedFile);
+
+            const originalName =
+                selectedFile.name
+                    .replace(/\.[^/.]+$/, '');
+
+            const outputName =
+                `${originalName}.${converted.extension}`;
+
+            downloadUrl =
+                URL.createObjectURL(converted.blob);
+
+            download.href = downloadUrl;
+            download.download = outputName;
+
+            resultName.textContent = outputName;
+
+            resultMeta.textContent =
+                `${formatBytes(converted.blob.size)} · ${converted.extension.toUpperCase()}`;
+
+            result.classList.add('visible');
+
+            setStatus('Conversion complete.');
+
+        } catch (error) {
+
+            console.error(
+                'Audio conversion failed:',
+                error
+            );
+
+            setStatus(
+                error.message ||
+                'Conversion failed.',
+                true
+            );
+
+        } finally {
+
+            convertBtn.disabled = !selectedFile;
+
+        }
+
+    });
+
+})();
+</script>
 
 </body>
 </html>
