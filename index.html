@@ -1086,8 +1086,16 @@
         }
 
         /* Pages */
-        .page { display: none; }
-        .page.active { display: block; animation: page-fade-in 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+       .page {
+    display: none !important;
+    width: 100%;
+}
+
+.page.active {
+    display: block !important;
+    width: 100%;
+    animation: page-fade-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
         @keyframes page-fade-in {
             from { opacity: 0; transform: translateY(8px); }
@@ -4150,6 +4158,43 @@
         height: 40px;
         padding: 0 15px;
     }
+}
+/* ============================================================
+   ROUTED PAGE LAYOUT FIX
+   Keeps every tab inside the main panel
+   ============================================================ */
+
+.hero-inner.layout-split {
+    align-items: start;
+}
+
+.main-panel {
+    align-self: start;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+}
+
+.main-panel > .page {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+}
+
+.main-panel > .page:not(.active) {
+    display: none !important;
+}
+
+.main-panel > .page.active {
+    display: block !important;
+    width: 100%;
+    animation: page-fade-in 0.25s ease both;
+}
+
+.main-panel > .card-tabs {
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
 }
 </style>
 </head>
