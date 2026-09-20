@@ -67,7 +67,7 @@ export function renderTracks() {
                     </div>
                     <span class="track-time" data-track-time="${t.id}">0:00 / 0:00</span>
                 </div>
-                <audio preload="metadata" src="${t.audio}" data-track-audio="${t.id}"></audio>
+                <audio preload="none" src="${t.audio}" data-track-audio="${t.id}"></audio>
                 <div class="track-reactions">
                     <button class="reaction-btn" data-track="${t.id}" data-emoji="fire" type="button"><span class="emoji">🔥</span><span class="count" data-track-count="${t.id}-fire">0</span></button>
                     <button class="reaction-btn" data-track="${t.id}" data-emoji="heart" type="button"><span class="emoji">❤️</span><span class="count" data-track-count="${t.id}-heart">0</span></button>
@@ -222,6 +222,7 @@ export function wireTrackPlayers() {
             updatePlayIcon();
             recordPlay(trackId);
         });
+
         audio.addEventListener('pause', () => {
             if (playerState.currentlyPlayingAudio === audio && miniPlayerIcon) miniPlayerIcon.innerHTML = PLAY_ICON;
             if (miniPlayerViz) miniPlayerViz.classList.add('paused');
@@ -229,6 +230,7 @@ export function wireTrackPlayers() {
             if (!anyPlaying && onTrackStarted) onTrackStarted(false);
             updatePlayIcon();
         });
+
         audio.addEventListener('ended', () => {
             if (playerState.currentlyPlayingAudio === audio) {
                 if (miniPlayerIcon) miniPlayerIcon.innerHTML = PLAY_ICON;
@@ -239,7 +241,8 @@ export function wireTrackPlayers() {
             if (!anyPlaying && onTrackStarted) onTrackStarted(false);
             updatePlayIcon();
         });
-	        // Apply saved volume to new audio elements
+
+        // Apply saved volume to new audio elements
         try {
             const savedVol = parseFloat(localStorage.getItem('stvlking_volume'));
             if (!isNaN(savedVol) && savedVol >= 0 && savedVol <= 1) {
@@ -250,6 +253,7 @@ export function wireTrackPlayers() {
         audio.addEventListener('loadedmetadata', () => {
             if (timeEl) timeEl.textContent = `0:00 / ${formatTime(audio.duration)}`;
         });
+
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 const pct = (audio.currentTime / audio.duration) * 100;
@@ -260,9 +264,13 @@ export function wireTrackPlayers() {
             }
         });
 
-        loadWaveform(trackId, audio.src).then(peaks => {
-            if (waveCanvas && peaks) drawWaveform(waveCanvas, peaks);
-        });
+        // Don't preload waveforms — only load when the user plays this track
+        audio.addEventListener('play', () => {
+            loadWaveform(trackId, audio.src).then(peaks => {
+                if (waveCanvas && peaks) drawWaveform(waveCanvas, peaks);
+            });
+        }, { once: true });
+
     });
 }
 
