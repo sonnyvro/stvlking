@@ -6521,7 +6521,7 @@ class="tracks-header">
         // ─────────────────────────────────────────────────────────────
         // SPA ROUTER — switches page panes inside the main card
         // ─────────────────────────────────────────────────────────────
-       const ROUTES = {
+      const ROUTES = {
     home:      { title: 'stvlking' },
     music:     { title: 'Music · stvlking' },
     tools:     { title: 'Tools · stvlking' },
@@ -6531,12 +6531,10 @@ class="tracks-header">
 
 const DEFAULT_ROUTE = 'home';
 
-// Prevent browser auto-scroll on hash change
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
 
-// Captured immediately before the hash changes, restored after page swap
 let pendingScrollY = null;
 
 function parseHash() {
@@ -6560,44 +6558,64 @@ function setActivePage(route) {
     });
 
     const meta = ROUTES[route];
-    if (meta && meta.title) {
-        document.title = meta.title;
-    }
+    if (meta && meta.title) document.title = meta.title;
 }
 
 function handleRouteChange() {
     const route = parseHash();
-
-    // Use the scroll captured before hash changed, or fall back to current
     const restoreY = pendingScrollY !== null ? pendingScrollY : window.scrollY;
     pendingScrollY = null;
 
+    // Hide old page FIRST so layout doesn't collapse-then-grow
     setActivePage(route);
 
-    // Double RAF so layout settles before we restore scroll
+    // Restore on multiple frames + a timeout fallback
+    const restore = () => {
+        window.scrollTo(0, restoreY);
+        document.documentElement.scrollTop = restoreY;
+    };
+
     requestAnimationFrame(() => {
-        window.scrollTo({ top: restoreY, behavior: 'instant' });
+        restore();
         requestAnimationFrame(() => {
-            window.scrollTo({ top: restoreY, behavior: 'instant' });
+            restore();
+            requestAnimationFrame(restore);
         });
     });
+    setTimeout(restore, 50);
+    setTimeout(restore, 150);
 }
 
 function navigateTo(route) {
     if (!ROUTES[route]) route = DEFAULT_ROUTE;
 
-    // Save scroll BEFORE changing hash so handleRouteChange can restore it
-    pendingScrollY = window.scrollY;
+    // Save current scroll
+    pendingScrollY = window.scrollY || document.documentElement.scrollTop || 0;
 
     const target = '#/' + route;
+
+    // Use history.pushState — this does NOT trigger an anchor jump
     if (location.hash !== target) {
-        location.hash = target;
-    } else {
-        handleRouteChange();
+        history.pushState(null, '', target);
     }
+    handleRouteChange();
 }
 
-window.addEventListener('hashchange', handleRouteChange);
+// Handle both pushState navigation and manual hash changes (back/forward)
+window.addEventListener('hashchange', () => {
+    // Only fires for back/forward or manual URL edits — capture scroll from history
+    if (pendingScrollY === null) {
+        pendingScrollY = window.scrollY;
+    }
+    handleRouteChange();
+});
+
+window.addEventListener('popstate', () => {
+    if (pendingScrollY === null) {
+        pendingScrollY = window.scrollY;
+    }
+    handleRouteChange();
+});
 
 document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-route]');
