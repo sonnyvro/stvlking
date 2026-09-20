@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>ㅤ</title>
+    <title>stvlking</title>
     <meta name="description" content="Producer. Beats, leases, and current work.">
     <meta name="theme-color" content="#ff0033">
     <meta property="og:type" content="website">
@@ -49,7 +49,7 @@
       ]
     }
     </script>
-<script defer src="https://cloud.umami.is/script.js" data-website-id="8c165112-facd-4913-9955-a47a559b7ff8"></script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="8c165112-facd-4913-9955-a47a559b7ff8"></script>
     <style>
         :root {
             --bg: #050505;
@@ -328,20 +328,19 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 72px 20px 40px;
-            gap: 40px;
+            padding: 48px 20px 32px;
+            gap: 32px;
         }
 
         .section-slot {
             width: 100%;
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 28px 20px;
+            padding: 32px 20px;
         }
 
-        .hero-inner { width: min(1040px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+        .hero-inner { width: min(1040px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
 
         .top-row {
             width: 100%;
@@ -574,7 +573,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 32px;
-            grid-template-areas: "header header" "left right";
+            grid-template-areas: "header header" "tabs tabs" "left right";
             min-height: 340px;
         }
 
@@ -587,6 +586,111 @@
             justify-content: space-between;
             gap: 24px;
             flex-wrap: wrap;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           IN-CARD TAB NAV
+           ═══════════════════════════════════════════════════════ */
+        .card-tabs {
+            grid-area: tabs;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin: -8px 0 8px;
+            padding: 6px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            position: relative;
+        }
+
+        .card-tabs::-webkit-scrollbar { display: none; }
+
+        .card-tab {
+            position: relative;
+            flex: 1 1 0;
+            min-width: 88px;
+            padding: 12px 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            border: 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: var(--font-body);
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 10px;
+            white-space: nowrap;
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .card-tab:hover {
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .card-tab.active {
+            color: var(--text);
+            background: rgba(var(--accent-rgb), 0.1);
+            box-shadow:
+                0 0 0 1px rgba(var(--accent-rgb), 0.3) inset,
+                0 0 24px rgba(var(--accent-rgb), 0.15);
+        }
+
+        .card-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .card-tab .tab-icon {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+            opacity: 0.85;
+        }
+
+        .card-tab .tab-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 16px;
+            padding: 0 5px;
+            border-radius: 100px;
+            background: rgba(var(--accent-rgb), 0.15);
+            border: 1px solid rgba(var(--accent-rgb), 0.35);
+            color: var(--accent);
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-left: 2px;
+        }
+
+        .card-tab.active .tab-count {
+            background: rgba(var(--accent-rgb), 0.25);
+            border-color: rgba(var(--accent-rgb), 0.55);
         }
 
         .profile { display: flex; align-items: center; gap: 15px; min-width: 0; position: relative; }
@@ -787,48 +891,6 @@
         }
 
         .join-discord svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
-
-        .site-nav {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 9px 0 3px;
-            margin: 0 0 6px;
-            border-bottom: 1px solid rgba(255,255,255,0.055);
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        .site-nav::-webkit-scrollbar { display: none; }
-
-        .site-nav a {
-            position: relative;
-            flex: 0 0 auto;
-            padding: 13px 16px 14px;
-            color: rgba(255,255,255,0.45);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.63rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            transition: color .2s ease;
-        }
-
-        .site-nav a::after {
-            content: "";
-            position: absolute;
-            left: 16px; right: 16px;
-            bottom: -1px;
-            height: 1px;
-            background: var(--accent);
-            transform: scaleX(0);
-            transform-origin: center;
-            transition: transform .2s ease;
-            box-shadow: 0 0 12px rgba(var(--accent-rgb),0.4);
-        }
-
-        .site-nav a:hover { color: rgba(255,255,255,0.95); }
-        .site-nav a:hover::after { transform: scaleX(1); }
 
         .col-left, .col-right { display: flex; flex-direction: column; gap: 26px; }
         .col-left { grid-area: left; }
@@ -1422,7 +1484,7 @@
             box-shadow: 0 0 36px rgba(var(--accent-rgb), 0.25), 0 12px 32px rgba(0, 0, 0, 0.6);
             opacity: 0; pointer-events: none;
             transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-            z-index: 200;
+            z-index: 2000;
             display: flex; align-items: center; gap: 8px;
         }
 
@@ -1565,45 +1627,6 @@
             font-family: var(--font-body);
             font-size: 0.58rem; font-weight: 700;
             color: var(--text-mid); margin: 0 2px;
-        }
-
-        .palette-shortcut-section {
-            padding: 10px 8px 4px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 6px;
-        }
-
-        .palette-shortcut-title {
-            font-size: 0.55rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            font-weight: 700;
-            padding: 0 6px 6px;
-        }
-
-        .palette-shortcut-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 8px;
-            font-size: 0.72rem;
-            color: var(--text-mid);
-            border-radius: 6px;
-        }
-
-        .palette-shortcut-row:hover { background: rgba(255, 255, 255, 0.03); }
-
-        .palette-shortcut-row .kbd-group { display: flex; gap: 4px; }
-
-        .palette-shortcut-row kbd {
-            display: inline-block; padding: 2px 6px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 4px;
-            font-family: var(--font-body);
-            font-size: 0.58rem; font-weight: 700;
-            color: var(--text);
         }
 
         .guestbook-strip {
@@ -3279,17 +3302,14 @@
    MOBILE RESPONSIVE OVERRIDES
    ═══════════════════════════════════════════════════════════════ */
 
-/* Tablet & small laptop — stack the two-column main panel */
 @media (max-width: 900px) {
-    /* Stage & hero adjustments */
     .hero-slot {
-        padding: 48px 16px 24px;
-        gap: 28px;
+        padding: 32px 16px 24px;
+        gap: 24px;
         min-height: auto;
     }
-    .hero-inner { gap: 28px; }
+    .hero-inner { gap: 24px; }
 
-    /* Top row (lyrics + now playing) becomes a single column */
     .top-row {
         grid-template-columns: 1fr;
         gap: 24px;
@@ -3310,17 +3330,34 @@
     .side-playing-art { width: 140px; height: 140px; }
     .side-playing-title { font-size: 1.8rem; letter-spacing: 3px; }
 
-    /* Main panel — stack into a single column */
     .main-panel {
         grid-template-columns: 1fr;
         grid-template-areas:
             "header"
+            "tabs"
             "left"
             "right";
         gap: 26px;
         padding: 26px 22px;
         min-height: 0;
     }
+
+    .card-tabs {
+        margin: 0 0 4px;
+        padding: 5px;
+        border-radius: 12px;
+        justify-content: flex-start;
+    }
+    .card-tab {
+        flex: 0 0 auto;
+        min-width: 0;
+        padding: 10px 12px;
+        font-size: 0.6rem;
+        letter-spacing: 1.5px;
+        gap: 6px;
+    }
+    .card-tab .tab-icon { display: none; }
+    .card-tab .tab-count { font-size: 0.5rem; min-width: 16px; height: 14px; padding: 0 4px; }
 
     .header {
         flex-direction: column;
@@ -3335,25 +3372,20 @@
         gap: 8px;
     }
     .header-actions .join-discord,
-    .header-actions .live-visitors,
-    .header-actions .scroll-hint { flex: 1 1 auto; justify-content: center; }
-    .header-actions .scroll-hint { display: none; } /* hide scroll hint on mobile */
+    .header-actions .live-visitors { flex: 1 1 auto; justify-content: center; }
 
     .username { font-size: 2.2rem; letter-spacing: 2px; }
 
     .col-left, .col-right { gap: 22px; }
 
-    /* Cards */
     .card { padding: 26px 22px; border-radius: 18px; }
-    .section-slot { padding: 20px 16px; min-height: auto; }
+    .section-slot { padding: 20px 16px; }
 
-    /* Beats grid — stack */
     .beats-info-grid {
         grid-template-columns: 1fr;
         gap: 26px;
     }
 
-    /* Track row — let content flow */
     .track {
         grid-template-columns: 56px 1fr;
         padding: 14px;
@@ -3365,27 +3397,24 @@
     .track-progress-wrap { flex: 1 1 100%; order: 3; }
     .track-time { min-width: 76px; text-align: left; order: 4; }
 
-    /* Discord CTA */
     .discord-cta-perks { grid-template-columns: 1fr; }
 
-    /* Key & BPM results — stack */
     .kbf-results { grid-template-columns: 1fr; }
 }
 
-/* Phones */
 @media (max-width: 560px) {
-    /* Global font-size floor for body text */
     body { font-size: 15px; }
 
-    .hero-slot { padding: 32px 12px 16px; }
-    .hero-inner { gap: 22px; }
+    .hero-slot { padding: 24px 12px 16px; }
+    .hero-inner { gap: 20px; }
     .section-slot { padding: 16px 12px; }
 
-    /* Card padding tighter */
     .card { padding: 22px 18px; border-radius: 16px; }
     .main-panel { padding: 22px 18px; gap: 22px; }
 
-    /* Profile / header */
+    .card-tabs { padding: 4px; gap: 1px; }
+    .card-tab { padding: 9px 10px; font-size: 0.55rem; letter-spacing: 1.2px; }
+
     .username { font-size: 1.9rem; letter-spacing: 1.5px; }
     .tagline { font-size: 0.6rem; letter-spacing: 2.5px; }
     .status-text { font-size: 0.66rem; }
@@ -3393,13 +3422,11 @@
     .avatar-wrap::after { inset: -3px; }
     .status-badge { width: 16px; height: 16px; border-width: 2.5px; }
 
-    /* Header actions — full-width buttons */
     .header-actions { flex-direction: column; align-items: stretch; gap: 8px; }
     .header-actions > * { width: 100%; justify-content: center; }
     .join-discord { padding: 11px 16px; font-size: 0.68rem; }
     .live-visitors { justify-content: center; padding: 8px 12px; }
 
-    /* Top row */
     .side-playing-art { width: 110px; height: 110px; border-radius: 12px; }
     .side-playing-title { font-size: 1.5rem; letter-spacing: 2px; }
     .side-playing-artist { font-size: 0.72rem; letter-spacing: 1.5px; }
@@ -3409,14 +3436,11 @@
     .floating-lyric-line.active { transform: scale(1.05); }
     .lyrics-expand-btn { font-size: 0.6rem; padding: 7px 12px; letter-spacing: 1.2px; }
 
-    /* Section titles */
     .section-title { font-size: 1.15rem; letter-spacing: 3px; margin-bottom: 12px; }
     .section-title::after { width: 22px; height: 2px; margin-top: 6px; }
 
-    /* About */
     .about { font-size: 0.82rem; line-height: 1.65; }
 
-    /* Stat pills — allow them to wrap */
     .stat-row { gap: 8px; }
     .local-time, .site-views, .sc-plays {
         font-size: 0.72rem;
@@ -3426,7 +3450,6 @@
     .site-views .count, .sc-plays .count { font-size: 1rem; }
     .local-time .tz, .site-views .label, .sc-plays .label { font-size: 0.6rem; letter-spacing: 1.2px; }
 
-    /* Links — full width single column */
     .links { flex-direction: column; gap: 8px; }
     .link {
         min-height: 52px;
@@ -3436,10 +3459,9 @@
     }
     .link span:last-child { margin-right: 18px; }
 
-    /* Contact form */
     .contact-form input,
     .contact-form textarea {
-        font-size: 16px !important; /* Prevents iOS zoom */
+        font-size: 16px !important;
         padding: 12px 14px;
     }
     .contact-form-submit {
@@ -3449,28 +3471,23 @@
         font-size: 0.72rem;
     }
 
-    /* Now playing / discord card */
     .now-playing { padding: 14px 16px; }
     .np-info .np-song { font-size: 0.9rem; }
     .discord-copy-btn { opacity: 1; width: 38px; height: 38px; }
 
-    /* Guestbook strip */
     .guestbook-strip { padding: 13px 14px; }
     .guestbook-icon { width: 36px; height: 36px; }
     .guestbook-title { font-size: 0.8rem; }
     .guestbook-sub { font-size: 0.66rem; }
     .guestbook-count { font-size: 1.5rem; }
 
-    /* On repeat stats */
     .lastfm-row { font-size: 0.76rem; padding: 7px 0; }
     .lastfm-rank { font-size: 0.85rem; }
     .lastfm-count { font-size: 0.58rem; }
 
-    /* Tracks */
     .tracks-header h2 { font-size: 1.9rem; }
     .tracks-header .count { font-size: 0.62rem; }
 
-    /* Track cards — give more room to title/audio */
     .track { grid-template-columns: 48px 1fr; padding: 12px; gap: 10px; }
     .track-cover { width: 48px; height: 48px; font-size: 1.2rem; border-radius: 8px; }
     .track-title { font-size: 0.88rem; }
@@ -3483,7 +3500,6 @@
     .track-time { font-size: 0.6rem; min-width: 70px; }
     .track-progress-wrap { height: 26px; }
 
-    /* Beat detail modal */
     .beat-detail-header { padding: 18px 18px 14px; }
     .beat-detail-title { font-size: 1.6rem; letter-spacing: 2px; }
     .beat-detail-body { padding: 16px 18px 20px; }
@@ -3492,7 +3508,6 @@
     .beat-detail-stat-value { font-size: 1.2rem; }
     .beat-detail-lease-row { padding: 11px 13px; }
 
-    /* Guestbook modal */
     .guestbook-modal-backdrop { padding: 12px; align-items: flex-end; }
     .guestbook-modal {
         max-height: 92vh;
@@ -3509,13 +3524,11 @@
     .guestbook-entry { padding: 12px 13px; }
     .guestbook-entry-body { font-size: 1.05rem; }
 
-    /* Contact / cart inputs — prevent iOS zoom */
     .cart-form input, .cart-form textarea,
     .notify-strip input {
         font-size: 16px !important;
     }
 
-    /* Notify strip — stack */
     .notify-strip {
         padding: 16px;
         flex-direction: column;
@@ -3526,7 +3539,6 @@
     .notify-strip form { flex-direction: column; min-width: 0; }
     .notify-strip button { width: 100%; padding: 13px 20px; }
 
-    /* Cart drawer */
     .cart-drawer-backdrop { padding: 12px; align-items: flex-end; }
     .cart-drawer {
         max-height: 92vh;
@@ -3536,17 +3548,15 @@
     .cart-drawer-title { font-size: 1.5rem; letter-spacing: 3px; }
     .cart-drawer-body { padding: 16px 20px 20px; }
 
-    /* Cart pill — reposition so it doesn't overlap mini-player */
     .cart-pill {
         left: 12px;
-        bottom: 88px; /* lift above mini-player when visible */
+        bottom: 88px;
         padding: 9px 14px;
         gap: 8px;
     }
     .cart-pill-count { min-width: 22px; height: 22px; font-size: 0.9rem; padding: 0 6px; }
     .cart-pill-label { font-size: 0.6rem; letter-spacing: 1.2px; }
 
-    /* Mini-player — compact layout */
     .mini-player {
         padding: 10px 12px;
         gap: 10px;
@@ -3557,12 +3567,11 @@
     .mini-player-meta { font-size: 0.58rem; }
     .mini-player-viz { width: 22px; height: 18px; gap: 2px; }
     .mini-player-viz span { width: 2px; }
-    .mini-player-volume { display: none; } /* hide volume on phones to save space */
-    .mini-player-eq-btn { display: none; } /* hide EQ button on phones */
+    .mini-player-volume { display: none; }
+    .mini-player-eq-btn { display: none; }
     .mini-player-controls { margin-left: auto; }
     .mini-player-btn { width: 36px; height: 36px; }
 
-    /* EQ popover — full width on phones */
     .eq-popover {
         left: 12px;
         right: 12px;
@@ -3570,19 +3579,16 @@
         width: auto;
     }
 
-    /* Command palette */
     .command-palette-backdrop { padding: 8vh 12px 12px; }
     .command-palette { border-radius: 14px; }
     .command-palette-input { font-size: 16px !important; padding: 14px 16px; }
     .command-item { padding: 12px 14px; font-size: 0.85rem; }
 
-    /* Shortcuts overlay */
     .shortcuts-overlay { padding: 12px; }
     .shortcuts-panel { padding: 22px 20px; border-radius: 16px; }
     .shortcuts-panel h3 { font-size: 1.5rem; margin-bottom: 18px; }
     .shortcut-row { font-size: 0.78rem; padding: 9px 0; }
 
-    /* Lyrics fullscreen */
     .lyrics-fs { padding: 40px 18px 24px; }
     .lyrics-fs-header { flex-wrap: wrap; gap: 12px; padding-bottom: 16px; margin-bottom: 20px; }
     .lyrics-fs-meta { gap: 12px; }
@@ -3596,7 +3602,6 @@
     .lyrics-fs-inner { padding: 0 8px; }
     .lyrics-fs-inner::before, .lyrics-fs-inner::after { height: 30vh; }
 
-    /* Footer */
     .site-footer {
         width: calc(100% - 24px);
         margin: 4px auto 28px;
@@ -3611,15 +3616,13 @@
     .site-footer-links { gap: 12px; justify-content: flex-start; }
     .site-footer-copy { align-self: flex-start; }
 
-    /* Toast */
     .toast {
-        bottom: 84px; /* lift above mini-player */
+        bottom: 84px;
         font-size: 0.7rem;
         padding: 10px 18px;
         max-width: calc(100% - 24px);
     }
 
-    /* Discord CTA card */
     .discord-cta-header h2 { font-size: 1.9rem; }
     .discord-cta-lede { font-size: 0.82rem; }
     .discord-cta-perks li { padding: 13px; }
@@ -3627,7 +3630,6 @@
     .discord-cta-perks li > div > span { font-size: 0.7rem; }
     .discord-cta-btn { padding: 13px 20px; font-size: 0.68rem; }
 
-    /* KBF card */
     .kbf-header h2 { font-size: 1.8rem; }
     .kbf-intro { font-size: 0.8rem; }
     .kbf-drop { padding: 36px 16px; }
@@ -3637,7 +3639,6 @@
     .kbf-result-value { font-size: 1.9rem; letter-spacing: 1px; }
     .kbf-result-unit { font-size: 0.68rem; }
 
-    /* Beats info / lease cards */
     .beats-info-text h2,
     .tracks-header h2,
     .kbf-header h2,
@@ -3647,11 +3648,9 @@
     .lease-features li { font-size: 0.76rem; }
     .lease-cta { width: 100%; text-align: center; padding: 13px 18px; }
 
-    /* Disable heavy fixed background effects on low-end devices */
     .cursor-spotlight { display: none; }
 }
 
-/* Very small phones (e.g. iPhone SE) */
 @media (max-width: 380px) {
     .username { font-size: 1.7rem; letter-spacing: 1px; }
     .side-playing-title { font-size: 1.35rem; }
@@ -3666,17 +3665,16 @@
     .track-play, .track-add { width: 34px; height: 34px; }
     .mini-player-art { width: 34px; height: 34px; }
     .mini-player-title { font-size: 0.7rem; }
+    .card-tab { font-size: 0.5rem; padding: 8px 8px; letter-spacing: 1px; }
 }
 
-/* Landscape phones — avoid massive hero taking whole viewport */
 @media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
-    .hero-slot { min-height: auto; padding: 32px 20px; }
+    .hero-slot { min-height: auto; padding: 24px 20px; }
     .section-slot { min-height: auto; }
     .floating-lyrics-container { height: 160px; }
     .side-playing-art { width: 100px; height: 100px; }
 }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -3684,6 +3682,222 @@
         transition-duration: 0.01ms !important;
     }
     .rain-layer, .grain-layer, .scanline-layer { display: none; }
+}
+/* ═══════════════════════════════════════════════════════════════
+   TAB SYSTEM FIX — overrides broken grid behavior
+   ═══════════════════════════════════════════════════════════════ */
+
+/* The card becomes a simple block container, not a 2-col grid */
+.main-panel {
+    display: block !important;
+}
+
+/* Header stacks normally */
+.main-panel > .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 24px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Tab bar row */
+.main-panel > .card-tabs {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0 0 24px;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.main-panel > .card-tabs::-webkit-scrollbar { display: none; }
+
+/* Pages: hide by default, show when active */
+.main-panel > .page {
+    display: none;
+}
+.main-panel > .page.active {
+    display: block;
+    animation: page-fade-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes page-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Home page: two-column grid for About/Links vs Discord/OnRepeat */
+.page-pane-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .page-pane-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+/* Tab pill styling (in case it got overridden) */
+.card-tab.active {
+    color: var(--text);
+    background: rgba(var(--accent-rgb), 0.1);
+    box-shadow:
+        0 0 0 1px rgba(var(--accent-rgb), 0.3) inset,
+        0 0 24px rgba(var(--accent-rgb), 0.15);
+}
+/* ═══════════════════════════════════════════════════════════════
+   FINAL LAYOUT FIX — proper two-column grid for Home page
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Reset the old grid-area assignments (they were for the deleted grid layout) */
+.col-left,
+.col-right {
+    grid-area: auto !important;
+}
+
+/* Force the two-column grid for the Home page content */
+.page[data-page="home"] .page-pane-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+/* Ensure sections inside the columns stack vertically, not overlap */
+.page[data-page="home"] .col-left,
+.page[data-page="home"] .col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    min-width: 0;
+}
+
+/* Each section should be a normal block */
+.page .section {
+    position: static;
+}
+
+/* Mobile: collapse to single column */
+@media (max-width: 900px) {
+    .page[data-page="home"] .page-pane-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+/* ═══════════════════════════════════════════════════════════════
+   NUCLEAR LAYOUT FIX
+   Overrides every possible conflicting rule
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Card is a plain block */
+.card.main-panel {
+    display: block !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+}
+
+/* Header row */
+.card.main-panel > .header {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+    padding-bottom: 24px !important;
+    margin-bottom: 20px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Tab bar */
+.card.main-panel > .card-tabs {
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    margin: 0 0 24px !important;
+    padding: 6px !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 14px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+}
+
+/* Page panes */
+.card.main-panel > .page {
+    display: none !important;
+}
+.card.main-panel > .page.active {
+    display: block !important;
+}
+
+/* Two-column grid — hard override */
+.card.main-panel > .page > .page-pane-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+    align-items: start !important;
+    width: 100% !important;
+}
+
+/* Force each column into its own cell */
+.card.main-panel > .page > .page-pane-grid > .col-left {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 26px !important;
+    position: static !important;
+    min-width: 0 !important;
+}
+
+.card.main-panel > .page > .page-pane-grid > .col-right {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 26px !important;
+    position: static !important;
+    min-width: 0 !important;
+}
+
+/* Sections behave normally */
+.card.main-panel > .page .section {
+    display: flex !important;
+    flex-direction: column !important;
+    position: static !important;
+    padding: 0 0 26px !important;
+}
+
+.card.main-panel > .page .section:last-child {
+    padding-bottom: 0 !important;
+    border-bottom: 0 !important;
+}
+
+/* Mobile: single column */
+@media (max-width: 900px) {
+    .card.main-panel > .page > .page-pane-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+    }
+    .card.main-panel > .page > .page-pane-grid > .col-left {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+    .card.main-panel > .page > .page-pane-grid > .col-right {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
 }
     </style>
 </head>
@@ -3700,416 +3914,445 @@
     <div class="lightning-layer" id="lightning-layer"></div>
     <div class="cursor-spotlight" id="cursor-spotlight"></div>
 
+    <!-- ═══════════════════════════════════════════════════════
+         MAIN CARD (shared across all pages)
+         Contains: profile header, tab nav, and page content
+         ═══════════════════════════════════════════════════════ -->
     <div class="stage">
-
         <div class="hero-slot">
-          <div class="hero-inner">
+            <div class="hero-inner">
 
-            <div class="top-row" id="top-row" hidden>
-                <div class="floating-lyrics">
-                    <div class="floating-lyrics-container">
-                        <div class="floating-lyrics-inner" id="floating-lyrics-inner"></div>
+                <div class="top-row" id="top-row" hidden>
+                    <div class="floating-lyrics">
+                        <div class="floating-lyrics-container">
+                            <div class="floating-lyrics-inner" id="floating-lyrics-inner"></div>
+                        </div>
+                    </div>
+
+                    <div class="side-playing">
+                        <div class="side-playing-label">Now Playing</div>
+                        <img class="side-playing-art" id="side-playing-art" src="" alt="" onerror="this.style.display='none'">
+                        <div class="side-playing-title" id="side-playing-title" aria-live="polite">—</div>
+                        <div class="side-playing-artist" id="side-playing-artist">—</div>
+                        <button class="lyrics-expand-btn" id="lyrics-expand-btn" type="button">
+                            <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                            Fullscreen
+                        </button>
                     </div>
                 </div>
 
-                <div class="side-playing">
-                    <div class="side-playing-label">Now Playing</div>
-                    <img class="side-playing-art" id="side-playing-art" src="" alt="" onerror="this.style.display='none'">
-                    <div class="side-playing-title" id="side-playing-title" aria-live="polite">—</div>
-                    <div class="side-playing-artist" id="side-playing-artist">—</div>
-                    <button class="lyrics-expand-btn" id="lyrics-expand-btn" type="button">
-                        <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
-                        Fullscreen
-                    </button>
-                </div>
-            </div>
+                <!-- MAIN CARD -->
+                <div class="card main-panel entrance-hide">
 
-            <div class="card main-panel entrance-hide">
-                <div class="header">
-                    <div class="profile" id="profile-wrap">
-                        <div class="avatar-wrap">
-                            <img class="avatar skeleton-avatar" id="discord-avatar" src="" alt="">
-                            <div class="status-badge offline" id="status-badge"></div>
+                    <!-- Profile header (always visible) -->
+                    <div class="header">
+                        <div class="profile" id="profile-wrap">
+                            <div class="avatar-wrap">
+                                <img class="avatar skeleton-avatar" id="discord-avatar" src="" alt="">
+                                <div class="status-badge offline" id="status-badge"></div>
+                            </div>
+                            <div class="username-block">
+                                <div class="username" id="discord-username">
+                                    <span class="skeleton skeleton-line name"></span>
+                                </div>
+                                <div class="tagline" id="discord-tagline">
+                                    <span class="skeleton skeleton-line tagline"></span>
+                                </div>
+                                <div class="status-text offline hidden" id="discord-status-text" aria-live="polite" role="status">
+                                    <span class="skeleton skeleton-line status"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="username-block">
-                            <div class="username" id="discord-username">
-                                <span class="skeleton skeleton-line name"></span>
+                        <div class="header-actions">
+                            <div class="live-visitors" id="live-visitors" title="Visitors online right now">
+                                <span class="live-visitors-dot"></span>
+                                <span id="live-visitors-count">—</span> online
                             </div>
-                            <div class="tagline" id="discord-tagline">
-                                <span class="skeleton skeleton-line tagline"></span>
-                            </div>
-                            <div class="status-text offline hidden" id="discord-status-text" aria-live="polite" role="status">
-                                <span class="skeleton skeleton-line status"></span>
-                            </div>
+                            <a class="join-discord magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3.2a.074.074 0 0 0-.079.037c-.2.351-.42.81-.575 1.17a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.582-1.17.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 6.093 4.37a.07.07 0 0 0-.033.027C2.398 9.084 1.474 13.673 1.925 18.2a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.46-.63.872-1.294 1.227-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                                Join Discord
+                            </a>
                         </div>
                     </div>
-                    <div class="header-actions">
-                        <div class="live-visitors" id="live-visitors" title="Visitors online right now">
-                            <span class="live-visitors-dot"></span>
-                            <span id="live-visitors-count">—</span> online
-                        </div>
-                        <a class="join-discord magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3.2a.074.074 0 0 0-.079.037c-.2.351-.42.81-.575 1.17a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.582-1.17.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 6.093 4.37a.07.07 0 0 0-.033.027C2.398 9.084 1.474 13.673 1.925 18.2a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.46-.63.872-1.294 1.227-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                            Join Discord
+
+                    <!-- ═══════════════════════════════════════════════
+                         TAB NAV — switches pages without leaving the card
+                         ═══════════════════════════════════════════════ -->
+                    <div class="card-tabs" role="tablist" aria-label="Site pages">
+                        <a href="#/home" class="card-tab" data-route="home" role="tab">
+                            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z"></path></svg>
+                            Home
                         </a>
-                        <a class="scroll-hint" href="#discord-cta">
-                            Scroll
-                            <span class="arrow">↓</span>
+                        <a href="#/music" class="card-tab" data-route="music" role="tab">
+                            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                            Music
+                        </a>
+                        <a href="#/tools" class="card-tab" data-route="tools" role="tab">
+                            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                            Tools
+                        </a>
+                        <a href="#/community" class="card-tab" data-route="community" role="tab">
+                            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            Community
+                        </a>
+                        <a href="#/contact" class="card-tab" data-route="contact" role="tab">
+                            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            Contact
                         </a>
                     </div>
-                </div>
-                <div class="col-left">
-                    <div class="section" id="about-section">
-                        <h2 class="section-title">About</h2>
-                        <p class="about">
-                            <strong>Producer/artist</strong> based out of the east coast. Making dark trap, ambient cinematic, and gritty alternative beats since 2022.
-                            Everything is written, arranged, and mixed from scratch.
-                            DM on Discord for leases, customs, or collabs.
+
+                    <!-- ═══════════════════════════════════════════════
+                         PAGE PANES — only one visible at a time
+                         ═══════════════════════════════════════════════ -->
+
+                    <!-- HOME -->
+                    <div class="page" data-page="home">
+                        <div class="page-pane-grid">
+                            <div class="col-left">
+                                <div class="section" id="about-section">
+                                    <h2 class="section-title">About</h2>
+                                    <p class="about">
+                                        <strong>Producer/artist</strong> based out of the east coast. Making dark trap, ambient cinematic, and gritty alternative beats since 2022.
+                                        Everything is written, arranged, and mixed from scratch.
+                                        DM on Discord for leases, customs, or collabs.
+                                    </p>
+                                    <div class="stat-row">
+                                        <div class="local-time" id="local-time">
+                                            <span id="local-time-value">--:-- --</span>
+                                            <span class="tz" id="local-time-tz">EST</span>
+                                        </div>
+                                        <div class="site-views" id="site-views" title="Total site views">
+                                            <span class="count" id="site-views-count">—</span>
+                                            <span class="label">views</span>
+                                        </div>
+                                        <a class="sc-plays" href="https://soundcloud.com/user-11954578" target="_blank" rel="noopener" title="Total SoundCloud plays">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c0-.057-.045-.1-.09-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.165 1.308c0 .055.045.094.09.094s.089-.045.104-.104l.21-1.319-.21-1.334c0-.061-.044-.09-.09-.09m1.83-1.229c-.061 0-.12.045-.12.104l-.21 2.563.225 2.458c0 .06.045.12.119.12.061 0 .105-.061.121-.12l.254-2.474-.254-2.548c-.016-.06-.061-.104-.121-.104m.945-.089c-.075 0-.135.06-.15.135l-.193 2.64.196 2.546c.015.074.075.135.15.135.075 0 .135-.061.15-.135l.24-2.546-.24-2.654c-.015-.075-.075-.121-.15-.121m1.036-.031c-.09 0-.15.061-.165.15l-.19 2.688.202 2.629c.015.09.075.15.165.15.09 0 .165-.061.18-.15l.226-2.63-.226-2.688c-.015-.089-.09-.149-.18-.149m1.065-.08c-.104 0-.18.075-.195.18l-.18 2.789.18 2.665c.015.104.09.18.195.18.104 0 .18-.076.195-.18l.225-2.68-.225-2.79c-.015-.104-.09-.18-.195-.18m1.096-.03c-.12 0-.215.09-.225.21l-.165 2.83.165 2.683c.015.12.105.21.225.21.12 0 .21-.09.225-.21l.195-2.699-.195-2.814c-.015-.12-.105-.21-.225-.21m1.14-.05c-.135 0-.24.105-.255.24l-.15 2.87.15 2.685c.015.135.12.24.255.24.135 0 .24-.105.255-.24l.18-2.699-.18-2.87c-.016-.135-.12-.226-.256-.226m1.184-.03c-.15 0-.27.121-.279.27l-.135 2.94.135 2.66c.015.15.135.27.279.27.15 0 .27-.12.285-.27l.165-2.7-.165-2.935c-.015-.15-.135-.27-.285-.27m1.274-.061c-.164 0-.3.135-.314.3l-.12 2.985.12 2.63c.015.165.15.3.314.3.165 0 .3-.135.315-.3l.14-2.645-.14-2.97c-.015-.164-.15-.3-.315-.3m1.32-.03c-.18 0-.33.15-.345.33l-.105 3.016.105 2.61c.015.18.165.33.345.33.18 0 .33-.15.345-.33l.135-2.61-.135-3.016c-.015-.18-.165-.33-.345-.33m1.424-.045c-.195 0-.36.165-.375.36l-.09 3.046.09 2.58c.016.195.18.36.375.36.195 0 .36-.165.375-.36l.105-2.58-.105-3.03c-.016-.21-.181-.376-.376-.376m1.575-.09c-.211 0-.39.18-.405.39l-.075 3.121.075 2.545c.015.211.194.39.405.39.21 0 .39-.18.404-.39l.09-2.545-.09-3.12c-.014-.211-.194-.391-.404-.391m1.35 1.53c-.03 0-.06.015-.084.03-.03.03-.046.075-.046.12l-.105 1.68.105 1.575c.014.045.045.075.084.075.045 0 .076-.03.09-.075l.12-1.575-.12-1.68c-.014-.045-.045-.075-.09-.075m.826-.09c-.03 0-.06.015-.076.045-.029.03-.044.075-.044.12l-.09 1.83.09 1.65c0 .045.015.075.044.105.016.015.046.03.076.03.029 0 .06-.015.075-.045.03-.03.045-.075.045-.12l.105-1.62-.105-1.68c0-.045-.015-.075-.045-.105-.015-.03-.046-.03-.075-.03m.945-.03c-.045 0-.075.015-.105.045-.03.03-.045.075-.045.12l-.075 1.98.075 1.62c0 .045.015.075.045.105.03.03.06.045.105.045.045 0 .075-.015.105-.045.015-.03.03-.06.03-.105l.09-1.62-.09-1.98c0-.045-.015-.075-.03-.105-.03-.045-.06-.06-.105-.06m4.017-7.031c.18 0 .33.045.48.135.885.51 1.471 1.44 1.471 2.535 0 .165-.016.33-.045.48.901.255 1.711.81 2.19 1.53.12.195.225.405.3.6.15.39.24.81.255 1.23v.135c0 2.28-1.86 4.14-4.14 4.14h-8.22c-.24 0-.42-.18-.435-.42V8.986c0-.24.18-.435.42-.465.36-.03.72-.135 1.05-.36.42-.27.72-.66.9-1.11.18-.45.27-.9.27-1.395 0-.42-.06-.84-.18-1.23-.06-.24-.015-.51.165-.66.12-.09.24-.12.36-.12"/></svg>
+                                            <span class="count" id="sc-plays-count">—</span>
+                                            <span class="label">plays</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="section" id="links-section">
+                                    <h2 class="section-title">Links</h2>
+                                    <div class="links">
+                                        <a class="link" href="https://instagram.com/sonnyvro" target="_blank" rel="noopener">
+                                            <span>Instagram</span><span>@sonnyvro</span>
+                                        </a>
+                                        <a class="link" href="https://soundcloud.com/user-11954578" target="_blank" rel="noopener">
+                                            <span>SoundCloud</span><span>sonnyvro</span>
+                                        </a>
+                                        <a class="link" href="https://youtube.com/@sonnyvro" target="_blank" rel="noopener">
+                                            <span>YouTube</span><span>sonnyvro</span>
+                                        </a>
+                                        <a class="link" href="https://x.com/stvlked" target="_blank" rel="noopener">
+                                            <span>Twitter / X</span><span>@stvlked</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-right">
+                                <div class="section" id="activity-section">
+                                    <h2 class="section-title">Discord Activity</h2>
+                                    <div class="now-playing compact" id="discord-activity">
+                                        <div class="np-status">Loading...</div>
+                                    </div>
+                                </div>
+
+                                <div class="section" id="discord-section">
+                                    <h2 class="section-title">Discord</h2>
+                                    <div class="now-playing active" id="discord-user-card">
+                                        <div class="discord-id-row">
+                                            <div class="np-info" style="min-width:0;">
+                                                <div class="np-song" id="side-username">—</div>
+                                            </div>
+                                            <button class="discord-copy-btn" id="discord-copy-btn" type="button" title="Copy username">
+                                                <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="section" id="lastfm-section">
+                                    <h2 class="section-title">On Repeat</h2>
+                                    <div class="lastfm-card">
+                                        <div class="lastfm-block">
+                                            <div class="lastfm-label">Top artists</div>
+                                            <div class="lastfm-list" id="lastfm-artists">
+                                                <div class="lastfm-row skeleton-row"></div>
+                                                <div class="lastfm-row skeleton-row"></div>
+                                                <div class="lastfm-row skeleton-row"></div>
+                                            </div>
+                                        </div>
+                                        <div class="lastfm-divider"></div>
+                                        <div class="lastfm-block">
+                                            <div class="lastfm-label">Top songs</div>
+                                            <div class="lastfm-list" id="lastfm-songs">
+                                                <div class="lastfm-row skeleton-row"></div>
+                                                <div class="lastfm-row skeleton-row"></div>
+                                                <div class="lastfm-row skeleton-row"></div>
+                                            </div>
+                                        </div>
+                                        <div class="lastfm-divider"></div>
+                                        <div class="lastfm-block">
+                                            <div class="lastfm-label">Top genre</div>
+                                            <div class="lastfm-list" id="lastfm-genres">
+                                                <div class="lastfm-row skeleton-row"></div>
+                                                <div class="lastfm-row skeleton-row"></div>
+                                                <div class="lastfm-row skeleton-row"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MUSIC -->
+                    <div class="page" data-page="music">
+                        <div class="beats-info-grid">
+                            <div class="beats-info-text">
+                                <h2>beats &amp; leases<span class="dot">.</span></h2>
+                                <p>
+                                    All beats are original productions — written, arranged, and mixed from scratch. 
+                                    Dark trap, ambient cinematic, and gritty alternative styles are the primary focus.
+                                </p>
+                                <p>
+                                    Every beat comes with tracked-out stems, a clean master, and a copy of the project file on request.
+                                    Delivery is instant via Discord DM or email after payment.
+                                </p>
+                                <p class="dim">
+                                    All purchases — leases, exclusives, and custom work — go through Discord. Join the server and DM me directly.
+                                </p>
+                                <div class="tag-list" id="beat-filter-tags">
+                                    <span class="tag" data-filter="all">all</span>
+                                    <span class="tag" data-filter="trap">trap</span>
+                                    <span class="tag" data-filter="ambient">ambient</span>
+                                    <span class="tag" data-filter="cinematic">cinematic</span>
+                                    <span class="tag" data-filter="gritty">gritty</span>
+                                    <span class="tag" data-filter="dark">dark</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="lease-card">
+                                    <div class="lease-header">
+                                        <span class="lease-name">Basic Lease</span>
+                                        <span class="lease-price">$25</span>
+                                    </div>
+                                    <ul class="lease-features">
+                                        <li>Tagged MP3 + WAV</li>
+                                        <li>Up to 10,000 streams</li>
+                                        <li>Non-exclusive rights</li>
+                                        <li>Credit required</li>
+                                    </ul>
+                                    <div class="lease-actions">
+                                        <a class="lease-cta magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
+                                            DM in Discord to purchase →
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="lease-card">
+                                    <div class="lease-header">
+                                        <span class="lease-name">Premium Lease</span>
+                                        <span class="lease-price">$50</span>
+                                    </div>
+                                    <ul class="lease-features">
+                                        <li>Untagged MP3 + WAV</li>
+                                        <li>Up to 100,000 streams</li>
+                                        <li>Non-exclusive rights</li>
+                                        <li>Tracked-out stems</li>
+                                    </ul>
+                                    <div class="lease-actions">
+                                        <a class="lease-cta magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
+                                            DM in Discord to purchase →
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="lease-card">
+                                    <div class="lease-header">
+                                        <span class="lease-name">Exclusive</span>
+                                        <span class="lease-price">$100+</span>
+                                    </div>
+                                    <ul class="lease-features">
+                                        <li>Full exclusive rights</li>
+                                        <li>Unlimited streams</li>
+                                        <li>Tracked-out stems + project</li>
+                                        <li>Beat removed from store</li>
+                                    </ul>
+                                    <div class="lease-actions">
+                                        <a class="lease-cta magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
+                                            DM in Discord to purchase →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section" style="margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <div class="tracks-header">
+                                <h2>artist catalog<span class="dot">.</span></h2>
+                                <span class="count">spotify · playlist</span>
+                            </div>
+                            <iframe
+                                style="border-radius:12px; display:block; width:100%;"
+                                src="https://open.spotify.com/embed/playlist/4TnolqN1gtlnEUxS9n5qVA?utm_source=generator&theme=0"
+                                width="100%"
+                                height="352"
+                                frameBorder="0"
+                                allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy">
+                            </iframe>
+                        </div>
+
+                        <div class="section" style="margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <div class="tracks-header">
+                                <h2>the catalog<span class="dot">.</span></h2>
+                                <span class="count" id="tracks-count">3 tracks · 2026</span>
+                            </div>
+                            <div class="tracks" id="tracks-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- TOOLS -->
+                    <div class="page" data-page="tools">
+                        <div class="kbf-header">
+                            <h2>key &amp; bpm finder<span class="dot">.</span></h2>
+                            <span class="kbf-sub">browser-native · private</span>
+                        </div>
+
+                        <p class="kbf-intro">
+                            Drop any audio file to detect its tempo and musical key. Useful for DJs, producers, and anyone
+                            working with samples. All processing runs locally in your browser — nothing is uploaded anywhere.
                         </p>
-                        <div class="stat-row">
-                            <div class="local-time" id="local-time">
-                                <span id="local-time-value">--:-- --</span>
-                                <span class="tz" id="local-time-tz">EST</span>
+
+                        <div class="kbf-drop" id="drop">
+                            <div class="kbf-icon">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M9 18V5l12-2v13"></path>
+                                    <circle cx="6" cy="18" r="3"></circle>
+                                    <circle cx="18" cy="16" r="3"></circle>
+                                </svg>
                             </div>
-                            <div class="site-views" id="site-views" title="Total site views">
-                                <span class="count" id="site-views-count">—</span>
-                                <span class="label">views</span>
-                            </div>
-                            <a class="sc-plays" href="https://soundcloud.com/user-11954578" target="_blank" rel="noopener" title="Total SoundCloud plays">
-                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c0-.057-.045-.1-.09-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.165 1.308c0 .055.045.094.09.094s.089-.045.104-.104l.21-1.319-.21-1.334c0-.061-.044-.09-.09-.09m1.83-1.229c-.061 0-.12.045-.12.104l-.21 2.563.225 2.458c0 .06.045.12.119.12.061 0 .105-.061.121-.12l.254-2.474-.254-2.548c-.016-.06-.061-.104-.121-.104m.945-.089c-.075 0-.135.06-.15.135l-.193 2.64.196 2.546c.015.074.075.135.15.135.075 0 .135-.061.15-.135l.24-2.546-.24-2.654c-.015-.075-.075-.121-.15-.121m1.036-.031c-.09 0-.15.061-.165.15l-.19 2.688.202 2.629c.015.09.075.15.165.15.09 0 .165-.061.18-.15l.226-2.63-.226-2.688c-.015-.089-.09-.149-.18-.149m1.065-.08c-.104 0-.18.075-.195.18l-.18 2.789.18 2.665c.015.104.09.18.195.18.104 0 .18-.076.195-.18l.225-2.68-.225-2.79c-.015-.104-.09-.18-.195-.18m1.096-.03c-.12 0-.215.09-.225.21l-.165 2.83.165 2.683c.015.12.105.21.225.21.12 0 .21-.09.225-.21l.195-2.699-.195-2.814c-.015-.12-.105-.21-.225-.21m1.14-.05c-.135 0-.24.105-.255.24l-.15 2.87.15 2.685c.015.135.12.24.255.24.135 0 .24-.105.255-.24l.18-2.699-.18-2.87c-.016-.135-.12-.226-.256-.226m1.184-.03c-.15 0-.27.121-.279.27l-.135 2.94.135 2.66c.015.15.135.27.279.27.15 0 .27-.12.285-.27l.165-2.7-.165-2.935c-.015-.15-.135-.27-.285-.27m1.274-.061c-.164 0-.3.135-.314.3l-.12 2.985.12 2.63c.015.165.15.3.314.3.165 0 .3-.135.315-.3l.14-2.645-.14-2.97c-.015-.164-.15-.3-.315-.3m1.32-.03c-.18 0-.33.15-.345.33l-.105 3.016.105 2.61c.015.18.165.33.345.33.18 0 .33-.15.345-.33l.135-2.61-.135-3.016c-.015-.18-.165-.33-.345-.33m1.424-.045c-.195 0-.36.165-.375.36l-.09 3.046.09 2.58c.016.195.18.36.375.36.195 0 .36-.165.375-.36l.105-2.58-.105-3.03c-.016-.21-.181-.376-.376-.376m1.575-.09c-.211 0-.39.18-.405.39l-.075 3.121.075 2.545c.015.211.194.39.405.39.21 0 .39-.18.404-.39l.09-2.545-.09-3.12c-.014-.211-.194-.391-.404-.391m1.35 1.53c-.03 0-.06.015-.084.03-.03.03-.046.075-.046.12l-.105 1.68.105 1.575c.014.045.045.075.084.075.045 0 .076-.03.09-.075l.12-1.575-.12-1.68c-.014-.045-.045-.075-.09-.075m.826-.09c-.03 0-.06.015-.076.045-.029.03-.044.075-.044.12l-.09 1.83.09 1.65c0 .045.015.075.044.105.016.015.046.03.076.03.029 0 .06-.015.075-.045.03-.03.045-.075.045-.12l.105-1.62-.105-1.68c0-.045-.015-.075-.045-.105-.015-.03-.046-.03-.075-.03m.945-.03c-.045 0-.075.015-.105.045-.03.03-.045.075-.045.12l-.075 1.98.075 1.62c0 .045.015.075.045.105.03.03.06.045.105.045.045 0 .075-.015.105-.045.015-.03.03-.06.03-.105l.09-1.62-.09-1.98c0-.045-.015-.075-.03-.105-.03-.045-.06-.06-.105-.06m4.017-7.031c.18 0 .33.045.48.135.885.51 1.471 1.44 1.471 2.535 0 .165-.016.33-.045.48.901.255 1.711.81 2.19 1.53.12.195.225.405.3.6.15.39.24.81.255 1.23v.135c0 2.28-1.86 4.14-4.14 4.14h-8.22c-.24 0-.42-.18-.435-.42V8.986c0-.24.18-.435.42-.465.36-.03.72-.135 1.05-.36.42-.27.72-.66.9-1.11.18-.45.27-.9.27-1.395 0-.42-.06-.84-.18-1.23-.06-.24-.015-.51.165-.66.12-.09.24-.12.36-.12"/></svg>
-                                <span class="count" id="sc-plays-count">—</span>
-                                <span class="label">plays</span>
-                            </a>
+                            <div>Drop an audio file here, or click to select</div>
+                            <div class="kbf-hint">mp3 · wav · flac · m4a · ogg</div>
+                        </div>
+
+                        <input type="file" id="file" accept="audio/*" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+
+                        <div class="kbf-status" id="status"></div>
+                        <div class="kbf-results" id="results"></div>
+
+                        <div class="kbf-privacy">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Your file never leaves your device. Detection runs entirely offline in the browser.
                         </div>
                     </div>
 
-                    <div class="section" id="links-section">
-                        <h2 class="section-title">Links</h2>
-                        <div class="links">
-                            <a class="link" href="https://instagram.com/sonnyvro" target="_blank" rel="noopener">
-                                <span>Instagram</span><span>@sonnyvro</span>
-                            </a>
-                            <a class="link" href="https://soundcloud.com/user-11954578" target="_blank" rel="noopener">
-                                <span>SoundCloud</span><span>sonnyvro</span>
-                            </a>
-                            <a class="link" href="https://youtube.com/@sonnyvro" target="_blank" rel="noopener">
-                                <span>YouTube</span><span>sonnyvro</span>
-                            </a>
-                            <a class="link" href="https://x.com/stvlked" target="_blank" rel="noopener">
-                                <span>Twitter / X</span><span>@stvlked</span>
-                            </a>
+                    <!-- COMMUNITY -->
+                    <div class="page" data-page="community">
+                        <div class="discord-cta-header">
+                            <h2>join the discord<span class="dot">.</span></h2>
+                            <div class="discord-cta-badge" id="discord-cta-badge" hidden>
+                                <span class="discord-cta-dot"></span>
+                                <span id="discord-cta-count">—</span>
+                            </div>
+                        </div>
+
+                        <p class="discord-cta-lede">
+                            Free lease giveaway every week. First access to new drops, stems, and direct collab requests.
+                        </p>
+
+                        <ul class="discord-cta-perks">
+                            <li>
+                                <span class="discord-cta-emoji">🎁</span>
+                                <div>
+                                    <strong>Weekly giveaway</strong>
+                                    <span>One free lease drawn every Friday. Active members only.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="discord-cta-emoji">⚡</span>
+                                <div>
+                                    <strong>First access</strong>
+                                    <span>Hear new beats before they hit the site.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="discord-cta-emoji">💬</span>
+                                <div>
+                                    <strong>Direct line</strong>
+                                    <span>DMs open for customs, stems, and collabs.</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <a class="discord-cta-btn magnetic"
+                           href="https://discord.gg/Mv6FRgD8jQ"
+                           target="_blank"
+                           rel="noopener">
+                            Join the server
+                            <span class="discord-cta-arrow">→</span>
+                        </a>
+
+                        <div class="section" style="margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <div class="tracks-header">
+                                <h2>guestbook<span class="dot">.</span></h2>
+                                <span class="count">leave a mark</span>
+                            </div>
+                            <div class="guestbook-strip" id="guestbook-strip">
+                                <div class="guestbook-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h4"></path></svg>
+                                </div>
+                                <div class="guestbook-text">
+                                    <div class="guestbook-title">Leave a comment</div>
+                                    <div class="guestbook-sub" id="guestbook-sub">Sign the guestbook</div>
+                                </div>
+                                <div class="guestbook-count" id="guestbook-count">0</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="section" id="contact-section">
-                        <h2 class="section-title">Contact</h2>
-                        <p class="about" style="font-size:0.78rem;margin-bottom:10px;">Send a message — it goes straight to my Discord.</p>
+                    <!-- CONTACT -->
+                    <div class="page" data-page="contact">
+                        <div class="tracks-header">
+                            <h2>contact<span class="dot">.</span></h2>
+                            <span class="count">goes to discord</span>
+                        </div>
+                        <p class="about" style="font-size:0.82rem;margin-bottom:14px;">Send a message — it goes straight to my Discord.</p>
                         <form class="contact-form" id="contact-form">
                             <input type="text" id="contact-name" maxlength="60" placeholder="Your name or artist name" required>
                             <input type="email" id="contact-email" maxlength="120" placeholder="Email or Discord tag" required>
                             <textarea id="contact-message" maxlength="600" placeholder="What do you need? (beat, lease, custom work…)" required></textarea>
                             <button class="contact-form-submit" type="submit" id="contact-submit">Send message</button>
                         </form>
-                    </div>
-                </div>
 
-                <div class="col-right">
-                    <div class="section" id="activity-section">
-                        <h2 class="section-title">Discord Activity</h2>
-                        <div class="now-playing compact" id="discord-activity">
-                            <div class="np-status">Loading...</div>
-                        </div>
-                    </div>
-
-                    <div class="section" id="discord-section">
-                        <h2 class="section-title">Discord</h2>
-                        <div class="now-playing active" id="discord-user-card">
-                            <div class="discord-id-row">
-                                <div class="np-info" style="min-width:0;">
-                                    <div class="np-song" id="side-username">—</div>
-                                </div>
-                                <button class="discord-copy-btn" id="discord-copy-btn" type="button" title="Copy username">
-                                    <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                </button>
+                        <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <div class="notify-strip">
+                                <div class="notify-strip-label">New drops in your inbox</div>
+                                <form id="notify-form" novalidate>
+                                    <input type="email" id="notify-email" placeholder="your@email.com" autocomplete="email" required>
+                                    <button type="submit" id="notify-submit">Notify me</button>
+                                </form>
                             </div>
                         </div>
                     </div>
 
-                                       <div class="section" id="guestbook-section">
-                        <h2 class="section-title">Guestbook</h2>
-                        <div class="guestbook-strip" id="guestbook-strip">
-                            <div class="guestbook-icon">
-                                <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h4"></path></svg>
-                            </div>
-                            <div class="guestbook-text">
-                                <div class="guestbook-title">Leave a comment</div>
-                                <div class="guestbook-sub" id="guestbook-sub">Sign the guestbook</div>
-                            </div>
-                            <div class="guestbook-count" id="guestbook-count">0</div>
-                        </div>
-                    </div>
-
-                    <div class="section" id="lastfm-section">
-                        <h2 class="section-title">On Repeat</h2>
-                        <div class="lastfm-card">
-                            <div class="lastfm-block">
-                                <div class="lastfm-label">Top artists</div>
-                                <div class="lastfm-list" id="lastfm-artists">
-                                    <div class="lastfm-row skeleton-row"></div>
-                                    <div class="lastfm-row skeleton-row"></div>
-                                    <div class="lastfm-row skeleton-row"></div>
-                                </div>
-                            </div>
-                            <div class="lastfm-divider"></div>
-                            <div class="lastfm-block">
-                                <div class="lastfm-label">Top songs</div>
-                                <div class="lastfm-list" id="lastfm-songs">
-                                    <div class="lastfm-row skeleton-row"></div>
-                                    <div class="lastfm-row skeleton-row"></div>
-                                    <div class="lastfm-row skeleton-row"></div>
-                                </div>
-                            </div>
-                            <div class="lastfm-divider"></div>
-                            <div class="lastfm-block">
-                                <div class="lastfm-label">Top genre</div>
-                                <div class="lastfm-list" id="lastfm-genres">
-                                    <div class="lastfm-row skeleton-row"></div>
-                                    <div class="lastfm-row skeleton-row"></div>
-                                    <div class="lastfm-row skeleton-row"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- ═══════════════════════════════════════════════════════
-             JOIN THE DISCORD
-             ═══════════════════════════════════════════════════════ -->
-        <div class="section-slot">
-            <div class="card discord-card glide" id="discord-cta">
-                <div class="discord-cta-header">
-                    <h2>join the discord<span class="dot">.</span></h2>
-                    <div class="discord-cta-badge" id="discord-cta-badge" hidden>
-                        <span class="discord-cta-dot"></span>
-                        <span id="discord-cta-count">—</span>
-                    </div>
-                </div>
-
-                <p class="discord-cta-lede">
-                    Free lease giveaway every week. First access to new drops, stems, and direct collab requests.
-                </p>
-
-                <ul class="discord-cta-perks">
-                    <li>
-                        <span class="discord-cta-emoji">🎁</span>
-                        <div>
-                            <strong>Weekly giveaway</strong>
-                            <span>One free lease drawn every Friday. Active members only.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="discord-cta-emoji">⚡</span>
-                        <div>
-                            <strong>First access</strong>
-                            <span>Hear new beats before they hit the site.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="discord-cta-emoji">💬</span>
-                        <div>
-                            <strong>Direct line</strong>
-                            <span>DMs open for customs, stems, and collabs.</span>
-                        </div>
-                    </li>
-                </ul>
-
-                <a class="discord-cta-btn magnetic"
-                   href="https://discord.gg/Mv6FRgD8jQ"
-                   target="_blank"
-                   rel="noopener">
-                    Join the server
-                    <span class="discord-cta-arrow">→</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- ═══════════════════════════════════════════════════════
-             KEY & BPM FINDER
-             ═══════════════════════════════════════════════════════ -->
-        <div class="section-slot">
-            <div class="card catalog-card glide kbf-card" id="key-bpm-finder">
-                <div class="kbf-header">
-                    <h2>key &amp; bpm finder<span class="dot">.</span></h2>
-                    <span class="kbf-sub">browser-native · private</span>
-                </div>
-
-                <p class="kbf-intro">
-                    Drop any audio file to detect its tempo and musical key. Useful for DJs, producers, and anyone
-                    working with samples. All processing runs locally in your browser — nothing is uploaded anywhere.
-                </p>
-
-                <div class="kbf-drop" id="drop">
-                    <div class="kbf-icon">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M9 18V5l12-2v13"></path>
-                            <circle cx="6" cy="18" r="3"></circle>
-                            <circle cx="18" cy="16" r="3"></circle>
-                        </svg>
-                    </div>
-                    <div>Drop an audio file here, or click to select</div>
-                    <div class="kbf-hint">mp3 · wav · flac · m4a · ogg</div>
-                </div>
-
-               <input type="file" id="file" accept="audio/*" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
-
-                <div class="kbf-status" id="status"></div>
-
-                <div class="kbf-results" id="results"></div>
-
-                <div class="kbf-privacy">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                    </svg>
-                    Your file never leaves your device. Detection runs entirely offline in the browser.
-                </div>
-            </div>
-        </div>
-
-        <div class="section-slot">
-            <div class="card beats-card glide" id="beats-info">
-                <div class="beats-info-grid">
-                    <div class="beats-info-text">
-                        <h2>beats &amp; leases<span class="dot">.</span></h2>
-                        <p>
-                            All beats are original productions — written, arranged, and mixed from scratch. 
-                            Dark trap, ambient cinematic, and gritty alternative styles are the primary focus.
-                        </p>
-                        <p>
-                            Every beat comes with tracked-out stems, a clean master, and a copy of the project file on request.
-                            Delivery is instant via Discord DM or email after payment.
-                        </p>
-                        <p class="dim">
-                            All purchases — leases, exclusives, and custom work — go through Discord. Join the server and DM me directly.
-                        </p>
-                        <div class="tag-list" id="beat-filter-tags">
-                            <span class="tag" data-filter="all">all</span>
-                            <span class="tag" data-filter="trap">trap</span>
-                            <span class="tag" data-filter="ambient">ambient</span>
-                            <span class="tag" data-filter="cinematic">cinematic</span>
-                            <span class="tag" data-filter="gritty">gritty</span>
-                            <span class="tag" data-filter="dark">dark</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="lease-card">
-                            <div class="lease-header">
-                                <span class="lease-name">Basic Lease</span>
-                                <span class="lease-price">$25</span>
-                            </div>
-                            <ul class="lease-features">
-                                <li>Tagged MP3 + WAV</li>
-                                <li>Up to 10,000 streams</li>
-                                <li>Non-exclusive rights</li>
-                                <li>Credit required</li>
-                            </ul>
-                            <div class="lease-actions">
-                                <a class="lease-cta magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
-                                    DM in Discord to purchase →
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="lease-card">
-                            <div class="lease-header">
-                                <span class="lease-name">Premium Lease</span>
-                                <span class="lease-price">$50</span>
-                            </div>
-                            <ul class="lease-features">
-                                <li>Untagged MP3 + WAV</li>
-                                <li>Up to 100,000 streams</li>
-                                <li>Non-exclusive rights</li>
-                                <li>Tracked-out stems</li>
-                            </ul>
-                            <div class="lease-actions">
-                                <a class="lease-cta magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
-                                    DM in Discord to purchase →
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="lease-card">
-                            <div class="lease-header">
-                                <span class="lease-name">Exclusive</span>
-                                <span class="lease-price">$100+</span>
-                            </div>
-                            <ul class="lease-features">
-                                <li>Full exclusive rights</li>
-                                <li>Unlimited streams</li>
-                                <li>Tracked-out stems + project</li>
-                                <li>Beat removed from store</li>
-                            </ul>
-                            <div class="lease-actions">
-                                <a class="lease-cta magnetic" href="https://discord.gg/Mv6FRgD8jQ" target="_blank" rel="noopener">
-                                    DM in Discord to purchase →
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-slot">
-            <div class="card glide" id="spotify">
-                    <div class="tracks-header">
-                    <h2>artist catalog<span class="dot">.</span></h2>
-                    <span class="count">spotify · playlist</span>
-                </div>
-                <p class="about" style="margin-bottom: 20px; max-width: 620px;">
-                    What's currently up on spotify. Hit the Spotify logo in the top-right corner of the player to open it in your own app and save it to your library.
-                </p>
-                <iframe
-                    style="border-radius:12px; display:block; width:100%;"
-                    src="https://open.spotify.com/embed/playlist/4TnolqN1gtlnEUxS9n5qVA?utm_source=generator&theme=0"
-                    width="100%"
-                    height="352"
-                    frameBorder="0"
-                    allowfullscreen=""
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy">
-                </iframe>
-            </div>
-        </div>
-
-        <div class="section-slot">
-            <div class="card catalog-card glide" id="tracks">
-                <div class="tracks-header">
-                    <h2>the catalog<span class="dot">.</span></h2>
-                    <span class="count" id="tracks-count">3 tracks · 2026</span>
-                </div>
-
-                <div class="tracks" id="tracks-container"></div>
-            </div>
-        </div>
-
     </div>
 
-    <section class="section-slot" style="min-height:auto;padding-top:0;padding-bottom:44px;">
-        <div class="card glide" style="padding:0;background:transparent;border:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;max-width:1040px;width:100%;">
-            <div class="notify-strip">
-                <div class="notify-strip-label">New drops in your inbox</div>
-                <form id="notify-form" novalidate>
-                    <input type="email" id="notify-email" placeholder="your@email.com" autocomplete="email" required>
-                    <button type="submit" id="notify-submit">Notify me</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
+    <!-- ═══════════════════════════════════════════════════════
+         GLOBAL OVERLAYS (unchanged)
+         ═══════════════════════════════════════════════════════ -->
     <div class="lyrics-fs" id="lyrics-fs">
         <div class="lyrics-fs-header">
             <div class="lyrics-fs-meta">
@@ -4219,16 +4462,24 @@
                 <span class="shortcut-keys"><kbd>G</kbd></span>
             </div>
             <div class="shortcut-row">
-                <span>Jump to beats</span>
+                <span>Go to Home</span>
                 <span class="shortcut-keys"><kbd>1</kbd></span>
             </div>
             <div class="shortcut-row">
-                <span>Jump to leases</span>
+                <span>Go to Music</span>
                 <span class="shortcut-keys"><kbd>2</kbd></span>
             </div>
             <div class="shortcut-row">
-                <span>Jump to catalog</span>
+                <span>Go to Tools</span>
                 <span class="shortcut-keys"><kbd>3</kbd></span>
+            </div>
+            <div class="shortcut-row">
+                <span>Go to Community</span>
+                <span class="shortcut-keys"><kbd>4</kbd></span>
+            </div>
+            <div class="shortcut-row">
+                <span>Go to Contact</span>
+                <span class="shortcut-keys"><kbd>5</kbd></span>
             </div>
             <div class="shortcut-row">
                 <span>Open your list</span>
@@ -4318,6 +4569,18 @@
         <span id="toast-text">Copied!</span>
     </div>
 
+    <footer class="site-footer">
+        <div class="site-footer-brand">STVLKING<span class="dot">.</span></div>
+        <div class="site-footer-links">
+            <a href="#/home" data-route="home">Home</a>
+            <a href="#/music" data-route="music">Music</a>
+            <a href="#/tools" data-route="tools">Tools</a>
+            <a href="#/community" data-route="community">Community</a>
+            <a href="#/contact" data-route="contact">Contact</a>
+        </div>
+        <div class="site-footer-copy">© 2026</div>
+    </footer>
+
     <script type="module" src="/src/main.js"></script>
 
     <script type="module">
@@ -4348,20 +4611,98 @@
             }
         }
 
+        // ─────────────────────────────────────────────────────────────
+        // SPA ROUTER — switches page panes inside the main card
+        // ─────────────────────────────────────────────────────────────
+        const ROUTES = {
+            home:      { title: 'stvlking' },
+            music:     { title: 'Music · stvlking' },
+            tools:     { title: 'Tools · stvlking' },
+            community: { title: 'Community · stvlking' },
+            contact:   { title: 'Contact · stvlking' }
+        };
+
+        const DEFAULT_ROUTE = 'home';
+
+        function parseHash() {
+            const raw = (location.hash || '').replace(/^#\/?/, '').trim();
+            const route = raw.split('?')[0].split('/')[0].toLowerCase();
+            return ROUTES[route] ? route : DEFAULT_ROUTE;
+        }
+
+        function setActivePage(route) {
+            // Toggle page panes inside the main card
+            document.querySelectorAll('.page').forEach(el => {
+                if (el.dataset.page === route) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            // Toggle tab active state
+            document.querySelectorAll('.card-tab').forEach(tab => {
+                if (tab.dataset.route === route) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            // Update document title
+            const meta = ROUTES[route];
+            if (meta && meta.title) {
+                document.title = meta.title;
+            }
+
+            // Scroll the card back to top when switching tabs
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        function handleRouteChange() {
+            const route = parseHash();
+            setActivePage(route);
+        }
+
+        function navigateTo(route) {
+            if (!ROUTES[route]) route = DEFAULT_ROUTE;
+            const target = '#/' + route;
+            if (location.hash !== target) {
+                location.hash = target;
+            } else {
+                handleRouteChange();
+            }
+        }
+
+        // Init
+        window.addEventListener('hashchange', handleRouteChange);
+
+        // Intercept clicks on any element with data-route
+        document.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-route]');
+            if (!target) return;
+            const route = target.getAttribute('data-route');
+            if (!route || !ROUTES[route]) return;
+
+            // Only intercept if it's an internal link
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (target.tagName === 'A' && target.target === '_blank') return;
+
+            e.preventDefault();
+            navigateTo(route);
+        });
+
+        // Initial route
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!location.hash || !ROUTES[parseHash()]) {
+                history.replaceState(null, '', '#/' + DEFAULT_ROUTE);
+            }
+            handleRouteChange();
+        });
+
+        // Load Discord widget
         window.addEventListener('load', initDiscordCTA);
     </script>
-
-    <footer class="site-footer">
-        <div class="site-footer-brand">STVLKING<span class="dot">.</span></div>
-        <div class="site-footer-links">
-            <a href="#about-section">About</a>
-            <a href="#tracks">Beats</a>
-            <a href="#beats-info">Leases</a>
-            <a href="#guestbook-section">Guestbook</a>
-            <a href="#contact-section">Contact</a>
-        </div>
-        <div class="site-footer-copy">© 2026</div>
-    </footer>
 
 </body>
 </html>
