@@ -4030,16 +4030,46 @@ function applyPresence(data) {
     };
     isPlaying = data.listening_to_spotify === true;
   } else {
-    const activity = (data.activities || []).find(a => a.name === 'Spotify');
+    // Recognize any music-source activity, not just Spotify.
+    // SoundCloud, Apple Music, Amazon Music, YouTube Music, Tidal, Deezer,
+    // Music Presence, and osu! (which PreMiD's client ID routes through).
+    const RECOGNIZED = [
+      'Spotify',
+      'SoundCloud',
+      'Apple Music',
+      'Amazon Music',
+      'YouTube Music',
+      'Tidal',
+      'Deezer',
+      'Music Presence',
+      'osu!(stable)',
+    ];
+    const activity = (data.activities || []).find(a => RECOGNIZED.includes(a.name));
     if (activity) {
+      let song   = activity.details || '—';
+      let artist = activity.state || '—';
+
+      // Some sources put "Artist - Song" in details. Split it if present.
+      // Example: "Lil peep - SICK(FULL CDQ LEAK)" -> song = "SICK(FULL CDQ LEAK)"
+      const dashMatch = song.match(/^(.+?)\s*-\s*(.+)$/);
+      if (dashMatch) {
+        const parsedArtist = dashMatch[1].trim();
+        const parsedSong = dashMatch[2].trim();
+        song = parsedSong;
+        if (!artist || artist === '—' || artist.toLowerCase() === parsedArtist.toLowerCase()) {
+          artist = parsedArtist;
+        }
+      }
+
       track = {
-        song: activity.details || '—',
-        artist: activity.state || '—',
+        song,
+        artist,
         album: activity.assets && activity.assets.large_text,
         duration: null,
         art: extractArt(activity),
         timestamps: activity.timestamps,
         spotifyId: activity.sync_id || null,
+        source: activity.name,
       };
       isPlaying = !!activity.timestamps;
     }
