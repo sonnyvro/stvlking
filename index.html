@@ -3974,7 +3974,8 @@ function renderSpotify(track, isPlaying) {
 
   if (incomingKey !== currentTrackKey) {
     currentTrackKey = incomingKey;
-    startLyrics(track.song, track.artist, track.album, track.duration, track.timestamps, isPlaying);
+    const searchTitle = (track.song || '').replace(/\s*[\(\[][^\)\]]*[\)\]]/g, '').trim();
+    startLyrics(searchTitle, track.artist, track.album, track.duration, track.timestamps, isPlaying);
   }
 }
 
