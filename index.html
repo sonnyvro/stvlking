@@ -55,6 +55,68 @@
     try { window.history.replaceState(null, '', target); } catch(_) {}
   }
 })();
+/* ═══════════════════════════════════════════════════════════════
+   MANUAL NOW PLAYING — for Spotify local files & other sources
+   Discord doesn't report to Lanyard, so set it from the console:
+     setNowPlaying('song', 'artist', ['art url'], [durationSec])
+     setNowPlaying(null)  // clear
+   ═══════════════════════════════════════════════════════════════ */
+let manualTrack = null;
+let manualStartedAt = null;
+
+window.setNowPlaying = function (song, artist, art, duration) {
+  if (!song) {
+    manualTrack = null;
+    manualStartedAt = null;
+    console.log('[manual] cleared');
+    // Let Lanyard take back over on the next presence update.
+    return;
+  }
+
+  manualTrack = {
+    song: String(song),
+    artist: String(artist || '—'),
+    album: null,
+    art: art || null,
+    duration: duration || null,
+    timestamps: duration
+      ? { start: Date.now(), end: Date.now() + duration * 1000 }
+      : null,
+    spotifyId: null,
+  };
+  manualStartedAt = Date.now();
+
+  console.log('[manual] now playing:', manualTrack.song, '—', manualTrack.artist);
+  renderSpotify(manualTrack, true);
+};
+
+// Whenever the site would otherwise hide the track (because Lanyard
+// has nothing to report), check the manual override first.
+const _originalClearTrackAtmosphere = clearTrackAtmosphere;
+clearTrackAtmosphere = function () {
+  if (manualTrack) {
+    renderSpotify(manualTrack, true);
+    return;
+  }
+  return _originalClearTrackAtmosphere.apply(this, arguments);
+};
+
+const _originalApplyPresence = applyPresence;
+applyPresence = function (data) {
+  // If Lanyard reports nothing and we have a manual override, keep it.
+  const hasSpotify = data && (data.spotify || (data.activities || []).some(a => a.name === 'Spotify'));
+  if (!hasSpotify && manualTrack) {
+    renderSpotify(manualTrack, true);
+    return;
+  }
+  // If Lanyard starts reporting a real track, drop the manual override.
+  if (hasSpotify && manualTrack) {
+    console.log('[manual] real Spotify detected, dropping override');
+    manualTrack = null;
+    manualStartedAt = null;
+  }
+  return _originalApplyPresence.apply(this, arguments);
+};
 </script>
 
 <style>
@@ -2562,6 +2624,7 @@ const CONFIG = {
   lanyardSocket: 'wss://api.lanyard.rest/socket',
   lanyardRest:   'https://api.lanyard.rest/v1/users',
   lrclibBase:    'https://lrclib.net/api',
+  geniusProxy:   'https://stvlking-proxy.sonnyvromusic.workers.dev/genius',  // ← new
   wispDuration: 900,
   tvGlitchDuration: 420,
 };
@@ -3288,7 +3351,38 @@ async function fetchLRCLIB(trackName, artistName, albumName, durationSec) {
     return null;
   }
 }
+const geniusCache = new Map();
 
+async function fetchGenius(trackName, artistName) {
+  const cacheKey = `${trackName}|${artistName}`.toLowerCase();
+  if (geniusCache.has(cacheKey)) return geniusCache.get(cacheKey);
+
+  try {
+    const res = await fetch(CONFIG.geniusProxy, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ song: trackName, artist: artistName }),
+    });
+    if (!res.ok) { geniusCache.set(cacheKey, null); return null; }
+    const data = await res.json();
+    if (!data.lyrics) { geniusCache.set(cacheKey, null); return null; }
+
+    // Genius text has no timestamps. Give each line a nominal slot so
+    // the existing word-timing estimator has something to work with.
+    const lines = data.lyrics
+      .split('\n')
+      .map(l => l.trim())
+      .filter(Boolean)
+      .map((line, i) => ({ t: i * 4, line }));
+
+    const result = { offset: 0, lines, source: 'genius', url: data.url };
+    geniusCache.set(cacheKey, result);
+    return result;
+  } catch (_) {
+    geniusCache.set(cacheKey, null);
+    return null;
+  }
+}
 function getFallbackLyrics(song) {
   if (!song) return null;
   return FALLBACK_LYRICS[song.toLowerCase().trim()] || null;
@@ -3500,8 +3594,28 @@ async function startLyrics(song, artist, album, duration, timestamps, isPlaying)
   const lrclibData = await fetchLRCLIB(song, artist, album, durationSec);
   if (requestId !== currentLyricsRequest) return;
 
-  if (lrclibData) applyLyrics(lrclibData, timestamps, isPlaying);
-  else renderEmptyLyrics();
+  if (lrclibData) {
+    applyLyrics(lrclibData, timestamps, isPlaying);
+    return;
+  }
+
+  // Genius fallback — plain lyrics, no timestamps.
+  const geniusData = await fetchGenius(song, artist);
+  if (requestId !== currentLyricsRequest) return;
+
+  if (geniusData) {
+    // Spread the lines across the track duration so the sync has
+    // something to work with, even without real timestamps.
+    const totalDur = durationSec && durationSec > 10 ? durationSec : null;
+    if (totalDur) {
+      const step = totalDur / geniusData.lines.length;
+      geniusData.lines = geniusData.lines.map((l, i) => ({ t: i * step, line: l.line }));
+    }
+    applyLyrics(geniusData, timestamps, isPlaying);
+    return;
+  }
+
+  renderEmptyLyrics();
 }
 
 function setLyrics() {
