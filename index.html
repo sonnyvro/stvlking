@@ -94,18 +94,20 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; background: #030303; }
+html {
+  scroll-behavior: smooth;
+  background: #030303;
+  overflow-x: clip;
+  isolation: isolate;
+}
 
 body {
   font-family: var(--font-sans) !important;
   background: transparent;
   color: var(--text-main);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
-  position: relative;
-  isolation: isolate;
-  z-index: 0;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -224,9 +226,18 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* --- Layout Grid --- */
-.stage { min-height: 100vh; display: flex; justify-content: center; }
+.stage {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 .column {
-  width: 100%; max-width: 1320px; min-height: 100vh; padding: 0 34px 22px;
+  width: 100%;
+  max-width: 1320px;
+  min-height: 100vh;
+  padding: 0 34px 22px;
   display: grid;
   grid-template-columns: 220px minmax(0, 718px) 245px;
   grid-template-rows: 144px minmax(0, 1fr) 82px;
@@ -234,8 +245,13 @@ a { color: inherit; text-decoration: none; }
     "head head head"
     "profile main right"
     "footer footer footer";
-  column-gap: 36px; row-gap: 0; align-items: start; justify-content: center;
-  position: relative; z-index: 5;
+  column-gap: 36px;
+  row-gap: 0;
+  align-items: start;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
 }
 
 /* --- Header / Navigation --- */
@@ -277,10 +293,10 @@ a { color: inherit; text-decoration: none; }
 
 .tab {
   font-family: var(--font-sans) !important;
-  font-size: 0.68rem;
+  font-size: 0.82rem; /* INCREASED from 0.68rem for better readability */
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #625e5c;
+  color: #a09d9b; /* LIGHTER color for better contrast against the dark background */
   padding: 9px 8px;
   transition: color 0.25s ease, transform 0.25s ease;
   cursor: pointer;
@@ -343,6 +359,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.5px;
 }
 .avatar-wrap {
+  position: relative;
   width: 100%;
   height: auto;
   aspect-ratio: 1 / 1;
@@ -1157,7 +1174,7 @@ a { color: inherit; text-decoration: none; }
   .tabs::before { font-size: 2.8rem; position: absolute; left: 0; top: 24px; }
   .tabs::after { display: none; }
   .tab-group { gap: 22px; }
-  .tab { transform: none !important; font-size: 0.57rem; letter-spacing: 3px; }
+  .tab { transform: none !important; font-size: 0.68rem; letter-spacing: 3px; }
   .card-head { padding: 24px 0 18px; flex-direction: row; gap: 16px; }
   .avatar-wrap { width: 92px; height: 92px; }
   .card-head::after { display: none; }
@@ -2892,7 +2909,17 @@ function applyPresence(data) {
 
   if (bootDone) hideBootLoader();
 
-  try { localStorage.setItem(PRESENCE_CACHE_KEY, JSON.stringify({ data, t: Date.now() })); } catch (_) {}
+    try { localStorage.setItem(PRESENCE_CACHE_KEY, JSON.stringify({ data, t: Date.now() })); } catch (_) {}
+
+  // If nothing musical is playing anywhere, make sure the fallback shows
+  if (!data.spotify && !data.listening_to_spotify) {
+    const anyMusicActivity = (data.activities || []).some(a =>
+      ['Spotify','SoundCloud','Apple Music','YouTube Music'].includes(a.name)
+    );
+    if (!anyMusicActivity) {
+      showFallback();
+    }
+  }
 
   const user   = data.discord_user;
   const status = data.discord_status || 'offline';
@@ -2974,7 +3001,8 @@ function applyPresence(data) {
         timestamps: activity.timestamps,
         spotifyId: activity.sync_id || null,
         source: activity.name,
-      };
+        sourceUrl: activity.details_url || null,
+};
       isPlaying = !!activity.timestamps;
     }
   }
@@ -3014,7 +3042,6 @@ let pollInterval = null;
     });
   } catch (_) {}
 })();
-
 async function pollLanyard() {
   try {
     const res = await fetch(`${CONFIG.lanyardRest}/${CONFIG.discordUserId}`, { cache: 'no-store', priority: 'high' });
