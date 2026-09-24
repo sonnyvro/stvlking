@@ -2273,10 +2273,11 @@ function estimateWordTiming(entry, nextEntry) {
   });
 }
 
+const LYRICS_CACHE_VERSION = 'v2';
 const lyricsCache = new Map();
 
 async function fetchLRCLIB(trackName, artistName, albumName, durationSec) {
-  const cacheKey = `${trackName}|${artistName}`.toLowerCase();
+  const cacheKey = `${LYRICS_CACHE_VERSION}|${trackName}|${artistName}`.toLowerCase();
   if (lyricsCache.has(cacheKey)) return lyricsCache.get(cacheKey);
 
   const controller = new AbortController();
@@ -2284,20 +2285,32 @@ async function fetchLRCLIB(trackName, artistName, albumName, durationSec) {
 
   try {
     const params = new URLSearchParams({ track_name: trackName, artist_name: artistName });
-    if (albumName)    params.set('album_name', albumName);
-    if (durationSec)  params.set('duration', Math.round(durationSec));
 
-    const res = await fetch(`${CONFIG.lrclibBase}/get?${params.toString()}`, { signal: controller.signal });
+    const res = await fetch(`${CONFIG.lrclibBase}/search?${params.toString()}`, { signal: controller.signal });
     clearTimeout(timeout);
 
     if (!res.ok) { lyricsCache.set(cacheKey, null); return null; }
-    const data = await res.json();
+    const results = await res.json();
+
+    // /api/search returns an array. Prefer the entry with synced lyrics,
+    // then plain lyrics, then whatever's first.
+    const best = Array.isArray(results)
+      ? (results.find(r => r.syncedLyrics) || results.find(r => r.plainLyrics) || results[0])
+      : null;
+
+    if (!best) { lyricsCache.set(cacheKey, null); return null; }
+
     let result = null;
-    if (data.syncedLyrics) result = parseLRC(data.syncedLyrics);
-    else if (data.plainLyrics) {
-      const lines = data.plainLyrics.split('\n').filter(l => l.trim()).map((l, i) => ({ t: i * 4, line: l.trim() }));
+    if (best.syncedLyrics) {
+      result = parseLRC(best.syncedLyrics);
+    } else if (best.plainLyrics) {
+      const lines = best.plainLyrics
+        .split('\n')
+        .filter(l => l.trim())
+        .map((l, i) => ({ t: i * 4, line: l.trim() }));
       result = { offset: 0, lines };
     }
+
     lyricsCache.set(cacheKey, result);
     return result;
   } catch (_) {
@@ -2310,7 +2323,7 @@ async function fetchLRCLIB(trackName, artistName, albumName, durationSec) {
 const geniusCache = new Map();
 
 async function fetchGenius(trackName, artistName) {
-  const cacheKey = `${trackName}|${artistName}`.toLowerCase();
+  const cacheKey = `${LYRICS_CACHE_VERSION}|${trackName}|${artistName}`.toLowerCase();
   if (geniusCache.has(cacheKey)) return geniusCache.get(cacheKey);
 
   try {
