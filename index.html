@@ -569,6 +569,34 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 1px;
 }
 
+/* ─── Beat-only state: show music symbol PNG instead of lyrics ─── */
+.lyric-track.beat-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transform: translateY(0) !important;
+  transition: none;
+}
+
+.beat-symbol {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  opacity: 0.55;
+  filter: drop-shadow(0 0 18px var(--dyn-glow-faint));
+  animation: beat-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes beat-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.45; }
+  50%      { transform: scale(1.08); opacity: 0.75; }
+}
+
+@media (max-width: 760px) {
+  .beat-symbol { width: 64px; height: 64px; }
+}
+
 /* --- Right Sidebar (Links & Featured) --- */
 .editorial-sidebar {
   grid-area: right;
@@ -2372,6 +2400,23 @@ function renderLoadingLyrics() {
   lastLyricEls = [];
 }
 
+const BEAT_SYMBOL_SRC = 'stickers/music-note.png';
+
+function renderBeatOnly() {
+  if (!els.lyricTrack) return;
+  els.lyrics.classList.remove('loading');
+  els.lyricTrack.classList.add('beat-only');
+  els.lyricTrack.style.transform = 'translateY(0)';
+  els.lyricTrack.innerHTML =
+    `<img class="beat-symbol" src="${BEAT_SYMBOL_SRC}" alt="" aria-hidden="true">`;
+  lastLyricEls = [];
+}
+
+function clearBeatOnly() {
+  if (!els.lyricTrack) return;
+  els.lyricTrack.classList.remove('beat-only');
+}
+
 function buildLyricElements() {
   if (!els.lyricTrack) return;
   els.lyrics.classList.remove('loading');
@@ -2431,6 +2476,7 @@ function centerOnLine(index) {
 
 function renderLyrics(activeIndex) {
   if (!activeLyricData || !activeLyricData.lines) { renderEmptyLyrics(); return; }
+  if (els.lyricTrack && els.lyricTrack.classList.contains('beat-only')) return;
   if (lastLyricEls.length !== activeLyricData.lines.length) buildLyricElements();
 
   lastLyricEls.forEach((el, i) => {
@@ -2462,13 +2508,26 @@ function syncLyricsToTime() {
     else break;
   }
 
+  const firstLine = lines[0];
   const lastLine = lines[lines.length - 1];
-  const nextAfterActive = active >= 0 ? lines[active + 1] : null;
-  const lastLineEnd = nextAfterActive ? nextAfterActive.t : (lastLine ? lastLine.t + 5 : Infinity);
+  const lastLineEnd = lastLine ? lastLine.t + 5 : Infinity;
 
-  if (active < 0) {
-    lastLyricEls.forEach(el => el.classList.remove('active', 'near', 'far', 'passed'));
+  if (active < 0 && firstLine && playhead < firstLine.t) {
+    if (!els.lyricTrack.classList.contains('beat-only')) renderBeatOnly();
+    lastActiveLine = -1;
     return;
+  }
+
+  if (playhead > lastLineEnd) {
+    if (!els.lyricTrack.classList.contains('beat-only')) renderBeatOnly();
+    lastActiveLine = -1;
+    return;
+  }
+
+  if (els.lyricTrack.classList.contains('beat-only')) {
+    clearBeatOnly();
+    buildLyricElements();
+    lastActiveLine = -1;
   }
 
   if (active !== lastActiveLine) {
@@ -2480,6 +2539,7 @@ function syncLyricsToTime() {
   const el = lastLyricEls[active];
   if (!line || !el) return;
 
+  const nextAfterActive = lines[active + 1];
   const lineEnd = nextAfterActive ? nextAfterActive.t : lastLineEnd;
   const playheadInLine = Math.max(0, Math.min(lineEnd, playhead));
   const words = el.querySelectorAll('.word');
@@ -2531,6 +2591,7 @@ async function startLyrics(song, artist, album, duration, timestamps, isPlaying)
   activeLyricData = null;
   lastActiveLine = -1;
   lastLyricEls = [];
+  clearBeatOnly();
   renderLoadingLyrics();
 
   const fallback = getFallbackLyrics(song);
@@ -2573,7 +2634,8 @@ function setLyrics() {
   currentTrackData = null;
   lastLyricEls = [];
   currentLyricsRequest++;
-  renderEmptyLyrics();
+  clearBeatOnly();
+  renderBeatOnly();
 }
 
 function fmt(ms) {
